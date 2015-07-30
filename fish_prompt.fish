@@ -560,7 +560,7 @@ end
 # => Symbols segment
 ####################
 function __budspencer_prompt_left_symbols -d 'Display symbols'
-  set -l jobs (jobs | wc -l)
+  set -l jobs (jobs | wc -l | tr -d '[:space:]')
   if [ -e ~/.taskrc ]
     set todo (task due.before:sunday ^ /dev/null | tail -1 | cut -f1 -d' ')
     set overdue (task due.before:today ^ /dev/null | tail -1 | cut -f1 -d' ')
