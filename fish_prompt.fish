@@ -700,7 +700,7 @@ set -g cmd_hist cmd_hist_nosession
 set -g CMD_DURATION 0
 set -g dir_hist_nosession
 set -g dir_hist dir_hist_nosession
-set -g pwd_hist_lock false
+set -g pwd_hist_lock true
 set -g pcount 1
 set -g prompt_hist
 set -g no_prompt_hist 'F'
