@@ -738,7 +738,9 @@ if not begin
     or set -q -x RANGER_LEVEL
     or set -q -x VIM
   end ^ /dev/null
-  cd $bookmarks[1]
+  if set -q bookmarks[1]
+    cd $bookmarks[1]
+  end
 end
 set -x LOGIN $USER
 
