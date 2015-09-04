@@ -79,7 +79,11 @@ end
 # => Git segment
 ################
 function __budspencer_is_git_ahead_or_behind -d 'Check if there are unpulled or unpushed commits'
-  command git rev-list --count --left-right 'HEAD...@{upstream}' ^ /dev/null  | sed 's|\s\+|\n|g'
+  if set -l ahead_or_behind (command git rev-list --count --left-right 'HEAD...@{upstream}' ^ /dev/null)
+    echo $ahead_or_behind | sed 's|\s\+|\n|g'
+  else
+    echo 0\n0
+  end
 end
 
 function __budspencer_git_status -d 'Check git status'
