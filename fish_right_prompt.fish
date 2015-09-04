@@ -111,7 +111,7 @@ function __budspencer_prompt_git_symbols -d 'Displays the git symbols'
   set -l git_status (__budspencer_git_status)
   set -l git_stashed (__budspencer_is_git_stashed)
 
-  if [ (expr $git_status[1] + $git_status[2] + $git_status[3] + $git_status[4] + $git_status[5] + $git_status[6] + $git_stashed) -ne 0 ]
+  if [ (expr $git_ahead_behind[1] + $git_ahead_behind[2] + $git_status[1] + $git_status[2] + $git_status[3] + $git_status[4] + $git_status[5] + $git_status[6] + $git_stashed) -ne 0 ]
     set_color $budspencer_colors[3]
     echo -n ''
     set_color -b $budspencer_colors[3]
