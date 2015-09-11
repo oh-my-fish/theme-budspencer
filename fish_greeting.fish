@@ -49,7 +49,7 @@ end
 # => Help
 #########
 function budspencer_help -d 'Show helpfile'
-  set -l readme_file "$fish_path/themes/budspencer/README.md"
+  set -l readme_file "$OMF_PATH/themes/budspencer/README.md"
   if set -q PAGER
     if [ -e $readme_file ]
       eval $PAGER $readme_file
