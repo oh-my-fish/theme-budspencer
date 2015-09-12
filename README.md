@@ -110,6 +110,7 @@ set -e budspencer_nogreeting
     * ✘: last command failed, can be toggled with `#` to show the status value
     * ⚡: superuser indicator
 - Present working directory
+- Active Python [virtual environment](https://virtualenv.pypa.io/en/latest/). Requires [Virtual Fish](https://github.com/adambrenecki/virtualfish/)
 
 ## Right prompt segments
 
