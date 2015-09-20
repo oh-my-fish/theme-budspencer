@@ -157,7 +157,7 @@ function d -d 'List directory history, jump to directory in list with d <number>
   set -l num_items (expr (count $$dir_hist) - 1)
   if [ $num_items -eq 0 ]
     set_color $fish_color_error[1]
-    echo 'Directory history is empty. '(set_color normal)'It will be created automatically'
+    echo 'Directory history is empty. '(set_color normal)'It will be created automatically.'
     return
   end
   for i in (seq $num_items)
