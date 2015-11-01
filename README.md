@@ -33,6 +33,17 @@ Non standard tools:
 * [taskwarrior][taskwarrior] (optional)
 * [remind][remind] (optional)
 
+### Note for OS X users
+
+The theme uses advanced `sed` and `expr` features. The OS X tools have
+restricted functionality.
+
+Try `expr` from `coreutils` package if you see `expr: syntax error` in
+budspencer prompt.
+
+Execute `brew install --with-default-names gnu-sed` if there are
+`Array index out of bounds` messages in your prompt.
+
 ## Configuration
 
 ### General configuration
