@@ -531,12 +531,38 @@ function __budspencer_prompt_git_branch -d 'Return the current branch name'
     set -l position (command git describe --contains --all HEAD ^ /dev/null)
     if not test $position > /dev/null
       set -l commit (command git rev-parse HEAD ^ /dev/null | sed 's|\(^.......\).*|\1|')
-      echo -n (set_color -b $budspencer_colors[11])''(set_color $budspencer_colors[1])' ➦ '$commit' '(set_color $budspencer_colors[11])
+      if test $commit
+        set_color -b $budspencer_colors[11]
+        switch $pwd_style
+          case short long
+            echo -n ''(set_color $budspencer_colors[1])' ➦ '$commit' '(set_color $budspencer_colors[11])
+          case none
+            echo -n ''
+        end
+        set_color normal
+        set_color $budspencer_colors[11]
+      end
     else
-      echo -n (set_color -b $budspencer_colors[9])''(set_color $budspencer_colors[1])'  '$position' '(set_color $budspencer_colors[9])
+      set_color -b $budspencer_colors[9]
+      switch $pwd_style
+        case short long
+          echo -n ''(set_color $budspencer_colors[1])'  '$position' '(set_color $budspencer_colors[9])
+        case none
+          echo -n ''
+      end
+      set_color normal
+      set_color $budspencer_colors[9]
     end
   else
-    echo -n (set_color -b $budspencer_colors[3])''(set_color $budspencer_colors[1])'  '$branch' '(set_color $budspencer_colors[3])
+    set_color -b $budspencer_colors[3]
+    switch $pwd_style
+      case short long
+        echo -n ''(set_color $budspencer_colors[1])'  '$branch' '(set_color $budspencer_colors[3])
+      case none
+    echo -n ''
+    end
+    set_color normal
+    set_color $budspencer_colors[3]
   end
 end
 
@@ -563,7 +589,10 @@ function __budspencer_prompt_bindmode -d 'Displays the current mode'
     set budspencer_current_bindmode_color $budspencer_colors[7]
   end
   set_color -b $budspencer_current_bindmode_color $budspencer_colors[1]
-  echo -n " $pcount "
+  switch $pwd_style
+    case short long
+      echo -n " $pcount "
+  end
   set_color -b $budspencer_colors[1] $budspencer_current_bindmode_color
 end
 
@@ -571,129 +600,130 @@ end
 # => Symbols segment
 ####################
 function __budspencer_prompt_left_symbols -d 'Display symbols'
-  set -l jobs (jobs | wc -l | tr -d '[:space:]')
-  if [ -e ~/.taskrc ]
-    set todo (task due.before:sunday ^ /dev/null | tail -1 | cut -f1 -d' ')
-    set overdue (task due.before:today ^ /dev/null | tail -1 | cut -f1 -d' ')
-  end
-  if [ -e ~/.reminders ]
-    set appointments (rem -a | cut -f1 -d' ')
-  end
-  if [ (count $todo) -eq 0 ]
-    set todo 0
-  end
-  if [ (count $overdue) -eq 0 ]
-    set overdue 0
-  end
-  if [ (count $appointments) -eq 0 ]
-    set appointments 0
-  end
-  set_color -b $budspencer_colors[2]
-  echo -n ''
+    set -l symbols_urgent 'F'
+    set -l symbols (set_color -b $budspencer_colors[2])''
 
-  if [ $symbols_style = 'symbols' ]
-    if [ $budspencer_session_current != '' ]
-      set_color -o $budspencer_colors[8]
-      echo -n ' ✻'
+    set -l jobs (jobs | wc -l | tr -d '[:space:]')
+    if [ -e ~/.taskrc ]
+        set todo (task due.before:sunday ^ /dev/null | tail -1 | cut -f1 -d' ')
+        set overdue (task due.before:today ^ /dev/null | tail -1 | cut -f1 -d' ')
     end
-    if contains $PWD $bookmarks
-      set_color -o $budspencer_colors[10]
-      echo -n ' ⌘'
+    if [ -e ~/.reminders ]
+        set appointments (rem -a | cut -f1 -d' ')
     end
-    if set -q -x VIM
-      set_color -o $budspencer_colors[9]
-      echo -n ' V'
+    if [ (count $todo) -eq 0 ]
+        set todo 0
     end
-    if set -q -x RANGER_LEVEL
-      set_color -o $budspencer_colors[9]
-      echo -n ' R'
+    if [ (count $overdue) -eq 0 ]
+        set overdue 0
     end
-    if [ $jobs -gt 0 ]
-      set_color -o $budspencer_colors[11]
-      echo -n ' ⚙'
+    if [ (count $appointments) -eq 0 ]
+        set appointments 0
     end
-    if [ ! -w . ]
-      set_color -o $budspencer_colors[6]
-      echo -n ' '
-    end
-    if [ $todo -gt 0 ]
-      set_color -o $budspencer_colors[4]
-    end
-    if [ $overdue -gt 0 ]
-      set_color -o $budspencer_colors[8]
-    end
-    if [ (expr $todo + $overdue) -gt 0 ]
-      echo -n ' ⚔'
-    end
-    if [ $appointments -gt 0 ]
-      set_color -o $budspencer_colors[5]
-      echo -n ' ⚑'
-    end
-    if [ $last_status -eq 0 ]
-      set_color -o $budspencer_colors[12]
-      echo -n ' ✔'
+
+    if [ $symbols_style = 'symbols' ]
+        if [ $budspencer_session_current != '' ]
+            set symbols $symbols(set_color -o $budspencer_colors[8])' ✻'
+            set symbols_urgent 'T'
+        end
+        if contains $PWD $bookmarks
+            set symbols $symbols(set_color -o $budspencer_colors[10])' ⌘'
+        end
+        if set -q -x VIM
+            set symbols $symbols(set_color -o $budspencer_colors[9])' V'
+            set symbols_urgent 'T'
+        end
+        if set -q -x RANGER_LEVEL
+            set symbols $symbols(set_color -o $budspencer_colors[9])' R'
+            set symbols_urgent 'T'
+        end
+        if [ $jobs -gt 0 ]
+            set symbols $symbols(set_color -o $budspencer_colors[11])' ⚙'
+            set symbols_urgent 'T'
+        end
+        if [ ! -w . ]
+            set symbols $symbols(set_color -o $budspencer_colors[6])' '
+        end
+        if [ $todo -gt 0 ]
+            set symbols $symbols(set_color -o $budspencer_colors[4])
+        end
+        if [ $overdue -gt 0 ]
+            set symbols $symbols(set_color -o $budspencer_colors[8])
+        end
+        if [ (expr $todo + $overdue) -gt 0 ]
+            set symbols $symbols' ⚔'
+            set symbols_urgent 'T'
+        end
+        if [ $appointments -gt 0 ]
+            set symbols $symbols(set_color -o $budspencer_colors[5])' ⚑'
+            set symbols_urgent 'T'
+        end
+        if [ $last_status -eq 0 ]
+            set symbols $symbols(set_color -o $budspencer_colors[12])' ✔'
+        else
+            set symbols $symbols(set_color -o $budspencer_colors[7])' ✘'
+        end
+        if [ $USER = 'root' ]
+            set symbols $symbols(set_color -o $budspencer_colors[6])' ⚡'
+            set symbols_urgent 'T'
+        end
     else
-      set_color -o $budspencer_colors[7]
-      echo -n ' ✘'
+        if [ $budspencer_session_current != '' ] ^ /dev/null
+            set symbols $symbols(set_color $budspencer_colors[8])' '(expr (count $budspencer_sessions) - (contains -i $budspencer_session_current $budspencer_sessions))
+            set symbols_urgent 'T'
+        end
+        if contains $PWD $bookmarks
+            set symbols $symbols(set_color $budspencer_colors[10])' '(expr (count $bookmarks) - (contains -i $PWD $bookmarks))
+        end
+        if set -q -x VIM
+            set symbols $symbols(set_color -o $budspencer_colors[9])' V'(set_color normal)
+            set symbols_urgent 'T'
+        end
+        if set -q -x RANGER_LEVEL
+            set symbols $symbols(set_color $budspencer_colors[9])' '$RANGER_LEVEL
+            set symbols_urgent 'T'
+        end
+        if [ $jobs -gt 0 ]
+            set symbols $symbols(set_color $budspencer_colors[11])' '$jobs
+            set symbols_urgent 'T'
+        end
+        if [ ! -w . ]
+            set symbols $symbols(set_color -o $budspencer_colors[6])' '(set_color normal)
+        end
+        if [ $todo -gt 0 ]
+            set symbols $symbols(set_color $budspencer_colors[4])
+        end
+        if [ $overdue -gt 0 ]
+            set symbols $symbols(set_color $budspencer_colors[8])
+        end
+        if [ (expr $todo + $overdue) -gt 0 ]
+            set symbols $symbols" $todo"
+            set symbols_urgent 'T'
+        end
+        if [ $appointments -gt 0 ]
+            set symbols $symbols(set_color $budspencer_colors[5])" $appointments"
+            set symbols_urgent 'T'
+        end
+        if [ $last_status -eq 0 ]
+            set symbols $symbols(set_color $budspencer_colors[12])' '$last_status
+        else
+            set symbols $symbols(set_color $budspencer_colors[7])' '$last_status
+        end
+        if [ $USER = 'root' ]
+            set symbols $symbols(set_color -o $budspencer_colors[6])' ⚡'
+            set symbols_urgent 'T'
+        end
     end
-    if [ $USER = 'root' ]
-      set_color -o $budspencer_colors[6]
-      echo -n ' ⚡'
+    set symbols $symbols(set_color $budspencer_colors[2])' '(set_color normal)(set_color $budspencer_colors[2])
+    switch $pwd_style
+        case none
+            if test $symbols_urgent = 'T'
+                set symbols (set_color -b $budspencer_colors[2])''(set_color normal)(set_color $budspencer_colors[2])
+            else
+                set symbols ''
+            end
     end
-  else
-    if [ $budspencer_session_current != '' ] ^ /dev/null
-      set_color $budspencer_colors[8]
-      echo -n ' '(expr (count $budspencer_sessions) - (contains -i $budspencer_session_current $budspencer_sessions))
-    end
-    if contains $PWD $bookmarks
-      set_color $budspencer_colors[10]
-      echo -n ' '(expr (count $bookmarks) - (contains -i $PWD $bookmarks))
-    end
-    if set -q -x VIM
-      set_color -o $budspencer_colors[9]
-      echo -n ' V'
-      set_color normal
-    end
-    if set -q -x RANGER_LEVEL
-      set_color -b $budspencer_colors[2] $budspencer_colors[9]
-      echo -n ' '$RANGER_LEVEL
-    end
-    if [ $jobs -gt 0 ]
-      set_color -b $budspencer_colors[2] $budspencer_colors[11]
-      echo -n ' '$jobs
-    end
-    if [ ! -w . ]
-      set_color -o $budspencer_colors[6]
-      echo -n ' '
-      set_color normal
-    end
-    if [ $todo -gt 0 ]
-      set_color -b $budspencer_colors[2] $budspencer_colors[4]
-    end
-    if [ $overdue -gt 0 ]
-      set_color -b $budspencer_colors[2] $budspencer_colors[8]
-    end
-    if [ (expr $todo + $overdue) -gt 0 ]
-      echo -n " $todo"
-    end
-    if [ $appointments -gt 0 ]
-      set_color -b $budspencer_colors[2] $budspencer_colors[5]
-      echo -n " $appointments"
-    end
-    if [ $last_status -eq 0 ]
-      set_color -b $budspencer_colors[2] $budspencer_colors[12]
-      echo -n ' '$last_status
-    else
-      set_color -b $budspencer_colors[2] $budspencer_colors[7]
-      echo -n ' '$last_status
-    end
-    if [ $USER = 'root' ]
-      set_color -o $budspencer_colors[6]
-      echo -n ' ⚡'
-    end
-  end
-  echo -n ' '
-  set_color -b normal $budspencer_colors[2]
+    echo -n $symbols
 end
 
 ###############################################################################
@@ -761,5 +791,5 @@ set -x LOGIN $USER
 
 function fish_prompt -d 'Write out the left prompt of the budspencer theme'
   set -g last_status $status
-  echo -n -s (__budspencer_prompt_bindmode) (__budspencer_prompt_virtual_env) (__budspencer_prompt_git_branch) (__budspencer_prompt_left_symbols) '' ' '
+  echo -n -s (__budspencer_prompt_bindmode) (__budspencer_prompt_git_branch) (__budspencer_prompt_left_symbols) ' ' (set_color normal)
 end

@@ -67,11 +67,17 @@ function __budspencer_cmd_duration -d 'Displays the elapsed time of last command
               end
           end
       end
-      if [ $last_status -ne 0 ]
-        echo -n (set_color $budspencer_colors[2])''(set_color -b $budspencer_colors[2] $budspencer_colors[7])' '$days$hours$minutes$seconds
-      else
-        echo -n (set_color $budspencer_colors[2])''(set_color -b $budspencer_colors[2] $budspencer_colors[12])' '$days$hours$minutes$seconds
+      set_color $budspencer_colors[2]
+      echo -n ''
+      switch $pwd_style
+        case short long
+          if [ $last_status -ne 0 ]
+            echo -n (set_color -b $budspencer_colors[2] $budspencer_colors[7])' '$days$hours$minutes$seconds' '
+          else
+            echo -n (set_color -b $budspencer_colors[2] $budspencer_colors[12])' '$days$hours$minutes$seconds' '
+          end
       end
+    set_color -b $budspencer_colors[2]
   end
 end
 
@@ -115,86 +121,90 @@ function __budspencer_prompt_git_symbols -d 'Displays the git symbols'
     set_color $budspencer_colors[3]
     echo -n ''
     set_color -b $budspencer_colors[3]
-    if [ $symbols_style = 'symbols' ]
-      if [ (count $git_ahead_behind) -eq 2 ]
-        if [ $git_ahead_behind[1] -gt 0 ]
-          set_color -o $budspencer_colors[5]
-          echo -n ' ↑'
+    switch $pwd_style
+      case long short
+        if [ $symbols_style = 'symbols' ]
+          if [ (count $git_ahead_behind) -eq 2 ]
+            if [ $git_ahead_behind[1] -gt 0 ]
+              set_color -o $budspencer_colors[5]
+              echo -n ' ↑'
+                  end
+                  if [ $git_ahead_behind[2] -gt 0 ]
+                    set_color -o $budspencer_colors[5]
+                    echo -n ' ↓'
+                  end
               end
-              if [ $git_ahead_behind[2] -gt 0 ]
-                set_color -o $budspencer_colors[5]
-                echo -n ' ↓'
+              if [ $git_status[1] -gt 0 ]
+                set_color -o $budspencer_colors[12]
+                echo -n ' +'
               end
-          end
-          if [ $git_status[1] -gt 0 ]
-            set_color -o $budspencer_colors[12]
-            echo -n ' +'
-          end
-          if [ $git_status[2] -gt 0 ]
-            set_color -o $budspencer_colors[7]
-            echo -n ' –'
-          end
-          if [ $git_status[3] -gt 0 ]
-            set_color -o $budspencer_colors[10]
-            echo -n ' ✱'
-          end
-          if [ $git_status[4] -gt 0 ]
-            set_color -o $budspencer_colors[8]
-            echo -n ' →'
-          end
-          if [ $git_status[5] -gt 0 ]
-            set_color -o $budspencer_colors[9]
-            echo -n ' ═'
-          end
-          if [ $git_status[6] -gt 0 ]
-            set_color -o $budspencer_colors[4]
-            echo -n ' ●'
-          end
-          if [ $git_stashed -gt 0 ]
-            set_color -o $budspencer_colors[11]
-            echo -n ' ✭'
-          end
-      else
-        if [ (count $git_ahead_behind) -eq 2 ]
-          if [ $git_ahead_behind[1] -gt 0 ]
-            set_color $budspencer_colors[5]
-            echo -n ' '$git_ahead_behind[1]
+              if [ $git_status[2] -gt 0 ]
+                set_color -o $budspencer_colors[7]
+                echo -n ' –'
               end
-              if [ $git_ahead_behind[2] -gt 0 ]
+              if [ $git_status[3] -gt 0 ]
+                set_color -o $budspencer_colors[10]
+                echo -n ' ✱'
+              end
+              if [ $git_status[4] -gt 0 ]
+                set_color -o $budspencer_colors[8]
+                echo -n ' →'
+              end
+              if [ $git_status[5] -gt 0 ]
+                set_color -o $budspencer_colors[9]
+                echo -n ' ═'
+              end
+              if [ $git_status[6] -gt 0 ]
+                set_color -o $budspencer_colors[4]
+                echo -n ' ●'
+              end
+              if [ $git_stashed -gt 0 ]
+                set_color -o $budspencer_colors[11]
+                echo -n ' ✭'
+              end
+          else
+            if [ (count $git_ahead_behind) -eq 2 ]
+              if [ $git_ahead_behind[1] -gt 0 ]
                 set_color $budspencer_colors[5]
-                echo -n ' '$git_ahead_behind[2]
+                echo -n ' '$git_ahead_behind[1]
+                  end
+                  if [ $git_ahead_behind[2] -gt 0 ]
+                    set_color $budspencer_colors[5]
+                    echo -n ' '$git_ahead_behind[2]
+                  end
               end
-          end
-          if [ $git_status[1] -gt 0 ]
-            set_color $budspencer_colors[12]
-            echo -n ' '$git_status[1]
-          end
-          if [ $git_status[2] -gt 0 ]
-            set_color $budspencer_colors[7]
-            echo -n ' '$git_status[2]
-          end
-          if [ $git_status[3] -gt 0 ]
-            set_color $budspencer_colors[10]
-            echo -n ' '$git_status[3]
-          end
-          if [ $git_status[4] -gt 0 ]
-            set_color $budspencer_colors[8]
-            echo -n ' '$git_status[4]
-          end
-          if [ $git_status[5] -gt 0 ]
-            set_color $budspencer_colors[9]
-            echo -n ' '$git_status[5]
-          end
-          if [ $git_status[6] -gt 0 ]
-            set_color $budspencer_colors[4]
-            echo -n ' '$git_status[6]
-          end
-          if [ $git_stashed -gt 0 ]
-            set_color $budspencer_colors[11]
-            echo -n ' '$git_stashed
-          end
-      end
-      set_color -b $budspencer_colors[3] normal
+              if [ $git_status[1] -gt 0 ]
+                set_color $budspencer_colors[12]
+                echo -n ' '$git_status[1]
+              end
+              if [ $git_status[2] -gt 0 ]
+                set_color $budspencer_colors[7]
+                echo -n ' '$git_status[2]
+              end
+              if [ $git_status[3] -gt 0 ]
+                set_color $budspencer_colors[10]
+                echo -n ' '$git_status[3]
+              end
+              if [ $git_status[4] -gt 0 ]
+                set_color $budspencer_colors[8]
+                echo -n ' '$git_status[4]
+              end
+              if [ $git_status[5] -gt 0 ]
+                set_color $budspencer_colors[9]
+                echo -n ' '$git_status[5]
+              end
+              if [ $git_status[6] -gt 0 ]
+                set_color $budspencer_colors[4]
+                echo -n ' '$git_status[6]
+              end
+              if [ $git_stashed -gt 0 ]
+                set_color $budspencer_colors[11]
+                echo -n ' '$git_stashed
+              end
+        end
+        set_color -b $budspencer_colors[3] normal
+        echo -n ' '
+    end
   end
 end
 
@@ -238,6 +248,6 @@ end
 ###############################################################################
 
 function fish_right_prompt -d 'Write out the right prompt of the budspencer theme'
-  echo -n (__budspencer_cmd_duration) (__budspencer_prompt_git_symbols) (__budspencer_prompt_pwd)
+  echo -n -s (__budspencer_cmd_duration) (__budspencer_prompt_git_symbols) (__budspencer_prompt_pwd)
   set_color normal
 end
