@@ -1,7 +1,7 @@
 # Budspencer theme
 
-A theme for the 70s, makes fish even more powerful. It's equipped with a hell
-of a lot of nice functions and key bindings to speed up your workflow.
+A theme for nerds, makes fish even more powerful. It's equipped with a hell of a
+lot of nice functions and key bindings to speed up your workflow.
 
 The philosophy behind budspencer theme:
 
@@ -223,6 +223,18 @@ Type `s -d` to detach current session.
 ## Set window title
 
 Just type `wt <title>`.
+
+## Ring the bell in order to set the urgency hint flag
+
+If you have configured your terminal application to use the visual bell, your
+window manager will tell you when a job running in your shell has finished. You
+don't need to check manually whether it's done.
+
+If you have still activated the acoustic bell, you probably hate that feature.
+Switch it off in that case:
+```
+set -U budspencer_nobell
+```
 
 ## TODO
 

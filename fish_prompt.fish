@@ -223,7 +223,8 @@ function __budspencer_create_cmd_hist -e fish_prompt -d 'Create command history 
     end
   end
   set fish_bind_mode insert
-  echo -n \a
+  #echo -n \a
+  __budspencer_urgency
 end
 
 function c -d 'List command history, load command from prompt with c <prompt number>'

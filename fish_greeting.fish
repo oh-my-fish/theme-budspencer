@@ -15,6 +15,7 @@
 #     -> Help
 #     -> Environment
 #     -> Window title
+#     -> Ring bell
 #     -> Welcome message
 #
 ###############################################################################
@@ -82,6 +83,18 @@ function wt -d 'Set window title'
   set -g window_title $argv
   function fish_title
     echo -n $window_title
+  end
+end
+
+##############
+# => Ring bell
+##############
+if set -q budspencer_nobell
+  function __budspencer_urgency -d 'Do nothing.'
+  end
+else
+  function __budspencer_urgency -d 'Ring the bell in order to set the urgency hint flag.'
+    echo -n \a
   end
 end
 
