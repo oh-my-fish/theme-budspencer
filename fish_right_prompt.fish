@@ -124,15 +124,13 @@ function __budspencer_prompt_git_symbols -d 'Displays the git symbols'
     switch $pwd_style
       case long short
         if [ $symbols_style = 'symbols' ]
-          if [ (count $git_ahead_behind) -eq 2 ]
-            if [ $git_ahead_behind[1] -gt 0 ]
-              set_color -o $budspencer_colors[5]
-              echo -n ' ↑'
-            end
-            if [ $git_ahead_behind[2] -gt 0 ]
-              set_color -o $budspencer_colors[5]
-              echo -n ' ↓'
-            end
+          if [ $git_ahead_behind[1] -gt 0 ]
+            set_color -o $budspencer_colors[5]
+            echo -n ' ↑'
+          end
+          if [ $git_ahead_behind[2] -gt 0 ]
+            set_color -o $budspencer_colors[5]
+            echo -n ' ↓'
           end
           if [ $git_status[1] -gt 0 ]
             set_color -o $budspencer_colors[12]
@@ -163,15 +161,13 @@ function __budspencer_prompt_git_symbols -d 'Displays the git symbols'
             echo -n ' ✭'
           end
         else
-          if [ (count $git_ahead_behind) -eq 2 ]
-            if [ $git_ahead_behind[1] -gt 0 ]
-              set_color $budspencer_colors[5]
-              echo -n ' '$git_ahead_behind[1]
-            end
-            if [ $git_ahead_behind[2] -gt 0 ]
-              set_color $budspencer_colors[5]
-              echo -n ' '$git_ahead_behind[2]
-            end
+          if [ $git_ahead_behind[1] -gt 0 ]
+            set_color $budspencer_colors[5]
+            echo -n ' '$git_ahead_behind[1]
+          end
+          if [ $git_ahead_behind[2] -gt 0 ]
+            set_color $budspencer_colors[5]
+            echo -n ' '$git_ahead_behind[2]
           end
           if [ $git_status[1] -gt 0 ]
             set_color $budspencer_colors[12]
