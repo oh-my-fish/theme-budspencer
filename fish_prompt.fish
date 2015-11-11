@@ -602,7 +602,7 @@ function __budspencer_prompt_bindmode -d 'Displays the current mode'
     case short long
       echo -n " $pcount "
   end
-  set_color -b $budspencer_colors[1] $budspencer_current_bindmode_color
+  set_color -b normal $budspencer_current_bindmode_color
 end
 
 ####################
