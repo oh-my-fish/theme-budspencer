@@ -568,7 +568,7 @@ function __budspencer_prompt_git_branch -d 'Return the current branch name'
       case short long
         echo -n ''(set_color $budspencer_colors[1])'  '$branch' '(set_color $budspencer_colors[3])
       case none
-    echo -n ''
+        echo -n ''
     end
     set_color normal
     set_color $budspencer_colors[3]

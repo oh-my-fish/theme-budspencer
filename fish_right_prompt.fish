@@ -212,14 +212,14 @@ function __budspencer_prompt_pwd -d 'Displays the present working directory'
   if set -q SSH_CLIENT
     if [ $symbols_style = 'symbols' ]
       switch $pwd_style
-          case short
-            set user_host " $USER@"(hostname -s)':'
-          case long
-            set user_host " $USER@"(hostname -f)':'
-          end
-      else
-        set user_host " $USER@"(hostname -i)':'
+        case short
+          set user_host " $USER@"(hostname -s)':'
+        case long
+          set user_host " $USER@"(hostname -f)':'
       end
+    else
+      set user_host " $USER@"(hostname -i)':'
+    end
   end
   set_color $budspencer_current_bindmode_color
   echo -n ''
@@ -231,7 +231,7 @@ function __budspencer_prompt_pwd -d 'Displays the present working directory'
         echo -n $user_host(prompt_pwd)' '
       case long
         echo -n $user_host(pwd)' '
-      end
+    end
   else
     echo -n " $budspencer_prompt_error "
     set -e budspencer_prompt_error[1]
