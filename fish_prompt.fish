@@ -10,9 +10,14 @@
 #   Joseph Tannhuber <sepp.tannhuber@yahoo.de>
 #
 # Sections:
+#   -> Color definitions
 #   -> Key bindings
 #   -> Files
 #   -> Functions
+#     -> Ring bell
+#     -> Window title
+#     -> Help
+#     -> Environment
 #     -> Pre execute
 #     -> Directory history
 #     -> Command history
@@ -26,6 +31,22 @@
 #   -> Left prompt
 #
 ###############################################################################
+
+###############################################################################
+# => Color definitions
+###############################################################################
+
+# Define colors
+set -U budspencer_night 000000 083743 445659 fdf6e3 b58900 cb4b16 dc121f af005f 6c71c4 268bd2 2aa198 859900
+set -U budspencer_day 000000 333333 666666 ffffff ffff00 ff6600 ff0000 ff0033 3300ff 00aaff 00ffff 00ff00
+if not set -q budspencer_colors
+  # Values are: black dark_gray light_gray white yellow orange red magenta violet blue cyan green
+  set -U budspencer_colors $budspencer_night
+end
+
+# Cursor color changes according to vi-mode
+# Define values for: normal_mode insert_mode visual_mode
+set -U budspencer_cursors "\033]12;#$budspencer_colors[10]\007" "\033]12;#$budspencer_colors[5]\007" "\033]12;#$budspencer_colors[8]\007" "\033]12;#$budspencer_colors[9]\007"
 
 ###############################################################################
 # => Key bindings
@@ -58,6 +79,58 @@ set -g budspencer_tmpfile '/tmp/'(echo %self)'_budspencer_edit.fish'
 ###############################################################################
 # => Functions
 ###############################################################################
+
+##############
+# => Ring bell
+##############
+if set -q budspencer_nobell
+  function __budspencer_urgency -d 'Do nothing.'
+  end
+else
+  function __budspencer_urgency -d 'Ring the bell in order to set the urgency hint flag.'
+    echo -n \a
+  end
+end
+
+#################
+# => Window title
+#################
+function wt -d 'Set window title'
+  set -g window_title $argv
+  function fish_title
+    echo -n $window_title
+  end
+end
+
+#########
+# => Help
+#########
+function budspencer_help -d 'Show helpfile'
+  set -l readme_file "$OMF_PATH/themes/budspencer/README.md"
+  if set -q PAGER
+    if [ -e $readme_file ]
+      eval $PAGER $readme_file
+      else
+        set_color $fish_color_error[1]
+        echo "$readme_file wasn't found."
+      end
+  else
+    open $readme_file
+  end
+end
+
+################
+# => Environment
+################
+function day -d "Set color palette for bright environment."
+  set budspencer_colors $budspencer_day
+  set budspencer_cursors "\033]12;#$budspencer_colors[10]\007" "\033]12;#$budspencer_colors[5]\007" "\033]12;#$budspencer_colors[8]\007" "\033]12;#$budspencer_colors[9]\007"
+end
+
+function night -d "Set color palette for dark environment."
+  set budspencer_colors $budspencer_night
+  set budspencer_cursors "\033]12;#$budspencer_colors[10]\007" "\033]12;#$budspencer_colors[5]\007" "\033]12;#$budspencer_colors[8]\007" "\033]12;#$budspencer_colors[9]\007"
+end
 
 ################
 # => Pre execute
