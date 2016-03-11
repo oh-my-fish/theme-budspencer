@@ -380,35 +380,43 @@ function m -d 'List bookmarks, jump to directory in list with m <number>'
     echo 'Bookmark list is empty. '(set_color normal)'Enter '(set_color $fish_color_command[1])'mark '(set_color normal)'in INSERT mode or '(set_color $fish_color_command[1])'m '(set_color normal)'in NORMAL mode, if you want to add the current directory to your bookmark list.'
     return
   end
-  for i in (seq $num_items)
-    if [ $PWD = $bookmarks[$i] ]
-      set_color $budspencer_colors[10]
-    else
-      if [ (expr \( $num_items - $i \) \% 2) -eq 0 ]
-        set_color normal
-      else
-        set_color $budspencer_colors[4]
-      end
+  if begin
+      [ (count $argv) -eq 1 ]
+      and [ $argv[1] -ge 0 ]
+      and [ $argv[1] -lt $num_items ]
     end
-    echo '▶ '(expr $num_items - $i)\t$bookmarks[$i] | sed "s|$HOME|~|"
-  end
-  if [ $num_items -eq 1 ]
-    set last_item ''
+    cd $$dir_hist[1][(expr $num_items - $argv[1])]
   else
-    set last_item '-'(expr $num_items - 1)
-  end
-  echo -en $budspencer_cursors[1]
-  set input_length (expr length (expr $num_items - 1))
-  read -p 'echo -n (set_color -b $budspencer_colors[2] $budspencer_colors[10])" ⌘ Goto [0"$last_item"] "(set_color -b normal $budspencer_colors[2])" "(set_color $budspencer_colors[10])' -n $input_length -l dir_num
-  switch $dir_num
-    case (seq 0 (expr $num_items - 1))
-      cd $bookmarks[(expr $num_items - $dir_num)]
-  end
-  for i in (seq (expr $num_items + 1))
+    for i in (seq $num_items)
+      if [ $PWD = $bookmarks[$i] ]
+        set_color $budspencer_colors[10]
+      else
+        if [ (expr \( $num_items - $i \) \% 2) -eq 0 ]
+          set_color normal
+        else
+          set_color $budspencer_colors[4]
+        end
+      end
+      echo '▶ '(expr $num_items - $i)\t$bookmarks[$i] | sed "s|$HOME|~|"
+    end
+    if [ $num_items -eq 1 ]
+      set last_item ''
+    else
+      set last_item '-'(expr $num_items - 1)
+    end
+    echo -en $budspencer_cursors[1]
+    set input_length (expr length (expr $num_items - 1))
+    read -p 'echo -n (set_color -b $budspencer_colors[2] $budspencer_colors[10])" ⌘ Goto [0"$last_item"] "(set_color -b normal $budspencer_colors[2])" "(set_color $budspencer_colors[10])' -n $input_length -l dir_num
+    switch $dir_num
+      case (seq 0 (expr $num_items - 1))
+        cd $bookmarks[(expr $num_items - $dir_num)]
+    end
+    for i in (seq (expr $num_items + 1))
+      tput cuu1
+    end
+    tput ed
     tput cuu1
   end
-  tput ed
-  tput cuu1
 end
 
 #############
