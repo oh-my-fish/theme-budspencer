@@ -385,7 +385,7 @@ function m -d 'List bookmarks, jump to directory in list with m <number>'
       and [ $argv[1] -ge 0 ]
       and [ $argv[1] -lt $num_items ]
     end
-    cd $$dir_hist[1][(expr $num_items - $argv[1])]
+    cd $bookmarks[(expr $num_items - $argv[1])]
   else
     for i in (seq $num_items)
       if [ $PWD = $bookmarks[$i] ]
