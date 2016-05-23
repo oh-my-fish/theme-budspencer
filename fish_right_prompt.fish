@@ -10,6 +10,7 @@
 #   Joseph Tannhuber <sepp.tannhuber@yahoo.de>
 #
 # Sections:
+#   -> TTY Detection
 #   -> Functions
 #     -> Toggle functions
 #     -> Command duration segment
@@ -18,6 +19,15 @@
 #   -> Prompt
 #
 ###############################################################################
+
+###############################################################################
+# => TTY Detection
+###############################################################################
+
+# Automatically disables right prompt when in a tty
+if tty | grep tty >/dev/null
+  exit
+end
 
 ###############################################################################
 # => Functions
