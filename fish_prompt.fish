@@ -11,7 +11,6 @@
 #
 # Sections:
 #   -> Color definitions
-#   -> Key bindings
 #   -> Files
 #   -> Functions
 #     -> Ring bell
@@ -47,24 +46,6 @@ end
 # Cursor color changes according to vi-mode
 # Define values for: normal_mode insert_mode visual_mode
 set -U budspencer_cursors "\033]12;#$budspencer_colors[10]\007" "\033]12;#$budspencer_colors[5]\007" "\033]12;#$budspencer_colors[8]\007" "\033]12;#$budspencer_colors[9]\007"
-
-################################################################################
-## => Key bindings
-################################################################################
-#
-#if [ $fish_key_bindings = 'fish_vi_key_bindings' ]
-#  bind '#' __budspencer_toggle_symbols
-#  bind -M visual '#' __budspencer_toggle_symbols
-#  bind ' ' __budspencer_toggle_pwd
-#  bind -M visual ' ' __budspencer_toggle_pwd
-#  bind L __budspencer_cd_next
-#  bind H __budspencer_cd_prev
-#  bind m mark
-#  bind M unmark
-#  bind . __budspencer_edit_commandline
-#  bind -M insert \r __budspencer_preexec
-#  bind \r __budspencer_preexec
-#end
 
 ###############################################################################
 # => Files
