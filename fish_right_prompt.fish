@@ -25,8 +25,11 @@
 ###############################################################################
 
 # Automatically disables right prompt when in a tty
-if tty | grep tty >/dev/null
-  exit
+# Except in Darwin due to OS X terminals identifying themselves as a tty
+if not test (uname) = Darwin
+  if tty | grep tty >/dev/null
+    exit
+  end
 end
 
 ###############################################################################
