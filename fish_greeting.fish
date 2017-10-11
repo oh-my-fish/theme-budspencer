@@ -1,7 +1,7 @@
 ###############################################################################
 #
 # prompt theme name:
-#   budspencer
+#   budspencer-node
 #
 # description:
 #   a sophisticated airline/powerline theme
