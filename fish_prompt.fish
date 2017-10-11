@@ -36,8 +36,8 @@
 ###############################################################################
 
 # Define colors
-set -U budspencer_night 000000 083743 445659 fdf6e3 b58900 cb4b16 dc121f af005f 6c71c4 268bd2 2aa198 859900
-set -U budspencer_day 000000 333333 666666 ffffff ffff00 ff6600 ff0000 ff0033 3300ff 00aaff 00ffff 00ff00
+set -U budspencer_night #000000 #083743 #445659 #fdf6e3 #b58900 #cb4b16 #dc121f #af005f #6c71c4 #268bd2 #2aa198 #859900
+set -U budspencer_day #000000 #333333 #666666 #ffffff #ffff00 #ff6600 #ff0000 #ff0033 #3300ff #00aaff #00ffff #00ff00
 if not set -q budspencer_colors
   # Values are: black dark_gray light_gray white yellow orange red magenta violet blue cyan green
   set -U budspencer_colors $budspencer_night
@@ -593,6 +593,17 @@ function __budspencer_prompt_virtual_env -d 'Return the current virtual env name
     set_color -b $budspencer_colors[1] $budspencer_colors[9]
   end
 end
+
+########################
+# => Node version segment
+########################
+function __budspencer_prompt_node_version -d 'Return the current Node version'
+  set_color -b $budspencer_colors[9]
+  echo -n ''
+  echo -n ' '(node -v)' '
+  set_color -b $budspencer_colors[1] $budspencer_colors[9]
+end
+
 ################
 # => Git segment
 ################
@@ -862,5 +873,5 @@ set -x LOGIN $USER
 
 function fish_prompt -d 'Write out the left prompt of the budspencer theme'
   set -g last_status $status
-  echo -n -s (__budspencer_prompt_bindmode) (__budspencer_prompt_virtual_env) (__budspencer_prompt_git_branch) (__budspencer_prompt_left_symbols) ' ' (set_color normal)
+  echo -n -s (__budspencer_prompt_bindmode) (__budspencer_prompt_node_version) (__budspencer_prompt_git_branch) (__budspencer_prompt_left_symbols) ' ' (set_color normal)
 end
