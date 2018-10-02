@@ -585,23 +585,18 @@ end
 ########################
 # => Virtual Env segment
 ########################
-function __budspencer_prompt_virtual_env -d 'Return the current virtual env name'
-  if set -q VIRTUAL_ENV
+function __budspencer_prompt_virtual_env -d 'Return the current virtual env name or other custom environment information'
+  if set -q VIRTUAL_ENV; or set -q budspencer_alt_environment
     set_color -b $budspencer_colors[9]
     echo -n ''
-    echo -n ' '(basename "$VIRTUAL_ENV")' '
+    if set -q VIRTUAL_ENV
+      echo -n ' '(basename "$VIRTUAL_ENV")' '
+    end
+    if set -q budspencer_alt_environment
+      echo -n ' '(eval "$budspencer_alt_environment")' '
+    end
     set_color -b $budspencer_colors[1] $budspencer_colors[9]
   end
-end
-
-########################
-# => Node version segment
-########################
-function __budspencer_prompt_node_version -d 'Return the current Node version'
-  set_color -b $budspencer_colors[9]
-  echo -n ''
-  echo -n ' '(node -v)' '
-  set_color -b $budspencer_colors[1] $budspencer_colors[9]
 end
 
 ################
