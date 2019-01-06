@@ -98,7 +98,7 @@ end
 # => Git segment
 ################
 function __budspencer_is_git_ahead_or_behind -d 'Check if there are unpulled or unpushed commits'
-  if set -l ahead_or_behind (command git rev-list --count --left-right 'HEAD...@{upstream}' ^ /dev/null)
+  if set -l ahead_or_behind (command git rev-list --count --left-right 'HEAD...@{upstream}' 2> /dev/null)
     echo $ahead_or_behind | sed 's|\s\+|\n|g'
   else
     echo 0\n0
@@ -106,7 +106,7 @@ function __budspencer_is_git_ahead_or_behind -d 'Check if there are unpulled or 
 end
 
 function __budspencer_git_status -d 'Check git status'
-  set -l git_status (command git status --porcelain ^/dev/null | cut -c 1-2)
+  set -l git_status (command git status --porcelain 2> /dev/null | cut -c 1-2)
   set -l added (echo -sn $git_status\n | egrep -c "[ACDMT][ MT]|[ACMT]D")
   set -l deleted (echo -sn $git_status\n | egrep -c "[ ACMRT]D")
   set -l modified (echo -sn $git_status\n | egrep -c ".[MT]")
@@ -117,11 +117,11 @@ function __budspencer_git_status -d 'Check git status'
 end
 
 function __budspencer_is_git_stashed -d 'Check if there are stashed commits'
-  command git log --format="%gd" -g $argv 'refs/stash' -- ^ /dev/null | wc -l | tr -d '[:space:]'
+  command git log --format="%gd" -g $argv 'refs/stash' -- 2> /dev/null | wc -l | tr -d '[:space:]'
 end
 
 function __budspencer_prompt_git_symbols -d 'Displays the git symbols'
-  set -l is_repo (command git rev-parse --is-inside-work-tree ^/dev/null)
+  set -l is_repo (command git rev-parse --is-inside-work-tree 2> /dev/null)
   if [ -z $is_repo ]
     return
   end
