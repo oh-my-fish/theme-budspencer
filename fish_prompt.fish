@@ -128,7 +128,7 @@ function __budspencer_preexec -d 'Execute after hitting <Enter> before doing any
     set -e budspencer_prompt_error[1]
     if not type -q $cmd[1]
       if [ -d $cmd[1] ]
-        set budspencer_prompt_error (cd $cmd[1] ^&1)
+        set budspencer_prompt_error (cd $cmd[1] 2>&1)
         and commandline ''
         commandline -f repaint
         return
@@ -148,7 +148,7 @@ function __budspencer_preexec -d 'Execute after hitting <Enter> before doing any
         end
       case 'cd'
         if [ (count $cmd) -le 2 ]
-          set budspencer_prompt_error (eval $cmd ^&1)
+          set budspencer_prompt_error (eval $cmd 2>&1)
           and commandline ''
           if [ (count $budspencer_prompt_error) -gt 1 ]
             set budspencer_prompt_error $budspencer_prompt_error[1]
@@ -172,7 +172,7 @@ end
 # => Fish termination
 #####################
 function __budspencer_on_termination -s HUP -s INT -s QUIT -s TERM --on-process %self -d 'Execute when shell terminates'
-  set -l item (contains -i %self $budspencer_sessions_active_pid ^ /dev/null)
+  set -l item (contains -i %self $budspencer_sessions_active_pid 2> /dev/null)
   __budspencer_detach_session $item
 end
 
@@ -242,7 +242,7 @@ function d -d 'List directory history, jump to directory in list with d <number>
         cd $$dir_hist[1][(expr $num_items - $dir_num)]
       case 'e'
         read -p 'echo -n (set_color -b $budspencer_colors[2] $budspencer_colors[5])" ♻ Erase [0"$last_item"] "(set_color -b normal $budspencer_colors[2])" "(set_color $budspencer_colors[5])' -n $input_length -l dir_num
-        set -e $dir_hist[1][(expr $num_items - $dir_num)] ^ /dev/null
+        set -e $dir_hist[1][(expr $num_items - $dir_num)] 2> /dev/null
         set dir_hist_val (count $$dir_hist)
         tput cuu1
     end
@@ -327,7 +327,7 @@ function c -d 'List command history, load command from prompt with c <prompt num
         tput cuu1
       end
       tput cuu1
-      set -e $cmd_hist[1][(expr $num_items - $cmd_num)] ^ /dev/null
+      set -e $cmd_hist[1][(expr $num_items - $cmd_num)] 2> /dev/null
   end
   tput ed
   tput cuu1
@@ -443,12 +443,12 @@ end
 function __budspencer_detach_session -d 'Detach current session'
   set cmd_hist cmd_hist_nosession
   set dir_hist dir_hist_nosession
-  if [ -z $$dir_hist ] ^ /dev/null
+  if [ -z $$dir_hist ] 2> /dev/null
     set $dir_hist $PWD
   end
   set dir_hist_val (count $$dir_hist)
-  set -e budspencer_sessions_active_pid[$argv] ^ /dev/null
-  set -e budspencer_sessions_active[$argv] ^ /dev/null
+  set -e budspencer_sessions_active_pid[$argv] 2> /dev/null
+  set -e budspencer_sessions_active[$argv] 2> /dev/null
   set budspencer_session_current ''
   cd $$dir_hist[1][$dir_hist_val]
   set no_prompt_hist 'T'
@@ -469,11 +469,11 @@ function __budspencer_attach_session -d 'Attach session'
     end
     set cmd_hist budspencer_session_cmd_hist_$argv[1]
     set dir_hist budspencer_session_dir_hist_$argv[1]
-    if [ -z $$dir_hist ] ^ /dev/null
+    if [ -z $$dir_hist ] 2> /dev/null
       set $dir_hist $PWD
     end
     set dir_hist_val (count $$dir_hist)
-    cd $$dir_hist[1][$dir_hist_val] ^ /dev/null
+    cd $$dir_hist[1][$dir_hist_val] 2> /dev/null
   end
   set no_prompt_hist 'T'
 end
@@ -549,7 +549,7 @@ function s -d 'Create, delete or attach session'
         return
     end
   end
-  set -l item (contains -i %self $budspencer_sessions_active_pid ^ /dev/null)
+  set -l item (contains -i %self $budspencer_sessions_active_pid 2> /dev/null)
   switch $argv[1]
     case '-e'
       __budspencer_erase_session $argv
@@ -597,11 +597,11 @@ end
 # => Git segment
 ################
 function __budspencer_prompt_git_branch -d 'Return the current branch name'
-  set -l branch (command git symbolic-ref HEAD ^ /dev/null | sed -e 's|^refs/heads/||')
+  set -l branch (command git symbolic-ref HEAD 2> /dev/null | sed -e 's|^refs/heads/||')
   if not test $branch > /dev/null
-    set -l position (command git describe --contains --all HEAD ^ /dev/null)
+    set -l position (command git describe --contains --all HEAD 2> /dev/null)
     if not test $position > /dev/null
-      set -l commit (command git rev-parse HEAD ^ /dev/null | sed 's|\(^.......\).*|\1|')
+      set -l commit (command git rev-parse HEAD 2> /dev/null | sed 's|\(^.......\).*|\1|')
       if test $commit
         set_color -b $budspencer_colors[11]
         switch $pwd_style
@@ -676,8 +676,8 @@ function __budspencer_prompt_left_symbols -d 'Display symbols'
 
     set -l jobs (jobs | wc -l | tr -d '[:space:]')
     if [ -e ~/.taskrc ]
-        set todo (task due.before:sunday ^ /dev/null | tail -1 | cut -f1 -d' ')
-        set overdue (task due.before:today ^ /dev/null | tail -1 | cut -f1 -d' ')
+        set todo (task due.before:sunday 2> /dev/null | tail -1 | cut -f1 -d' ')
+        set overdue (task due.before:today 2> /dev/null | tail -1 | cut -f1 -d' ')
     end
     if [ -e ~/.reminders ]
         set appointments (rem -a | cut -f1 -d' ')
@@ -739,7 +739,7 @@ function __budspencer_prompt_left_symbols -d 'Display symbols'
             set symbols_urgent 'T'
         end
     else
-        if [ $budspencer_session_current != '' ] ^ /dev/null
+        if [ $budspencer_session_current != '' ] 2> /dev/null
             set symbols $symbols(set_color $budspencer_colors[8])' '(expr (count $budspencer_sessions) - (contains -i $budspencer_session_current $budspencer_sessions))
             set symbols_urgent 'T'
         end
@@ -849,7 +849,7 @@ if not begin
     set -q -x LOGIN
     or set -q -x RANGER_LEVEL
     or set -q -x VIM
-  end ^ /dev/null
+  end 2> /dev/null
   if set -q bookmarks[1]
     cd $bookmarks[1]
   end
