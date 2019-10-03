@@ -6,8 +6,11 @@
 # Description:
 #   a sophisticated airline/powerline theme
 #
-# Author:
+# Original Author:
 #   Joseph Tannhuber <sepp.tannhuber@yahoo.de>
+#
+# Additional edits and bug fixes:
+#   Clayton Auld <clayauld@gmail.com>
 #
 # Sections:
 #   -> TTY Detection
@@ -26,9 +29,12 @@
 
 # Automatically disables right prompt when in a tty
 # Except in Darwin due to OS X terminals identifying themselves as a tty
-if not test (uname) = Darwin
-  if tty | grep tty >/dev/null
-    exit
+# Bug fix for WSL terminals as these, too, identify themselves as a tty
+if not test (uname -r | /bin/grep Microsoft)
+  if not test (uname) = Darwin
+    if tty | /bin/grep tty >/dev/null
+      exit
+    end
   end
 end
 
