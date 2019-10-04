@@ -1,4 +1,4 @@
-# Budspencer theme
+# Budspencer-Node theme
 
 A theme for nerds, makes fish even more powerful. It's equipped with a hell of a
 lot of nice functions and key bindings to speed up your workflow.
@@ -244,7 +244,7 @@ set -U budspencer_nobell
 
 Give me feedback if you ...
 * ... have ideas how I could improve budspencer.
-* ... have problems with budspencer. 
+* ... have problems with budspencer.
 * ... have questions concerning budspencer.
 
 [font]: https://github.com/Lokaltog/powerline-fonts
