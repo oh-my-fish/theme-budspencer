@@ -599,6 +599,18 @@ function __budspencer_prompt_virtual_env -d 'Return the current virtual env name
   end
 end
 
+########################
+# => Node version segment
+########################
+function __budspencer_prompt_node_version -d 'Return the current Node version'
+  if set -q budspencer_alt_environment
+    set_color -b $budspencer_colors[9]
+    echo -n ''
+    echo -n ' '(node -v)' '
+    set_color -b $budspencer_colors[1] $budspencer_colors[9]
+  end
+end
+
 ################
 # => Git segment
 ################
@@ -868,5 +880,5 @@ set -x LOGIN $USER
 
 function fish_prompt -d 'Write out the left prompt of the budspencer theme'
   set -g last_status $status
-  echo -n -s (__budspencer_prompt_bindmode) (__budspencer_prompt_node_version) (__budspencer_prompt_git_branch) (__budspencer_prompt_left_symbols) ' ' (set_color normal)
+  echo -n -s (__budspencer_prompt_bindmode) (__budspencer_prompt_virtual_env) (__budspencer_prompt_node_version) (__budspencer_prompt_git_branch) (__budspencer_prompt_left_symbols) ' ' (set_color normal)
 end
