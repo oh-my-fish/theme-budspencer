@@ -122,6 +122,7 @@ set -e budspencer_nogreeting
     * ⚡: superuser indicator
 - Present working directory
 - Active Python [virtual environment](https://virtualenv.pypa.io/en/latest/). Requires [Virtual Fish](https://github.com/adambrenecki/virtualfish/)
+- To show your current node version, do following in your Fish configs: set -g budspencer_alt_environment "node -v"
 
 ## Right prompt segments
 
