@@ -30,8 +30,8 @@
 # Automatically disables right prompt when in a tty
 # Except in Darwin due to OS X terminals identifying themselves as a tty
 # Bug fix for WSL terminals as these, too, identify themselves as a tty
-if not test (uname -r | /bin/grep Microsoft)
-  if not test (uname) = Darwin
+if not test (uname) = Darwin
+  if not test (uname -r | /bin/grep Microsoft)
     if tty | /bin/grep tty >/dev/null
       exit
     end
