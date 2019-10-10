@@ -205,6 +205,13 @@ The following shortcuts need vi mode:
 - Create a bookmark for present working directory with `m` in NORMAL mode.
 - Remove a bookmark for present working directory with `M` in NORMAL mode.
 
+By default the shell will change to the directory of the latest bookmark on a new session. 
+This can be disabled by adding the following line:
+
+```
+set -U budspencer_no_cd_bookmark
+```
+
 ## Edit commandline with your favorite editor
 
 The function `edit-commandline` let you edit the commandline with your editor.
