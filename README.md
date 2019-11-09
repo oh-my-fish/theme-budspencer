@@ -41,8 +41,20 @@ restricted functionality.
 Try `expr` from `coreutils` package if you see `expr: syntax error` in
 budspencer prompt.
 
-Execute `brew install --with-default-names gnu-sed` if there are
-`Array index out of bounds` messages in your prompt.
+Install advanced `sed` and `expr` versions:
+
+```
+$ brew install coreutils gnu-sed
+```
+
+Add this to your `~/.config/fish/config.fish`:
+
+```
+if test (uname -s) = "Darwin"
+  set -gx PATH /usr/local/opt/coreutils/libexec/gnubin $PATH
+  set -gx PATH /usr/local/opt/gnu-sed/libexec/gnubin $PATH
+end
+```
 
 ## Configuration
 
