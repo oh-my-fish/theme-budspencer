@@ -346,12 +346,21 @@ function mark -d 'Create bookmark for present working directory.'
   end
 end
 
-function unmark -d 'Remove bookmark for present working directory.'
-  if contains $PWD $bookmarks
+function unmark -d 'Remove bookmark for present working directory, or remove the entry given as argument.'
+  set -l num_items (count $bookmarks)
+  if begin
+      [ (count $argv) -eq 1 ]
+      and [ $argv[1] -ge 0 ]
+      and [ $argv[1] -lt $num_items ]
+    end
+    set -e bookmarks[(expr $num_items - $argv[1])]
+  else if contains $PWD $bookmarks
     set -e bookmarks[(contains -i $PWD $bookmarks)]
-    set pwd_hist_lock true
-    commandline -f repaint
+  else
+    return
   end
+  set pwd_hist_lock true
+  commandline -f repaint
 end
 
 function m -d 'List bookmarks, jump to directory in list with m <number>'
