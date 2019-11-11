@@ -207,7 +207,11 @@ argument.
 
 ## Bookmarks
 
-A bookmark can be created with `mark`. It can be removed with `unmark`.
+A bookmark can be created with `mark`. It can be removed with `unmark`. 
+
+`unmark` can take an argument to remove a specific bookmark in the bookmark list. 
+Simply add the number of the bookmark you would like to remove as the argument.
+
 Bookmarks are universal and thus persistant.
 A new shell automatically changes working directory on startup to newest bookmark.
 `m` is a function that drops down a menu showing the bookmarks as enumerated list
