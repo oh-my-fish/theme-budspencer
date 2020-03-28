@@ -236,12 +236,12 @@ function d -d 'List directory history, jump to directory in list with d <number>
     end
     echo -en $budspencer_cursors[2]
     set input_length (expr length (expr $num_items - 1))
-    read -p 'echo -n (set_color -b $budspencer_colors[2] $budspencer_colors[5])" ♻ Goto [e|0"$last_item"] "(set_color -b normal $budspencer_colors[2])" "(set_color $budspencer_colors[5])' -n $input_length -l dir_num
+    read -p 'echo -n (set_color -b $budspencer_colors[2] $budspencer_colors[5])" ♻ Goto [e|0"$last_item"] "(set_color -b normal $budspencer_colors[2])" "(set_color $budspencer_colors[5])' -n $input_length -l dir_num
     switch $dir_num
       case (seq 0 (expr $num_items - 1))
         cd $$dir_hist[1][(expr $num_items - $dir_num)]
       case 'e'
-        read -p 'echo -n (set_color -b $budspencer_colors[2] $budspencer_colors[5])" ♻ Erase [0"$last_item"] "(set_color -b normal $budspencer_colors[2])" "(set_color $budspencer_colors[5])' -n $input_length -l dir_num
+        read -p 'echo -n (set_color -b $budspencer_colors[2] $budspencer_colors[5])" ♻ Erase [0"$last_item"] "(set_color -b normal $budspencer_colors[2])" "(set_color $budspencer_colors[5])' -n $input_length -l dir_num
         set -e $dir_hist[1][(expr $num_items - $dir_num)] 2> /dev/null
         set dir_hist_val (count $$dir_hist)
         tput cuu1
@@ -313,7 +313,7 @@ function c -d 'List command history, load command from prompt with c <prompt num
   end
   echo -en $budspencer_cursors[4]
   set input_length (expr length (expr $num_items - 1))
-  read -p 'echo -n (set_color -b $budspencer_colors[2] $budspencer_colors[9])" ↩ Exec [e|0"$last_item"] "(set_color -b normal $budspencer_colors[2])" "(set_color $budspencer_colors[9])' -n $input_length -l cmd_num
+  read -p 'echo -n (set_color -b $budspencer_colors[2] $budspencer_colors[9])" ↩ Exec [e|0"$last_item"] "(set_color -b normal $budspencer_colors[2])" "(set_color $budspencer_colors[9])' -n $input_length -l cmd_num
   switch $cmd_num
     case (seq 0 (expr $num_items - 1))
       commandline $$cmd_hist[1][(expr $num_items - $cmd_num)]
@@ -322,7 +322,7 @@ function c -d 'List command history, load command from prompt with c <prompt num
         tput cuu1
       end
     case 'e'
-      read -p 'echo -n (set_color -b $budspencer_colors[2] $budspencer_colors[9])" ↩ Erase [0"$last_item"] "(set_color -b normal $budspencer_colors[2])" "(set_color $budspencer_colors[9])' -n $input_length -l cmd_num
+      read -p 'echo -n (set_color -b $budspencer_colors[2] $budspencer_colors[9])" ↩ Erase [0"$last_item"] "(set_color -b normal $budspencer_colors[2])" "(set_color $budspencer_colors[9])' -n $input_length -l cmd_num
       for i in (seq (count (echo $$cmd_hist\n)))
         tput cuu1
       end
@@ -396,7 +396,7 @@ function m -d 'List bookmarks, jump to directory in list with m <number>'
     end
     echo -en $budspencer_cursors[1]
     set input_length (expr length (expr $num_items - 1))
-    read -p 'echo -n (set_color -b $budspencer_colors[2] $budspencer_colors[10])" ⌘ Goto [0"$last_item"] "(set_color -b normal $budspencer_colors[2])" "(set_color $budspencer_colors[10])' -n $input_length -l dir_num
+    read -p 'echo -n (set_color -b $budspencer_colors[2] $budspencer_colors[10])" ⌘ Goto [0"$last_item"] "(set_color -b normal $budspencer_colors[2])" "(set_color $budspencer_colors[10])' -n $input_length -l dir_num
     switch $dir_num
       case (seq 0 (expr $num_items - 1))
         cd $bookmarks[(expr $num_items - $dir_num)]
@@ -529,7 +529,7 @@ function s -d 'Create, delete or attach session'
     end
     echo -en $budspencer_cursors[3]
     set input_length (expr length (expr $num_items - 1))
-    read -p 'echo -n (set_color -b $budspencer_colors[2] $budspencer_colors[8])" ✻ Attach [e|0"$last_item"] "(set_color -b normal $budspencer_colors[2])" "(set_color $budspencer_colors[8])' -n $input_length -l session_num
+    read -p 'echo -n (set_color -b $budspencer_colors[2] $budspencer_colors[8])" ✻ Attach [e|0"$last_item"] "(set_color -b normal $budspencer_colors[2])" "(set_color $budspencer_colors[8])' -n $input_length -l session_num
     set pcount (expr $pcount - 1)
     switch $session_num
       case (seq 0 (expr $num_items - 1))
@@ -540,7 +540,7 @@ function s -d 'Create, delete or attach session'
         tput ed
         tput cuu1
       case 'e'
-        read -p 'echo -n (set_color -b $budspencer_colors[2] $budspencer_colors[8])" ✻ Erase [0"$last_item"] "(set_color -b normal $budspencer_colors[2])" "(set_color $budspencer_colors[8])' -n $input_length -l session_num
+        read -p 'echo -n (set_color -b $budspencer_colors[2] $budspencer_colors[8])" ✻ Erase [0"$last_item"] "(set_color -b normal $budspencer_colors[2])" "(set_color $budspencer_colors[8])' -n $input_length -l session_num
         if [ (expr $num_items - $session_num) -gt 0 ]
           __budspencer_erase_session -e $budspencer_sessions[(expr $num_items - $session_num)]
         end
@@ -597,7 +597,7 @@ end
 function __budspencer_prompt_virtual_env -d 'Return the current virtual env name or other custom environment information'
   if set -q VIRTUAL_ENV; or set -q budspencer_alt_environment
     set_color -b $budspencer_colors[9]
-    echo -n ''
+    echo -n ''
     if set -q VIRTUAL_ENV
       echo -n ' '(basename "$VIRTUAL_ENV")' '
     end
@@ -614,7 +614,7 @@ end
 function __budspencer_prompt_node_version -d 'Return the current Node version'
   if set -q budspencer_alt_environment
     set_color -b $budspencer_colors[9]
-    echo -n ''
+    echo -n ''
     echo -n ' '(node -v)' '
     set_color -b $budspencer_colors[1] $budspencer_colors[9]
   end
@@ -624,6 +624,7 @@ end
 # => Git segment
 ################
 function __budspencer_prompt_git_branch -d 'Return the current branch name'
+#  echo $PWD ''\n
   set -l branch (command git symbolic-ref HEAD 2> /dev/null | sed -e 's|^refs/heads/||')
   if not test $branch > /dev/null
     set -l position (command git describe --contains --all HEAD 2> /dev/null)
@@ -633,9 +634,9 @@ function __budspencer_prompt_git_branch -d 'Return the current branch name'
         set_color -b $budspencer_colors[11]
         switch $pwd_style
           case short long
-            echo -n ''(set_color $budspencer_colors[1])' ➦ '$commit' '(set_color $budspencer_colors[11])
+            echo -n ''(set_color $budspencer_colors[1])' ➦ '$commit' '(set_color $budspencer_colors[11])
           case none
-            echo -n ''
+            echo -n ''
         end
         set_color normal
         set_color $budspencer_colors[11]
@@ -644,9 +645,9 @@ function __budspencer_prompt_git_branch -d 'Return the current branch name'
       set_color -b $budspencer_colors[9]
       switch $pwd_style
         case short long
-          echo -n ''(set_color $budspencer_colors[1])'  '$position' '(set_color $budspencer_colors[9])
+          echo -n ''(set_color $budspencer_colors[1])'  '$position' '(set_color $budspencer_colors[9])
         case none
-          echo -n ''
+          echo -n ''
       end
       set_color normal
       set_color $budspencer_colors[9]
@@ -655,9 +656,9 @@ function __budspencer_prompt_git_branch -d 'Return the current branch name'
     set_color -b $budspencer_colors[3]
     switch $pwd_style
       case short long
-        echo -n ''(set_color $budspencer_colors[1])'  '$branch' '(set_color $budspencer_colors[3])
+        echo -n ''(set_color $budspencer_colors[1])'  '$branch' '(set_color $budspencer_colors[3])
       case none
-        echo -n ''
+        echo -n ''
     end
     set_color normal
     set_color $budspencer_colors[3]
@@ -699,7 +700,7 @@ end
 ####################
 function __budspencer_prompt_left_symbols -d 'Display symbols'
     set -l symbols_urgent 'F'
-    set -l symbols (set_color -b $budspencer_colors[2])''
+    set -l symbols (set_color -b $budspencer_colors[2])''
 
     set -l jobs (jobs | wc -l | tr -d '[:space:]')
     if [ -e ~/.taskrc ]
@@ -816,7 +817,7 @@ function __budspencer_prompt_left_symbols -d 'Display symbols'
     switch $pwd_style
         case none
             if test $symbols_urgent = 'T'
-                set symbols (set_color -b $budspencer_colors[2])''(set_color normal)(set_color $budspencer_colors[2])
+                set symbols (set_color -b $budspencer_colors[2])''(set_color normal)(set_color $budspencer_colors[2])
             else
                 set symbols ''
             end
@@ -890,6 +891,8 @@ set -x LOGIN $USER
 ###############################################################################
 
 function fish_prompt -d 'Write out the left prompt of the budspencer theme'
+  echo
+  echo (set_color -b b58900)(set_color 083743)$PWD(set_color normal)(set_color b58900)''
   set -g last_status $status
-  echo -n -s (__budspencer_prompt_bindmode) (__budspencer_prompt_virtual_env) (__budspencer_prompt_node_version) (__budspencer_prompt_git_branch) (__budspencer_prompt_left_symbols) ' ' (set_color normal)
+  echo -n -s (set_color -b b58900)(set_color 083743)' '(set_color b58900)'' (__budspencer_prompt_virtual_env) (__budspencer_prompt_node_version) (__budspencer_prompt_git_branch) (__budspencer_prompt_left_symbols) ' ' (set_color normal) # (__budspencer_prompt_bindmode)
 end
