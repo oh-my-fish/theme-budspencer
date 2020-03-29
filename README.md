@@ -33,7 +33,7 @@ Non standard tools:
 * [taskwarrior][taskwarrior] (optional)
 * [remind][remind] (optional)
 
-### Note for OS X users
+### Note for OS X users:
 
 The theme uses advanced `sed` and `expr` features. The OS X tools have
 restricted functionality.
