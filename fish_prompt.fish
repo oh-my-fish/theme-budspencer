@@ -645,7 +645,7 @@ function __budspencer_prompt_git_branch -d 'Return the current branch name'
       set_color -b $budspencer_colors[9]
       switch $pwd_style
         case short long
-          echo -n ''(set_color $budspencer_colors[1])'  '$position' '(set_color $budspencer_colors[9])
+          echo -n ''(set_color $budspencer_colors[1])'  '$position' '(set_color $budspencer_colors[9])
         case none
           echo -n ''
       end
@@ -656,7 +656,7 @@ function __budspencer_prompt_git_branch -d 'Return the current branch name'
     set_color -b $budspencer_colors[3]
     switch $pwd_style
       case short long
-        echo -n ''(set_color $budspencer_colors[1])'  '$branch' '(set_color $budspencer_colors[3])
+        echo -n ''(set_color $budspencer_colors[1])'  '$branch' '(set_color $budspencer_colors[3])
       case none
         echo -n ''
     end
@@ -671,17 +671,17 @@ end
 function __budspencer_prompt_bindmode -d 'Displays the current mode'
   switch $fish_bind_mode
     case default
-      set budspencer_current_bindmode_color $budspencer_colors[10]
+      set budspencer_current_bindmode_color $budspencer_colors[6]
       echo -en $budspencer_cursors[1]
     case insert
-      set budspencer_current_bindmode_color $budspencer_colors[5]
+      set budspencer_current_bindmode_color $budspencer_colors[6]
       echo -en $budspencer_cursors[2]
       if [ "$pwd_hist_lock" = true ]
         set pwd_hist_lock false
         __budspencer_create_dir_hist
       end
     case visual
-      set budspencer_current_bindmode_color $budspencer_colors[8]
+      set budspencer_current_bindmode_color $budspencer_colors[6]
       echo -en $budspencer_cursors[3]
   end
   if [ (count $budspencer_prompt_error) -eq 1 ]
@@ -892,7 +892,7 @@ set -x LOGIN $USER
 
 function fish_prompt -d 'Write out the left prompt of the budspencer theme'
   echo
-  echo (set_color -b b58900)(set_color 083743)$PWD(set_color normal)(set_color b58900)''
+  echo (set_color -b black)(set_color b58900)''(set_color -b b58900)(set_color 083743)$PWD (set_color normal)(set_color b58900)''
   set -g last_status $status
-  echo -n -s (set_color -b b58900)(set_color 083743)' '(set_color b58900)'' (__budspencer_prompt_virtual_env) (__budspencer_prompt_node_version) (__budspencer_prompt_git_branch) (__budspencer_prompt_left_symbols) ' ' (set_color normal) # (__budspencer_prompt_bindmode)
+  echo -n -s (set_color -b black)(set_color cb4b16)''(set_color -b cb4b16)(set_color -o 083743)(__budspencer_prompt_bindmode)(set_color -b b58900)(set_color cb4b16)''(set_color black)' '(set_color b58900)'' (__budspencer_prompt_virtual_env) (__budspencer_prompt_node_version) (__budspencer_prompt_git_branch) (__budspencer_prompt_left_symbols) ' ' (set_color normal)
 end
