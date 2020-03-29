@@ -18,7 +18,7 @@ The philosophy behind budspencer theme:
 
 ## Demonstration video
 
-[![video][screenshot]](http://vimeo.com/105546618)
+[![video][screenshot]](https://vimeo.com/user111114812/review/401819683/f4d09a9636)
 
 ## Requirements
 
