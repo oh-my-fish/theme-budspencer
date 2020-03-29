@@ -892,7 +892,8 @@ set -x LOGIN $USER
 
 function fish_prompt -d 'Write out the left prompt of the budspencer theme'
   echo
+  set -g android (set_color green)''(set_color black)
   echo (set_color -b black)(set_color b58900)''(set_color -b b58900)(set_color 083743)$PWD (set_color normal)(set_color b58900)''
   set -g last_status $status
-  echo -n -s (set_color -b black)(set_color cb4b16)''(set_color -b cb4b16)(set_color -o 083743)(__budspencer_prompt_bindmode)(set_color -b b58900)(set_color cb4b16)''(set_color black)' '(set_color b58900)'' (__budspencer_prompt_virtual_env) (__budspencer_prompt_node_version) (__budspencer_prompt_git_branch) (__budspencer_prompt_left_symbols) ' ' (set_color normal)
+  echo -n -s (set_color -b black)(set_color cb4b16)''(set_color -b cb4b16)(set_color -o 083743)(__budspencer_prompt_bindmode)(set_color -b b58900)(set_color cb4b16)''(set_color black)$android' '(set_color b58900)'' (__budspencer_prompt_virtual_env) (__budspencer_prompt_node_version) (__budspencer_prompt_git_branch) (__budspencer_prompt_left_symbols) ' ' (set_color normal)
 end
