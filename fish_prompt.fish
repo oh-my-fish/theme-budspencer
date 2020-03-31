@@ -1,5 +1,5 @@
 ###############################################################################
-#     
+#
 # Prompt theme name:
 #   barracuda
 #
@@ -894,7 +894,9 @@ function fish_prompt -d 'Write out the left prompt of the barracuda theme'
   echo
   set -g barracuda (set_color -o 000)' }><(({º>'(set_color b58900)
   set -g prompt (set_color black)' '(set_color b58900)
-  echo (set_color -b black)(set_color 777)''(set_color -b 777)(set_color 000)$PWD (set_color normal)(set_color 777)''
+  echo (set_color -b black)(set_color 777)''(set_color -b 777)(set_color 000) $PWD (set_color normal)(set_color 777)''
   set -g last_status $status
   echo -n -s (set_color -b black)(set_color cb4b16)''(set_color -b cb4b16)(set_color -o 083743)(__barracuda_prompt_bindmode)(set_color -b b58900)(set_color cb4b16)''$barracuda'' (__barracuda_prompt_virtual_env) (__barracuda_prompt_node_version) (__barracuda_prompt_git_branch) (__barracuda_prompt_left_symbols) ' ' (set_color normal)
 end
+
+#cb4b16
