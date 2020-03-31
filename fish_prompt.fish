@@ -1,5 +1,5 @@
 ###############################################################################
-#      
+#     
 # Prompt theme name:
 #   barracuda
 #
@@ -741,11 +741,7 @@ function __barracuda_prompt_left_symbols -d 'Display symbols'
             set symbols_urgent 'T'
         end
         if [ ! -w . ]
-<<<<<<< HEAD
             set symbols $symbols(set_color -o $barracuda_colors[6])' '
-=======
-            set symbols $symbols(set_color -o $barracuda_colors[6])' '
->>>>>>> bd36f622b1a3ebef370df1d954e028c284126899
         end
         if [ $todo -gt 0 ]
             set symbols $symbols(set_color -o $barracuda_colors[4])
@@ -791,11 +787,7 @@ function __barracuda_prompt_left_symbols -d 'Display symbols'
             set symbols_urgent 'T'
         end
         if [ ! -w . ]
-<<<<<<< HEAD
             set symbols $symbols(set_color -o $barracuda_colors[6])' '(set_color normal)(set_color -b $barracuda_colors[2])
-=======
-            set symbols $symbols(set_color -o $barracuda_colors[6])' '(set_color normal)(set_color -b $barracuda_colors[2])
->>>>>>> bd36f622b1a3ebef370df1d954e028c284126899
         end
         if [ $todo -gt 0 ]
             set symbols $symbols(set_color $barracuda_colors[4])
@@ -900,13 +892,9 @@ set -x LOGIN $USER
 
 function fish_prompt -d 'Write out the left prompt of the barracuda theme'
   echo
-  set -g barracuda (set_color -o 000000)' }><(({º>'(set_color b58900)
+  set -g barracuda (set_color -o 000)' }><(({º>'(set_color b58900)
   set -g prompt (set_color black)' '(set_color b58900)
-  echo (set_color -b black)(set_color 777)''(set_color -b 777)(set_color 000) $PWD (set_color normal)(set_color 777)''  #
+  echo (set_color -b black)(set_color 777)''(set_color -b 777)(set_color 000)$PWD (set_color normal)(set_color 777)''
   set -g last_status $status
-<<<<<<< HEAD
   echo -n -s (set_color -b black)(set_color cb4b16)''(set_color -b cb4b16)(set_color -o 083743)(__barracuda_prompt_bindmode)(set_color -b b58900)(set_color cb4b16)''$barracuda'' (__barracuda_prompt_virtual_env) (__barracuda_prompt_node_version) (__barracuda_prompt_git_branch) (__barracuda_prompt_left_symbols) ' ' (set_color normal)
-=======
-  echo -n -s (set_color -b black)(set_color cb4b16)''(set_color -b cb4b16)(set_color -o 083743)(__barracuda_prompt_bindmode)(set_color -b b58900)(set_color cb4b16)''$android'' (__barracuda_prompt_virtual_env) (__barracuda_prompt_node_version) (__barracuda_prompt_git_branch) (__barracuda_prompt_left_symbols) ' ' (set_color normal)
->>>>>>> bd36f622b1a3ebef370df1d954e028c284126899
 end
