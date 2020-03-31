@@ -624,6 +624,7 @@ end
 # => Git segment
 ################
 function __barracuda_prompt_git_branch -d 'Return the current branch name'
+#  echo $PWD ''\n
   set -l branch (command git symbolic-ref HEAD 2> /dev/null | sed -e 's|^refs/heads/||')
   if not test $branch > /dev/null
     set -l position (command git describe --contains --all HEAD 2> /dev/null)
@@ -644,7 +645,7 @@ function __barracuda_prompt_git_branch -d 'Return the current branch name'
       set_color -b $barracuda_colors[9]
       switch $pwd_style
         case short long
-          echo -n (set_color $barracuda_colors[1])'  '$position' '(set_color $barracuda_colors[9])
+          echo -n ''(set_color $barracuda_colors[1])'  '$position' '(set_color $barracuda_colors[9])
         case none
           echo -n ''
       end
@@ -655,7 +656,7 @@ function __barracuda_prompt_git_branch -d 'Return the current branch name'
     set_color -b $barracuda_colors[3]
     switch $pwd_style
       case short long
-        echo -n (set_color $barracuda_colors[1])'  '$branch' '(set_color $barracuda_colors[3])
+        echo -n ''(set_color $barracuda_colors[1])'  '$branch' '(set_color $barracuda_colors[3])
       case none
         echo -n ''
     end
@@ -671,17 +672,17 @@ function __barracuda_prompt_bindmode -d 'Displays the current mode'
   switch $fish_bind_mode
     case default
       set barracuda_current_bindmode_color $barracuda_colors[6]
-      echo -en $barracuda_cursors[1](set_color $barracuda_colors[6])
+      echo -en $barracuda_cursors[1]
     case insert
       set barracuda_current_bindmode_color $barracuda_colors[6]
-      echo -en  $barracuda_cursors[2](set_color $barracuda_colors[6])
+      echo -en $barracuda_cursors[2] 
       if [ "$pwd_hist_lock" = true ]
         set pwd_hist_lock false
         __barracuda_create_dir_hist
       end
     case visual
       set barracuda_current_bindmode_color $barracuda_colors[6]
-      echo -en $barracuda_cursors[3](set_color $barracuda_colors[6])
+      echo -en $barracuda_cursors[3]
   end
   if [ (count $barracuda_prompt_error) -eq 1 ]
     set barracuda_current_bindmode_color $barracuda_colors[7]
@@ -689,9 +690,9 @@ function __barracuda_prompt_bindmode -d 'Displays the current mode'
   set_color -b $barracuda_current_bindmode_color $barracuda_colors[1]
   switch $pwd_style
     case short long
-      echo -n (set_color -o)" $pcount "(set_color normal)(set_color -b $barracuda_colors[5])(set_color $barracuda_colors[6])(set_color -b $barracuda_colors[5])(set_color -o 000)' }><(({º> '(set_color normal)(set_color -b $barracuda_colors[2])(set_color $barracuda_colors[5])
+      echo -n " $pcount "(set_color normal)(set_color -b $barracuda_colors[5])(set_color $barracuda_colors[6])
   end
-  set_color $barracuda_colors[5]
+  set_color -b normal $barracuda_current_bindmode_color
 end
 
 ####################
@@ -891,7 +892,11 @@ set -x LOGIN $USER
 
 function fish_prompt -d 'Write out the left prompt of the barracuda theme'
   echo
+  set -g logo (set_color -o 000)' }><(({º> ' (set_color normal)(set_color b58900)
+  set -g prompt (set_color black)' '(set_color normal)
   echo (set_color -b black)(set_color 777)''(set_color -b 777)(set_color 000) $PWD (set_color normal)(set_color 777)''
   set -g last_status $status
-  echo -n -s (__barracuda_prompt_bindmode) (__barracuda_prompt_virtual_env) (__barracuda_prompt_node_version) (__barracuda_prompt_git_branch) (__barracuda_prompt_left_symbols) (set_color normal)(set_color $barracuda_colors[2])
+  echo -n -s (set_color -b black)(set_color cb4b16)''(set_color -b cb4b16)(set_color -o 083743)(__barracuda_prompt_bindmode)(set_color normal)(set_color -b b58900)(set_color cb4b16) $logo (__barracuda_prompt_virtual_env) (__barracuda_prompt_node_version) (__barracuda_prompt_git_branch) (__barracuda_prompt_left_symbols) ' ' (set_color normal)
 end
+
+#cb4b16)At
