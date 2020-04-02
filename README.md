@@ -1,6 +1,6 @@
-# Barracuda theme
+# Barracuda theme (for Termux terminal)
 
-This is basically a fork of [oh-my-fish/theme-budspencer](https://github.com/oh-my-fish/theme-budspencer), which means it keeps all it's awesome features. I just added a few things to adjust it to mobile devices environments (specifically speaking, for Termux) 
+This is basically a fork of [oh-my-fish/theme-budspencer](https://github.com/oh-my-fish/theme-budspencer), which means it keeps all it's awesome features. I just added a few things to adjust it to mobile devices. 
 
 I also made a few visual changes taking advantage of Powerline Symbols.
 
@@ -22,32 +22,9 @@ lot of nice functions and key bindings to speed up your workflow.
 Non standard tools:
 
 * figlet `apt install figlet`
-* Termux: API
-* [taskwarrior][taskwarrior] (optional)
-* [remind][remind] (optional)
-
-### Note for OS X users
-
-The theme uses advanced `sed` and `expr` features. The OS X tools have
-restricted functionality.
-
-Try `expr` from `coreutils` package if you see `expr: syntax error` in
-budspencer prompt.
-
-Install advanced `sed` and `expr` versions:
-
-```
-$ brew install coreutils gnu-sed
-```
-
-Add this to your `~/.config/fish/config.fish`:
-
-```
-if test (uname -s) = "Darwin"
-  set -gx PATH /usr/local/opt/coreutils/libexec/gnubin $PATH
-  set -gx PATH /usr/local/opt/gnu-sed/libexec/gnubin $PATH
-end
-```
+* Termux:API plug-in \(I recommend to download **Termux** and **Termux:API** from [F-Droid](https://f-droid.org) as both apps most have the same PGP signature.\) 
+* termux-api `apt install termux-api`
+* nodejs `apt install nodejs` (Optional. Only if you want to show node version in left prompt)
 
 ## Configuration
 
@@ -63,12 +40,12 @@ before enabling the theme.
 
 ### Colors
 
-Redefine `$budspencer_colors` with the `set` command in order to change the
+Redefine `$barracuda_colors` with the `set` command in order to change the
 colors of the prompt.
 
 Example:
 ```
-set budspencer_colors 000000 333333 666666 ffffff ffff00 ff6600 ff0000 ff0033 3300ff 0000ff 00ffff
+set barracuda_colors 000000 333333 666666 ffffff ffff00 ff6600 ff0000 ff0033 3300ff 0000ff 00ffff
 00ff00
 ```
 will result in a prompt like this:
@@ -79,28 +56,35 @@ enable them with `day` and `night`, respectively.
 
 ### Command history
 Commands that shouldn't appear in the command history are defined by a universal
-list `$budspencer_nocmdhist`. Default:
+list `$barracuda_nocmdhist`. Default:
 ```
-set -U budspencer_nocmdhist c d ll ls m s
+set -U barracuda_nocmdhist c d ll ls m s
 ```
 
 ### Disable/reenable greeting
 
 Disable:
 ```
-set -U budspencer_nogreeting
+set -U barracuda_nogreeting
 ```
 
 Reenable:
 ```
-set -e budspencer_nogreeting
+set -e barracuda_nogreeting
 ```
 
 ### Show Node version
 
 To show your current node version, do following in your Fish configs
+
+Enable:
 ```
-set -g budspencer_alt_environment "node -v"
+set -g barracuda_alt_environment "node -v"
+```
+
+Disable:
+```
+set -U barracuda_alt_environment
 ```
 
 ## Outer prompt segments
