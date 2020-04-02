@@ -1,35 +1,28 @@
-# Budspencer theme
+# Barracuda theme
 
-A theme for nerds, makes fish even more powerful. It's equipped with a hell of a
+This is basically a fork of [oh-my-fish/theme-budspencer](https://github.com/oh-my-fish/theme-budspencer), which means it keeps all it's awesome features. I just added a few things to adjust it to mobile devices environments (specifically speaking, for Termux) 
+
+I also made a few visual changes taking advantage of Powerline Symbols.
+
+This is:
+
+> A theme for nerds, makes fish even more powerful. It's equipped with a hell of a
 lot of nice functions and key bindings to speed up your workflow.
 
-The philosophy behind budspencer theme:
+## Screenshot
 
-* Delimit the prompt lines clearly to the output.
-* Produce output only if it contains relevant information.
-* Show useful notifications within the prompt.
-* Equip the prompt with toggle commands in order to change its style
-  interactively.
-* Store sessions in order to make frequently used commands quickly accessible.
-* Make navigation within the directory tree as easy as possible using
-  bookmarks and a directory history without duplicates.
-* Make histories quickly accessible with menus.
-* Don't stress your eyes. Use different colors in dark and bright environments.
-
-## Demonstration video
-
-[![video][screenshot]](http://vimeo.com/105546618)
+![screenshot](screenshot.jpg)
 
 ## Requirements
 
-You need an up-to-date fish shell version from [github][fish-git] or a
+* An up-to-date fish shell version from [github][fish-git] or a
 [nightly build][fish-nightly].
+* Patched Powerline fonts installed. \(See how to install [here](https://github.com/powerline/fonts)
 
 Non standard tools:
 
-* xsel
-* wmctrl
-* git
+* figlet `apt install figlet`
+* Termux: API
 * [taskwarrior][taskwarrior] (optional)
 * [remind][remind] (optional)
 
