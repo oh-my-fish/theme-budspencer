@@ -13,9 +13,9 @@ lot of nice functions and key bindings to speed up your workflow
 
 * Added function: **termux-backup** (Performs a backup of the whole system on the External Storage. If there is none, backup will be saved in $HOME/.backup_termux)
 
-  ```
-  termux-backup <backup_name>
-  ```
+```
+termux-backup <backup_name>
+```
 
 ## Screenshot
 
@@ -127,8 +127,6 @@ The function `d` drops down a menu showing the history as enumerated list. Unlik
 fish's builtin `dirh`, `d` does not show any duplicates. Enter a number to jump
 to a directory within the list.
 
-![dir menu][dirmenu]
-
 The following shortcuts need vi-mode:
 - Press `H` in NORMAL mode to change present working directory to previous
   working directory in history.
@@ -210,5 +208,4 @@ set -U barracuda_nobell
 [fish-nightly]: https://github.com/fish-shell/fish-shell/wiki/Nightly-builds
 [screenshot]: https://raw.githubusercontent.com/tannhuber/media/master/budspencer.jpg
 [colors]: https://raw.githubusercontent.com/tannhuber/media/master/budspencer_replace_colors.jpg
-[dirmenu]: https://raw.githubusercontent.com/tannhuber/media/master/budspencer_dir_menu.jpg
 [pwdstyle]: https://raw.githubusercontent.com/tannhuber/media/master/budspencer_pwd_style.jpg
