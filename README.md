@@ -13,8 +13,9 @@ lot of nice functions and key bindings to speed up your workflow
 
 * Added function: **termux-backup** (Performs a backup of the whole system on th External Storage. If there is none, backup will be saved in $HOME/.termux-backup)
 
-  `termux-backup <backup_name>`
-
+  ```  
+  termux-backup <backup_name>
+  ``` 
 ## Screenshot
 
 ![screenshot](screenshot.jpg)
