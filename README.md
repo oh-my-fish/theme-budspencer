@@ -1,4 +1,4 @@
-# Barracuda theme (for [fish](https://fishshell.com) in Termux terminal)
+# Barracuda theme (for fish in Termux terminal)
 
 This is basically a fork of [oh-my-fish/theme-budspencer](https://github.com/oh-my-fish/theme-budspencer), which means it keeps all it's awesome features. I just added a few things to adjust it to mobile devices. 
 
