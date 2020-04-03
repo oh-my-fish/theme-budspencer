@@ -45,7 +45,7 @@ end
 
 # Cursor color changes according to vi-mode
 # Define values for: normal_mode insert_mode visual_mode
-set -U barracuda_cursors "\033]12;#$barracuda_colors[10]\007" "\033]12;#$barracuda_colors[5]\007" "\033]12;#$barracuda_colors[8]\007" "\033]12;#$barracuda_colors[9]\007"
+set -U barracuda_cursors "\033]12;#$barracuda_colors[5]\007" "\033]12;#$barracuda_colors[12]\007" "\033]12;#$barracuda_colors[10]\007" "\033]12;#$barracuda_colors[9]\007"
 
 ###############################################################################
 # => Files
@@ -105,12 +105,12 @@ end
 ################
 function day -d "Set color palette for bright environment."
   set barracuda_colors $barracuda_day
-  set barracuda_cursors "\033]12;#$barracuda_colors[10]\007" "\033]12;#$barracuda_colors[5]\007" "\033]12;#$barracuda_colors[8]\007" "\033]12;#$barracuda_colors[9]\007"
+  set barracuda_cursors "\033]12;#$barracuda_colors[5]\007" "\033]12;#$barracuda_colors[12]\007" "\033]12;#$barracuda_colors[10]\007" "\033]12;#$barracuda_colors[9]\007"
 end
 
 function night -d "Set color palette for dark environment."
   set barracuda_colors $barracuda_night
-  set barracuda_cursors "\033]12;#$barracuda_colors[10]\007" "\033]12;#$barracuda_colors[5]\007" "\033]12;#$barracuda_colors[8]\007" "\033]12;#$barracuda_colors[9]\007"
+  set barracuda_cursors "\033]12;#$barracuda_colors[5]\007" "\033]12;#$barracuda_colors[12]\007" "\033]12;#$barracuda_colors[10]\007" "\033]12;#$barracuda_colors[9]\007"
 end
 
 ################
@@ -670,18 +670,18 @@ end
 function __barracuda_prompt_bindmode -d 'Displays the current mode'
   switch $fish_bind_mode
     case default
-      set barracuda_current_bindmode_color $barracuda_colors[6]
-      echo -en $barracuda_cursors[1](set_color $barracuda_colors[6])
+      set barracuda_current_bindmode_color $barracuda_colors[12]
+      echo -en $barracuda_cursors[2](set_color $barracuda_colors[12])
     case insert
       set barracuda_current_bindmode_color $barracuda_colors[6]
-      echo -en  $barracuda_cursors[2](set_color $barracuda_colors[6])
+      echo -en  $barracuda_cursors[1](set_color $barracuda_colors[6])
       if [ "$pwd_hist_lock" = true ]
         set pwd_hist_lock false
         __barracuda_create_dir_hist
       end
     case visual
-      set barracuda_current_bindmode_color $barracuda_colors[6]
-      echo -en $barracuda_cursors[3](set_color $barracuda_colors[6])
+      set barracuda_current_bindmode_color $barracuda_colors[12]
+      echo -en $barracuda_cursors[3](set_color $barracuda_colors[10])
   end
   if [ (count $barracuda_prompt_error) -eq 1 ]
     set barracuda_current_bindmode_color $barracuda_colors[7]
@@ -689,7 +689,7 @@ function __barracuda_prompt_bindmode -d 'Displays the current mode'
   set_color -b $barracuda_current_bindmode_color $barracuda_colors[1]
   switch $pwd_style
     case short long
-      echo -n (set_color -o)" $pcount "(set_color normal)(set_color -b $barracuda_colors[5])(set_color $barracuda_colors[6])(set_color -b $barracuda_colors[5])(set_color -o 000)' }><(({º> '(set_color normal)(set_color -b $barracuda_colors[2])(set_color $barracuda_colors[5])
+      echo -n (set_color -o)" $pcount "(set_color normal)(set_color -b $barracuda_colors[5] $barracuda_current_bindmode_color)(set_color -b $barracuda_colors[5])(set_color -o 000)' }><(({º> '(set_color normal)(set_color -b $barracuda_colors[2])(set_color $barracuda_colors[5])
   end
   set_color $barracuda_colors[5]
 end
@@ -886,12 +886,62 @@ end
 set -x LOGIN $USER
 
 ###############################################################################
+# => Custom functions
+###############################################################################
+function termux-backup -d 'Backup files to External Storage' --argument file_name
+
+## Set defaults:
+
+  [ $file_name ]; or set file_name 'Backup'
+
+  set current_path (pwd)
+  set tmp_dir $HOME/.backup_termux
+  set -g bkup_dir $HOME/storage/shared/
+  set -g termux_path (cd $HOME && .. && pwd)
+  set bkup_date (date +%s)
+  set file $file_name-$bkup_date
+  set test_path $HOME/00
+
+## Start backup:
+
+  clear
+  if test -d $HOME/storage
+    if test -d $tmp_dir
+      rsync -av --exclude home/storage $termux_path/ $tmp_dir/$file/
+      cd $tmp_dir && tar -czvf $file.tar.gz $file/ && rm -Rf $file/
+      clear
+      cp -rf $tmp_dir/ $bkup_dir/
+      rm -Rf $tmp_dir
+      cd $current_path
+    else
+      mkdir $tmp_dir
+      rsync -av --exclude home/storage $termux_path/ $tmp_dir/$file/
+      cd $tmp_dir && tar -czvf $file.tar.gz $file/ && rm -Rf $file/
+      clear
+      cp -rf $tmp_dir/ $bkup_dir/
+      rm -Rf $tmp_dir
+      cd $current_path
+    end
+  else
+    mkdir $HOME/.backup_termux
+    rsync -av --exclude home/storage $termux_path/ $tmp_dir/$file/
+    cd $HOME/.backup_termux && tar -czvf $file.tar.gz $file/ && rm -Rf $file/
+    clear
+    cd $current_path
+    echo 'No EXTERNAL STORAGE mounted. Backup has been stored in User folder.'
+    echo 'Try using < termux-setup-storage >'
+  end
+  termux-toast -b "#222222" -g top -c white All done\! System backup is finished.
+end
+
+###############################################################################
 # => Left prompt
 ###############################################################################
 
 function fish_prompt -d 'Write out the left prompt of the barracuda theme'
   echo
-  echo (set_color -b black)(set_color 777)''(set_color -b 777)(set_color 000) $PWD (set_color normal)(set_color 777)''
+  fish_vi_key_bindings
+  echo (set_color -b black)(set_color 777)''(set_color -b 777)(set_color 000) $PWD (set_color normal)(set_color 777)''
   set -g last_status $status
-  echo -n -s (__barracuda_prompt_bindmode) (__barracuda_prompt_virtual_env) (__barracuda_prompt_node_version) (__barracuda_prompt_git_branch) (__barracuda_prompt_left_symbols) (set_color normal)(set_color $barracuda_colors[2])
+  echo -n -s (__barracuda_prompt_bindmode) (__barracuda_prompt_node_version) (__barracuda_prompt_git_branch) (__barracuda_prompt_left_symbols) (set_color normal)(set_color $barracuda_colors[2])
 end
