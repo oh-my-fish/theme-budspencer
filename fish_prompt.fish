@@ -895,19 +895,18 @@ function termux-backup -d 'Backup files to External Storage' --argument file_nam
   [ $file_name ]; or set file_name 'Backup'
 
   set current_path (pwd)
-  set tmp_dir $HOME/.backup_termux
+  set tmp_dir $HOME/.bakup_termux
   set -g bkup_dir $HOME/storage/shared/
   set -g termux_path (cd $HOME && .. && pwd)
   set bkup_date (date +%s)
   set file $file_name-$bkup_date
-  set test_path $HOME/00
 
 ## Start backup:
 
   clear
   if test -d $HOME/storage
     if test -d $tmp_dir
-      rsync -av --exclude home/storage $termux_path/ $tmp_dir/$file/
+      rsync -av --exclude "home/storage home/.backup" $termux_path/ $tmp_dir/$file/
       cd $tmp_dir && tar -czvf $file.tar.gz $file/ && rm -Rf $file/
       clear
       cp -rf $tmp_dir/ $bkup_dir/
