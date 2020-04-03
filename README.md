@@ -1,4 +1,4 @@
-# Barracuda theme (for [fish](https://fishshell.com) in Termux terminal)
+# Barracuda theme (for fish in Termux terminal)
 
 This is basically a fork of [oh-my-fish/theme-budspencer](https://github.com/oh-my-fish/theme-budspencer), which means it keeps all it's awesome features. I just added a few things to adjust it to mobile devices. 
 
@@ -11,9 +11,11 @@ lot of nice functions and key bindings to speed up your workflow
 
 ## New features
 
-* Added function: **termux-backup** (Performs a backup of the whole system on th External Storage. If there is none, backup will be saved in $HOME/.termux-backup)
+* Added function: **termux-backup** (Performs a backup of the whole system on the External Storage. If there is none, backup will be saved in $HOME/.backup_termux)
 
-  `termux-backup <backup_name>`
+```
+termux-backup <backup_name>
+```
 
 ## Screenshot
 
@@ -23,14 +25,14 @@ lot of nice functions and key bindings to speed up your workflow
 
 * An up-to-date fish shell version from [github][fish-git] or a
 [nightly build][fish-nightly].
-* Patched Powerline fonts installed. \(See how to install [here](https://github.com/powerline/fonts)
+* Patched Powerline fonts installed. \(See how to install [here](https://github.com/powerline/fonts))
 
 Non standard tools:
 
 * figlet `apt install figlet`
-* Termux:API plug-in \(I recommend to download **Termux** and **Termux:API** from [F-Droid](https://f-droid.org) as both apps most have the same PGP signature.\) 
+* Termux:API plug-in \(It's recommended to download **Termux** and **Termux:API** from [F-Droid](https://f-droid.org) as both apps most have the same PGP signature.\) 
 * termux-api `apt install termux-api`
-* nodejs `apt install nodejs` (Optional. Only if you want to show node version in left prompt)
+* nodejs `apt install nodejs`
 
 ## Configuration
 
@@ -45,17 +47,6 @@ set -U fish_key_bindings fish_vi_key_bindings
 before enabling the theme.
 
 ### Colors
-
-Redefine `$barracuda_colors` with the `set` command in order to change the
-colors of the prompt.
-
-Example:
-```
-set barracuda_colors 000000 333333 666666 ffffff ffff00 ff6600 ff0000 ff0033 3300ff 0000ff 00ffff
-00ff00
-```
-will result in a prompt like this:
-![color replace example][colors]
 
 Two color schemes for bright and dark environments are predefined. You can
 enable them with `day` and `night`, respectively.
@@ -103,6 +94,7 @@ set -U barracuda_alt_environment
 
 ## Left prompt segments
 
+- Present working directory (in top)
 - Prompt line number
 - Barracuda ASCII logo
 - Git repository information
@@ -123,48 +115,17 @@ set -U barracuda_alt_environment
     * ✔: last command succeeded, can be toggled with `#` to show the status value
     * ✘: last command failed, can be toggled with `#` to show the status value
     * ⚡: superuser indicator
-- Present working directory
 - Active Python [virtual environment](https://virtualenv.pypa.io/en/latest/). Requires [Virtual Fish](https://github.com/adambrenecki/virtualfish/)
 
 ## Right prompt segments
 
 - Shows a timestamp 
 
-## Toggle prompt segments
-
-The following shortcuts need vi-mode:
-- Style of "present working directory"-segment can be toggled in NORMAL and in
-  VISUAL mode with space bar
-    * styles implemented:
-        - `short` (shows username, short hostname and truncated path; recommended in
-          most cases)
-        - `long` (shows username, full hostname and full path; useful for copy-paste
-          in ssh connections)
-        - `none` (shows nothing except small delimiter; useful for small terminals)
-        - If prompt is toggled with `#`, the IP address is shown instead of the
-          hostname.
-    * configurable by universal list `$barracuda_pwdstyle` (if not set, defaults to
-      `short long none`); note that changes to `$barracuda_pwdstyle` keep persistant as it's
-      a universal variable.
-
-![pwd style][pwdstyle]
-
-- Style of symbols can be toggled in NORMAL and in VISUAL mode with `#`
-    * styles implemented:
-        - `symbols` (shows status symbols)
-        - `numbers` (shows numbers instead of symbols in left prompt as well as amount of changes in
-          right git prompt)
-
-Note, the format is _username@hostname:pathname_. Thus, you can cut
-the whole string with your mouse and paste it into `ssh` commands.
-
 ## Quickly navigate in history of working directories
 
 The function `d` drops down a menu showing the history as enumerated list. Unlike
 fish's builtin `dirh`, `d` does not show any duplicates. Enter a number to jump
 to a directory within the list.
-
-![dir menu][dirmenu]
 
 The following shortcuts need vi-mode:
 - Press `H` in NORMAL mode to change present working directory to previous
@@ -240,17 +201,6 @@ Switch it off in that case:
 set -U barracuda_nobell
 ```
 
-## TODO
-
-- vi REPLACE mode, as soon as REPLACE mode is implemented within fish
-
-## Feedback
-
-Give me feedback if you ...
-* ... have ideas how I could improve budspencer.
-* ... have problems with budspencer.
-* ... have questions concerning budspencer.
-
 [font]: https://github.com/Lokaltog/powerline-fonts
 [ranger]: http://ranger.nongnu.org/
 [remind]: http://www.roaringpenguin.com/products/remind
@@ -258,5 +208,4 @@ Give me feedback if you ...
 [fish-nightly]: https://github.com/fish-shell/fish-shell/wiki/Nightly-builds
 [screenshot]: https://raw.githubusercontent.com/tannhuber/media/master/budspencer.jpg
 [colors]: https://raw.githubusercontent.com/tannhuber/media/master/budspencer_replace_colors.jpg
-[dirmenu]: https://raw.githubusercontent.com/tannhuber/media/master/budspencer_dir_menu.jpg
 [pwdstyle]: https://raw.githubusercontent.com/tannhuber/media/master/budspencer_pwd_style.jpg
