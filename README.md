@@ -1,4 +1,4 @@
-# Barracuda theme (for Termux terminal)
+# Barracuda theme (for [fish](https://fishshell.com) in Termux terminal)
 
 This is basically a fork of [oh-my-fish/theme-budspencer](https://github.com/oh-my-fish/theme-budspencer), which means it keeps all it's awesome features. I just added a few things to adjust it to mobile devices. 
 
@@ -7,7 +7,13 @@ I also made a few visual changes taking advantage of Powerline Symbols.
 This is:
 
 > A theme for nerds, makes fish even more powerful. It's equipped with a hell of a
-lot of nice functions and key bindings to speed up your workflow.
+lot of nice functions and key bindings to speed up your workflow
+
+## New features
+
+* Added function: **termux-backup** (Performs a backup of the whole system on th External Storage. If there is none, backup will be saved in $HOME/.termux-backup)
+
+  `termux-backup <backup_name>`
 
 ## Screenshot
 
@@ -193,7 +199,7 @@ By default the shell will change to the directory of the latest bookmark on a ne
 This can be disabled by adding the following line:
 
 ```
-set -U budspencer_no_cd_bookmark
+set -U barracuda_no_cd_bookmark
 ```
 
 ## Edit commandline with your favorite editor
