@@ -91,13 +91,14 @@ set -U barracuda_alt_environment
 
 - Vi mode is indicated by color of outer segments, cursor color also changes
   if terminal supports it:
-    * blue: NORMAL mode
+    * green: NORMAL mode
     * yellow: INSERT mode
-    * magenta: VISUAL mode
+    * blue: VISUAL mode
 
 ## Left prompt segments
 
 - Prompt line number
+- Barracuda ASCII logo
 - Git repository information
 - Status symbols
     * ✻: keep track of this shell session, can be toggled with `#` to show the number of
@@ -108,7 +109,7 @@ set -U barracuda_alt_environment
     * R: [ranger][ranger] is parent process
     * ⚙: there are background jobs, can be toggled with `#` to show the amount of
         background jobs
-    * : no write permissions in present working directory
+    * 🔒: no write permissions in present working directory
     * ⚔: there are tasks scheduled for this week, can be toggled with `#` to
         show the amount of weekly tasks
     * ⚑: there are appointments for today, can be toggled with `#` to
@@ -121,17 +122,7 @@ set -U barracuda_alt_environment
 
 ## Right prompt segments
 
-- Last command's duration time
-- Git status symbols:
-    * ↑: git repository is ahead origin
-    * ↓: git repository is behind origin
-    * +: changes have been added to git index
-    * –: files have been deleted in work tree
-    * ✱: files have been modified in work tree
-    * →: files have been renamed in git index
-    * ═: there are unmerged commits
-    * ●: there are untracked (new) files
-    * ✭: there are stashed commits
+- Shows a timestamp 
 
 ## Toggle prompt segments
 
@@ -146,8 +137,8 @@ The following shortcuts need vi-mode:
         - `none` (shows nothing except small delimiter; useful for small terminals)
         - If prompt is toggled with `#`, the IP address is shown instead of the
           hostname.
-    * configurable by universal list `$budspencer_pwdstyle` (if not set, defaults to
-      `short long none`); note that changes to `$budspencer_pwdstyle` keep persistant as it's
+    * configurable by universal list `$barracuda_pwdstyle` (if not set, defaults to
+      `short long none`); note that changes to `$barracuda_pwdstyle` keep persistant as it's
       a universal variable.
 
 ![pwd style][pwdstyle]
@@ -240,7 +231,7 @@ don't need to check manually whether it's done.
 If you have still activated the acoustic bell, you probably hate that feature.
 Switch it off in that case:
 ```
-set -U budspencer_nobell
+set -U barracuda_nobell
 ```
 
 ## TODO
@@ -256,7 +247,6 @@ Give me feedback if you ...
 
 [font]: https://github.com/Lokaltog/powerline-fonts
 [ranger]: http://ranger.nongnu.org/
-[taskwarrior]: http://taskwarrior.org/
 [remind]: http://www.roaringpenguin.com/products/remind
 [fish-git]: https://github.com/fish-shell/fish-shell.git
 [fish-nightly]: https://github.com/fish-shell/fish-shell/wiki/Nightly-builds
