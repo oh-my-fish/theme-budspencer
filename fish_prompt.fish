@@ -6,8 +6,11 @@
 # Description:
 #   a sophisticated airline/powerline theme
 #
-# Author:
+# Author (of original theme budspencer):
 #   Joseph Tannhuber <sepp.tannhuber@yahoo.de>
+#
+# Forked and modified by:
+#   Marvin Eversley Silva <meverss@outlook.com>
 #
 # Sections:
 #   -> Color definitions
