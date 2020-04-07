@@ -897,7 +897,6 @@ function termux-backup -d 'Backup files to External Storage' --argument file_nam
   set current_path (pwd)
   set tmp_dir $HOME/.backup_termux
   set -g bkup_dir $HOME/storage/shared/
-#  set -g termux_path (cd $HOME/00 && pwd)
   set -g termux_path (cd $HOME && .. && pwd)
   set bkup_date (date +%s)
   set file $file_name-$bkup_date
@@ -905,32 +904,32 @@ function termux-backup -d 'Backup files to External Storage' --argument file_nam
 ## Start backup:
 
   clear
-  echo "$HOME/storage/"\n"$HOME/.backup_termux/"\n"$HOME/exclude" > $HOME/exclude  
+  echo "home/storage/"\n"home/.backup_termux/"\n"home/exclude"\n"termux_backup_log.txt" > home/exclude  
   if test -d $HOME/storage
     if test -d $tmp_dir
-      rsync -av --exclude-from "$HOME/exclude" $termux_path/ $tmp_dir/$file/ 2>> $HOME/termux_backup_log.txt
-      cd $tmp_dir && tar -czvf $file.tar.gz $file/ && rm -Rf $file/ && rm "$HOME/exclude"
+      rsync -av --exclude-from 'home/exclude' $termux_path/ $tmp_dir/$file/ 2>> home/termux_backup_log.txt
+      rm home/exclude && cd $tmp_dir && tar -czvf $file.tar.gz $file/ && rm -Rf $file/
       clear
       cp -rf $tmp_dir/ .$bkup_dir/
       rm -Rf $tmp_dir
       cd $current_path
     else
       mkdir $tmp_dir
-      rsync -av --exclude-from "$HOME/exclude" $termux_path/ $tmp_dir/$file/ 2>> $HOME/termux_backup_log.txt
-      cd $tmp_dir && tar -czvf $file.tar.gz $file/ && rm -Rf $file/ && rm $HOME/exclude
+      rsync -av --exclude-from home/exclude $termux_path/ $tmp_dir/$file/ 2>> home/termux_backup_log.txt
+      rm home/exclude && cd $tmp_dir && tar -czvf $file.tar.gz $file/ && rm -Rf $file/
       clear
       cp -rf $tmp_dir/ $bkup_dir/
       rm -Rf $tmp_dir
       cd $current_path
     end
   else
-    mkdir $HOME/backup_termux
-    rsync -av --exclude-from "$HOME/exclude" $termux_path/ $tmp_dir/$file/ 2>> $HOME/termux_backup_log.txt
-    cd $HOME/.backup_termux && tar -czvf $file.tar.gz $file/ && rm -Rf $file/ && rm $HOME/exclude
+    mkdir $tmp_dir
+    rsync -av --exclude-from 'home/exclude' $termux_path/ $tmp_dir/$file/ 2>> home/termux_backup_log.txt
+    rm home/exclude && cd $tmp_dir && tar -czvf $file.tar.gz $file/ && rm -Rf $file/
     clear
     cd $current_path
-    echo 'No EXTERNAL STORAGE mounted. Backup has been stored in User folder.'
-    echo 'Try using < termux-setup-storage >'
+    echo 'No EXTERNAL_STORAGE mounted.'\n'Backup has been stored in User folder.'
+    echo 'Try using '(set_color green)'termux-setup-storage'(set_color normal)
   end
   termux-toast -b "#222222" -g top -c white All done\! System backup is finished.
 end
