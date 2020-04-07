@@ -126,7 +126,7 @@ function __budspencer_preexec -d 'Execute after hitting <Enter> before doing any
       return
     end
     set -e budspencer_prompt_error[1]
-    if not type -q $cmd[1]
+    if not type -q -- $cmd[1]
       if [ -d $cmd[1] ]
         set budspencer_prompt_error (cd $cmd[1] 2>&1)
         and commandline ''
@@ -276,10 +276,10 @@ function __budspencer_create_cmd_hist -e fish_prompt -d 'Create command history 
     # Create command history
     if not begin
         expr $cmd : '[cdms] ' > /dev/null
-        or contains $cmd $budspencer_nocmdhist
+        or contains -- $cmd $budspencer_nocmdhist
       end
-      if contains $cmd $$cmd_hist
-        set -e $cmd_hist[1][(contains -i $cmd $$cmd_hist)]
+      if contains -- $cmd $$cmd_hist
+        set -e $cmd_hist[1][(contains -i -- $cmd $$cmd_hist)]
       end
       set $cmd_hist $$cmd_hist $cmd
     end
