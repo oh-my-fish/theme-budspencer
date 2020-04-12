@@ -1,3 +1,5 @@
+#!/data/data/com.termux/usr/bin/fish
+
 ###############################################################################
 #
 # Prompt theme name:
@@ -396,7 +398,7 @@ function m -d 'List bookmarks, jump to directory in list with m <number>'
     end
     echo -en $barracuda_cursors[1]
     set input_length (expr length (expr $num_items - 1))
-    read -p 'echo -n (set_color -b $barracuda_colors[2] $barracuda_colors[10])" ⌘ Goto [0"$last_item"] "(set_color -b normal $barracuda_colors[2])" "(set_color $barracuda_colors[10])' -n $input_length -l dir_num
+    read -p 'echo -n (set_color -b $barracuda_colors[2] $barracuda_colors[10])"  Goto [0"$last_item"] "(set_color -b normal $barracuda_colors[2])" "(set_color $barracuda_colors[10])' -n $input_length -l dir_num
     switch $dir_num
       case (seq 0 (expr $num_items - 1))
         cd $bookmarks[(expr $num_items - $dir_num)]
@@ -466,9 +468,9 @@ end
 function __barracuda_attach_session -d 'Attach session'
   set argv (echo -sn $argv\n | sed 's|[^[:alnum:]]|_|g')
   if contains $argv[1] $barracuda_sessions_active
-    wmctrl -a "✻ $argv[1]"
+    wmctrl -a " $argv[1]"
   else
-    wt "✻ $argv[1]"
+    wt " $argv[1]"
     __barracuda_detach_session $argv[-1]
     set barracuda_sessions_active $barracuda_sessions_active $argv[1]
     set barracuda_sessions_active_pid $barracuda_sessions_active_pid %self
@@ -516,7 +518,7 @@ function s -d 'Create, delete or attach session'
         end
       end
       if contains $barracuda_sessions[$i] $barracuda_sessions_active
-        set active_indicator '✻ '
+        set active_indicator ' '
       else
         set active_indicator ' '
       end
@@ -529,7 +531,7 @@ function s -d 'Create, delete or attach session'
     end
     echo -en $barracuda_cursors[3]
     set input_length (expr length (expr $num_items - 1))
-    read -p 'echo -n (set_color -b $barracuda_colors[2] $barracuda_colors[8])" ✻ Attach [e|0"$last_item"] "(set_color -b normal $barracuda_colors[2])" "(set_color $barracuda_colors[8])' -n $input_length -l session_num
+    read -p 'echo -n (set_color -b $barracuda_colors[2] $barracuda_colors[8])"  Attach [e|0"$last_item"] "(set_color -b normal $barracuda_colors[2])" "(set_color $barracuda_colors[8])' -n $input_length -l session_num
     set pcount (expr $pcount - 1)
     switch $session_num
       case (seq 0 (expr $num_items - 1))
@@ -540,7 +542,7 @@ function s -d 'Create, delete or attach session'
         tput ed
         tput cuu1
       case 'e'
-        read -p 'echo -n (set_color -b $barracuda_colors[2] $barracuda_colors[8])" ✻ Erase [0"$last_item"] "(set_color -b normal $barracuda_colors[2])" "(set_color $barracuda_colors[8])' -n $input_length -l session_num
+        read -p 'echo -n (set_color -b $barracuda_colors[2] $barracuda_colors[8])"  Erase [0"$last_item"] "(set_color -b normal $barracuda_colors[2])" "(set_color $barracuda_colors[8])' -n $input_length -l session_num
         if [ (expr $num_items - $session_num) -gt 0 ]
           __barracuda_erase_session -e $barracuda_sessions[(expr $num_items - $session_num)]
         end
@@ -644,7 +646,7 @@ function __barracuda_prompt_git_branch -d 'Return the current branch name'
       set_color -b $barracuda_colors[9]
       switch $pwd_style
         case short long
-          echo -n (set_color $barracuda_colors[1])'  '$position' '(set_color $barracuda_colors[9])
+          echo -n (set_color $barracuda_colors[1])'  '$position' '(set_color $barracuda_colors[9])
         case none
           echo -n ''
       end
@@ -655,7 +657,7 @@ function __barracuda_prompt_git_branch -d 'Return the current branch name'
     set_color -b $barracuda_colors[3]
     switch $pwd_style
       case short long
-        echo -n (set_color $barracuda_colors[1])'  '$branch' '(set_color $barracuda_colors[3])
+        echo -n (set_color $barracuda_colors[1])'  '$branch' '(set_color $barracuda_colors[3])
       case none
         echo -n ''
     end
@@ -689,7 +691,7 @@ function __barracuda_prompt_bindmode -d 'Displays the current mode'
   set_color -b $barracuda_current_bindmode_color $barracuda_colors[1]
   switch $pwd_style
     case short long
-      echo -n (set_color -o)" $pcount "(set_color normal)(set_color -b $barracuda_colors[5] $barracuda_current_bindmode_color)(set_color -b $barracuda_colors[5])(set_color -o 000)' }><(({º> '(set_color normal)(set_color -b $barracuda_colors[2])(set_color $barracuda_colors[5])
+      echo -n (set_color -o)" $pcount "(set_color normal)(set_color -b $barracuda_colors[5] $barracuda_current_bindmode_color)(set_color -b $barracuda_colors[5])(set_color -o 000)' }><(({º> '(set_color normal)(set_color -b $barracuda_colors[2])(set_color $barracuda_colors[5])      
   end
   set_color $barracuda_colors[5]
 end
@@ -721,11 +723,11 @@ function __barracuda_prompt_left_symbols -d 'Display symbols'
 
     if [ $symbols_style = 'symbols' ]
         if [ $barracuda_session_current != '' ]
-            set symbols $symbols(set_color -o $barracuda_colors[8])' ✻'
+            set symbols $symbols(set_color -o $barracuda_colors[8])' '
             set symbols_urgent 'T'
         end
         if contains $PWD $bookmarks
-            set symbols $symbols(set_color -o $barracuda_colors[10])' ⌘'
+            set symbols $symbols(set_color -o $barracuda_colors[10])' '
         end
         if set -q -x VIM
             set symbols $symbols(set_color -o $barracuda_colors[9])' V'
@@ -736,7 +738,7 @@ function __barracuda_prompt_left_symbols -d 'Display symbols'
             set symbols_urgent 'T'
         end
         if [ $jobs -gt 0 ]
-            set symbols $symbols(set_color -o $barracuda_colors[11])' ⚙'
+            set symbols $symbols(set_color -o $barracuda_colors[11])' '
             set symbols_urgent 'T'
         end
         if [ ! -w . ]
@@ -852,7 +854,7 @@ end
 
 # Set favorite editor
 if not set -q EDITOR
-  set -g EDITOR vi
+  set -g EDITOR nano
 end
 
 # Source config file
@@ -888,7 +890,7 @@ set -x LOGIN $USER
 ###############################################################################
 # => Custom functions
 ###############################################################################
-function termux-backup -d 'Backup files to External Storage' --argument file_name
+function termux-backup -d 'Backup file system' --argument file_name
 
 ## Set defaults:
 
@@ -897,20 +899,23 @@ function termux-backup -d 'Backup files to External Storage' --argument file_nam
   set current_path (pwd)
   set tmp_dir $HOME/.backup_termux
   set -g bkup_dir $HOME/storage/shared/
-  set -g termux_path (cd $HOME && .. && pwd)
+  set -U termux_path (cd $HOME && .. && pwd)
   set bkup_date (date +%s)
   set file $file_name-$bkup_date
+  set f_count (find . -type f | wc -l)
 
 ## Start backup:
 
+#echo $f_count && sleep 10
+
   clear
-  echo "home/storage/"\n"home/.backup_termux/"\n"home/exclude"\n"termux_backup_log.txt" > home/exclude  
-  if test -d $HOME/storage
+  echo "home/storage/"\n"home/.backup_termux/"\n"home/exclude"\n"termux_backup_log.txt"\n".links" > home/exclude  
+  if test -d $HOME/storage1
     if test -d $tmp_dir
       rsync -av --exclude-from 'home/exclude' $termux_path/ $tmp_dir/$file/ 2>> home/termux_backup_log.txt
       rm home/exclude && cd $tmp_dir && tar -czvf $file.tar.gz $file/ && rm -Rf $file/
       clear
-      cp -rf $tmp_dir/ .$bkup_dir/
+      cp -rf $tmp_dir/ $bkup_dir/
       rm -Rf $tmp_dir
       cd $current_path
     else
@@ -923,13 +928,16 @@ function termux-backup -d 'Backup files to External Storage' --argument file_nam
       cd $current_path
     end
   else
-    mkdir $tmp_dir
-    rsync -av --exclude-from 'home/exclude' $termux_path/ $tmp_dir/$file/ 2>> home/termux_backup_log.txt
-    rm home/exclude && cd $tmp_dir && tar -czvf $file.tar.gz $file/ && rm -Rf $file/
-    clear
+    mkdir $tmp_dir 2>/dev/null
+    echo 'No EXTERNAL_STORAGE mounted.'\n'Backup has will be stored in User folder.'
+    echo 'Try using '(set_color 777)'termux-setup-storage'(set_color normal) && echo
+    rsync -av --stats --exclude-from 'home/exclude' $termux_path/ $tmp_dir/$file/ | pv -lpes (math $f_count + 10000) >/dev/null
+
+    set f_count_tmp (find $tmp_dir -type f | wc -l)
+
+#    rm home/exclude && cd $tmp_dir && tar -czvf $file.tar.gz $file/ | progress -mc tar && rm -Rf $file/
+    rm home/exclude && cd $tmp_dir && tar -czf - $file/ | pv -leps $f_count_tmp > $file.tar.gz && rm -Rf $file/
     cd $current_path
-    echo 'No EXTERNAL_STORAGE mounted.'\n'Backup has been stored in User folder.'
-    echo 'Try using '(set_color green)'termux-setup-storage'(set_color normal)
   end
   termux-toast -b "#222222" -g top -c white All done\! System backup is finished.
 end
@@ -945,3 +953,4 @@ function fish_prompt -d 'Write out the left prompt of the barracuda theme'
   set -g last_status $status
   echo -n -s (__barracuda_prompt_bindmode) (__barracuda_prompt_node_version) (__barracuda_prompt_git_branch) (__barracuda_prompt_left_symbols) (set_color normal)(set_color $barracuda_colors[2])
 end
+

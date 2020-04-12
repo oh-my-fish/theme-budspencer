@@ -5,11 +5,15 @@ function fish_greeting -d "Welcome Message"
     set t (set_color eee)
     set e (set_color normal)(set_color b58900)''(set_color normal)
 
-    set_color -o cb4b16
+    if test -e $termux_path/usr/bin/figlet
+      set_color -o cb4b16
          figlet '    barracuda'
-    set_color normal
+      set_color normal
+    else
+      echo (set_color b58900)''$n' Debe instalar '$h'figlet '(set_color normal)'para mostrar el logo.'\n'  Use el comando '$h'pkg install figlet'$n.
+      echo
+    end
 
-    echo
     echo $b' Documentación y Ayuda '$e
     echo
     echo $t' * Wiki:                   '$h'https://wiki.termux.com'$n
@@ -22,7 +26,7 @@ function fish_greeting -d "Welcome Message"
     echo $t' * Buscar paquetes:        '$h'pkg search <query>'$n
     echo $t' * Instalar un paquete:    '$h'pkg install <package>'$n
     echo $t' * Actualizar un paquete:  '$h'pkg upgrade'$n
-    echo 
+    echo
     echo $b' Repositorios adicionales '$e
     echo
     echo $t' * Root:                   '$h'pkg install root-repo'$n
