@@ -902,41 +902,50 @@ function termux-backup -d 'Backup file system' --argument file_name
   set -U termux_path (cd $HOME && .. && pwd)
   set bkup_date (date +%s)
   set file $file_name-$bkup_date
-  set f_count (find . -type f | wc -l)
+  set f_count_total (find . -type f | wc -l)
+  set f_count_p (math (math $f_count_total / 100 x 15) + $f_count_total)
+  set f_count (echo $f_count_p/1 | bc)
+  set text (set_color -o cb4b16)
+  set frame (set_color -o white)
+  set normal (set_color normal)
 
 ## Start backup:
 
-#echo $f_count && sleep 10
-
   clear
-  echo "home/storage/"\n"home/.backup_termux/"\n"home/exclude"\n"termux_backup_log.txt"\n".links" > home/exclude  
-  if test -d $HOME/storage1
+  echo "home/storage/"\n"home/.backup_termux/"\n"home/exclude"\n"termux_backup_log.txt"\n".links" > home/exclude
+  if test -d $HOME/storage
     if test -d $tmp_dir
-      rsync -av --exclude-from 'home/exclude' $termux_path/ $tmp_dir/$file/ 2>> home/termux_backup_log.txt
-      rm home/exclude && cd $tmp_dir && tar -czvf $file.tar.gz $file/ && rm -Rf $file/
-      clear
-      cp -rf $tmp_dir/ $bkup_dir/
-      rm -Rf $tmp_dir
-      cd $current_path
+     echo $text'Starting Bakup...'\n$frame'-----------------'\n $normal
+     echo (set_color yellow)'Analizing and collecting data...'$normal
+     rsync -av --stats --exclude-from 'home/exclude' $termux_path/ $tmp_dir/$file/ | pv -lpes $f_count >/dev/null
+     set f_count_tmp (find $tmp_dir -type f | wc -l)
+     echo \n(set_color yellow)'Compressing data...'$normal
+     rm home/exclude && cd $tmp_dir && tar -czf - $file/ | pv -leps $f_count_tmp > $file.tar.gz && rm -Rf $file
+     cp -rf $tmp_dir/ $bkup_dir/
+     rm -Rf $tmp_dir
+     cd $current_path
     else
-      mkdir $tmp_dir
-      rsync -av --exclude-from home/exclude $termux_path/ $tmp_dir/$file/ 2>> home/termux_backup_log.txt
-      rm home/exclude && cd $tmp_dir && tar -czvf $file.tar.gz $file/ && rm -Rf $file/
-      clear
-      cp -rf $tmp_dir/ $bkup_dir/
-      rm -Rf $tmp_dir
-      cd $current_path
+     mkdir $tmp_dir
+     echo $text'Starting Bakup...'\n$frame'-----------------'\n $normal
+     echo (set_color yellow)'Analizing and collecting data...'$normal
+     rsync -av --stats --exclude-from 'home/exclude' $termux_path/ $tmp_dir/$file/ | pv -lpes $f_count >/dev/null
+     set f_count_tmp (find $tmp_dir -type f | wc -l)
+     echo \n(set_color yellow)'Compressing data...'$normal
+     rm home/exclude && cd $tmp_dir && tar -czf - $file/ | pv -leps $f_count_tmp > $file.tar.gz && rm -Rf $file
+     cp -rf $tmp_dir/ $bkup_dir/
+     rm -Rf $tmp_dir
+     cd $current_path
     end
   else
     mkdir $tmp_dir 2>/dev/null
-    echo 'No EXTERNAL_STORAGE mounted.'\n'Backup has will be stored in User folder.'
-    echo 'Try using '(set_color 777)'termux-setup-storage'(set_color normal) && echo
-    rsync -av --stats --exclude-from 'home/exclude' $termux_path/ $tmp_dir/$file/ | pv -lpes (math $f_count + 10000) >/dev/null
-
+    echo $text'Starting Bakup...'\n$frame'-----------------'\n $normal
+    echo 'No EXTERNAL_STORAGE mounted.'\n'Backup will be stored in User folder.'
+    echo 'Try using '(set_color 777)'termux-setup-storage'$normal\n
+    echo (set_color yellow)'Analizing and collecting data...'$normal
+    rsync -av --stats --exclude-from 'home/exclude' $termux_path/ $tmp_dir/$file/ | pv -lpes $f_count >/dev/null
     set f_count_tmp (find $tmp_dir -type f | wc -l)
-
-#    rm home/exclude && cd $tmp_dir && tar -czvf $file.tar.gz $file/ | progress -mc tar && rm -Rf $file/
-    rm home/exclude && cd $tmp_dir && tar -czf - $file/ | pv -leps $f_count_tmp > $file.tar.gz && rm -Rf $file/
+    echo \n(set_color yellow)'Compressing data...'$normal
+    rm home/exclude && cd $tmp_dir && tar -czf - $file/ | pv -leps $f_count_tmp > $file.tar.gz && rm -Rf $file
     cd $current_path
   end
   termux-toast -b "#222222" -g top -c white All done\! System backup is finished.
