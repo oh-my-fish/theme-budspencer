@@ -890,15 +890,14 @@ set -x LOGIN $USER
 ###############################################################################
 # => Custom functions
 ###############################################################################
-function __backup -d 'Backup file system' --argument file_name
+function termux-backup -d 'Backup file system' --argument file_name
 
 ## Set defaults:
 
   [ $file_name ]; or set file_name 'Backup'
-  echo "$HOME/storage/"\n"$HOME/.backup_termux/"\n"$HOME/exclude"\n"$HOME/termux_backup_log.txt"\n > $HOME/exclude
 
-  set -g current_path (pwd)
-  set -g tmp_dir $HOME/.backup_termux
+  set current_path (pwd)
+  set tmp_dir $HOME/.backup_termux
   set -g bkup_dir $HOME/storage/shared/
   set -U termux_path (cd $HOME && .. && pwd)
   set bkup_date (date +%s)
@@ -910,31 +909,39 @@ function __backup -d 'Backup file system' --argument file_name
   set frame (set_color -o white)
   set normal (set_color normal)
 
-  echo (set_color -b 000 cb4b16)(set_color -b cb4b16 -o 000) Termux-Backup v1.0 $normal(set_color -b black cb4b16)$normal\n
-  echo (set_color yellow)'Analizing and collecting data...'$normal
-  set_color 999 && rsync -av --stats --exclude-from 'home/exclude' $termux_path/ $tmp_dir/$file/ | pv -lpes $f_count >/dev/null
+## Start backup:
 
-  set f_count_tmp_real (find $tmp_dir -type f | wc -l)
-  set f_count_tmp_p (math $f_count_tmp_real - (math $f_count_tmp_real / 100 x 44))
-  set f_count_tmp (echo $f_count_tmp_p/1 | bc)
-
-  echo \n(set_color yellow)'Compressing data...'$normal
-  set_color 999 && rm $HOME/exclude && cd $tmp_dir && tar -czf - $file/ | pv -leps $f_count_tmp > $file.tar.gz && rm -Rf $file
-  cp -rf $tmp_dir/ $bkup_dir/ 2>/dev/null
-  rm -Rf $tmp_dir 2>/dev/null
-end
-
-# ----------------------------
-
-function termux-backup
   clear
+  echo "home/storage/"\n"home/.backup_termux/"\n"home/exclude"\n"termux_backup_log.txt"\n".links" > home/exclude
   if test -d $HOME/storage
     if test -d $tmp_dir
-     __backup
+     echo (set_color -b 000 cb4b16)(set_color -b cb4b16 -o 000) Termux-Backup v1.0 $normal(set_color -b black cb4b16)$normal\n
+     echo (set_color yellow)'Analizing and collecting data...'$normal
+     set_color 999 && rsync -av --stats --exclude-from 'home/exclude' $termux_path/ $tmp_dir/$file/ | pv -lpes $f_count >/dev/null
+
+     set f_count_tmp_real (find $tmp_dir -type f | wc -l)
+     set f_count_tmp_p (math $f_count_tmp_real - (math $f_count_tmp_real / 100 x 44))
+     set f_count_tmp (echo $f_count_tmp_p/1 | bc)
+
+     echo \n(set_color yellow)'Compressing data...'$normal
+     set_color 999 && rm home/exclude && cd $tmp_dir && tar -czf - $file/ | pv -leps $f_count_tmp > $file.tar.gz && rm -Rf $file
+     cp -rf $tmp_dir/ $bkup_dir/ 2>/dev/null
+     rm -Rf $tmp_dir 2>/dev/null
      cd $current_path
     else
      mkdir $tmp_dir
-     __backup
+     echo (set_color -b 000 cb4b16)(set_color -b cb4b16 -o 000) Termux-Backup v1.0 $normal(set_color -b black cb4b16)$normal\n
+     echo (set_color yellow)'Analizing and collecting data...'$normal
+     set_color 999 && rsync -av --stats --exclude-from 'home/exclude' $termux_path/ $tmp_dir/$file/ | pv -lpes $f_count >/dev/null
+
+     set f_count_tmp_real (find $tmp_dir -type f | wc -l)
+     set f_count_tmp_p (math $f_count_tmp_real - (math $f_count_tmp_real / 100 x 44))
+     set f_count_tmp (echo $f_count_tmp_p/1 | bc)
+
+     echo \n(set_color yellow)'Compressing data...'$normal
+     set_color 999 && rm home/exclude && cd $tmp_dir && tar -czf - $file/ | pv -leps $f_count_tmp > $file.tar.gz && rm -Rf $file
+     cp -rf $tmp_dir/ $bkup_dir/ 2>/dev/null
+     rm -Rf $tmp_dir 2>/dev/null
      cd $current_path
     end
   else
@@ -945,9 +952,9 @@ function termux-backup
     echo (set_color yellow)'Analizing and collecting data...'$normal
     set_color 999 && rsync -av --stats --exclude-from 'home/exclude' $termux_path/ $tmp_dir/$file/ | pv -lpes $f_count >/dev/null
 
-    set f_count_tmp_real (find $tmp_dir -type f | wc -l)
-    set f_count_tmp_p (math $f_count_tmp_real - (math $f_count_tmp_real / 100 x 44))
-    set f_count_tmp (echo $f_count_tmp_p/1 | bc)
+     set f_count_tmp_real (find $tmp_dir -type f | wc -l)
+     set f_count_tmp_p (math $f_count_tmp_real - (math $f_count_tmp_real / 100 x 44))
+     set f_count_tmp (echo $f_count_tmp_p/1 | bc)
 
     echo \n(set_color yellow)'Compressing data...'$normal
     set_color 999 && rm home/exclude && cd $tmp_dir && tar -czf - $file/ | pv -leps $f_count_tmp > $file.tar.gz && rm -Rf $file
