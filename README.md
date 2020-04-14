@@ -30,9 +30,10 @@ termux-backup <backup_name>
 Non standard tools:
 
 * figlet `apt install figlet`
-* Termux:API plug-in \(It's recommended to download **Termux** and **Termux:API** from [F-Droid](https://f-droid.org) as both apps most have the same PGP signature.\) 
+* Termux:API plug-in \(It's recommended to download **Termux** and **Termux:API** from [F-Droid](https://f-droid.org) as both apps most have the same PGP signature\) 
 * termux-api `apt install termux-api`
 * nodejs `apt install nodejs`
+* pv `apt install pv`
 
 ## Configuration
 
