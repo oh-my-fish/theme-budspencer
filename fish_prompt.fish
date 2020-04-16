@@ -921,66 +921,69 @@ end
 
 # ----------------------------
 
-function termux-backup -a file_name -d 'Backup file system'
+function termux-backup -a opt file_name -d 'Backup file system'
   [ $file_name ]; or set file_name ''  #Set defaults
 
-  switch $argv
+ switch $opt
    case '-l' '--list'
-    set bkup1 $bkup_dir.backup_termux
-    set bkup2 $tmp_dir
-    if test -d $bkup1 -o -d $bkup2
-    echo
-    echo (set_color -o yellow)'Backups:'\n
-    echo (set_color white)'Size'(set_color normal) (set_color -o white)'File name'(set_color normal)
-     set_color 999
-     ls -sh --format=single-column $bkup1 $bkup2 2>/dev/null | grep --color=never ".tar.gz"
-    else
-     echo 'No backups found'
-    end
-    return
-   case '-h' '--help'
-    echo
-    echo Usage: termux-backup [OPTION]... [FILE]...\n
-    echo Description:
-    echo Performs a backup of system and user\'s files\n
-    echo OPTION:
-    echo '-l' '--list'			List backup files
-    echo '-h --help			Show this help'\n
-    echo FILE:
-    echo '<bakup_file_name>		Name of backup file'
-    return
-   case '-*'
-    echo "termux-backup: invalid option $argv"
-    echo "Try option '-h' or '--help' for more information"
-    return
-  end
-
-  clear
-
-  if test -d $HOME/storage
-    if test -d $tmp_dir
-     echo (set_color -b 000 cb4b16)(set_color -b cb4b16 -o 000) Termux-Backup v1.0 $normal(set_color -b black cb4b16)$normal\n
-     __backup__ $file_name
-     cp -rf $tmp_dir/ $bkup_dir/ 2>/dev/null
-     rm -Rf $tmp_dir 2>/dev/null
-     cd $current_path
-    else
-     echo (set_color -b 000 cb4b16)(set_color -b cb4b16 -o 000) Termux-Backup v1.0 $normal(set_color -b black cb4b16)$normal\n
-     mkdir $tmp_dir
-     __backup__ $file_name
-     cp -rf $tmp_dir/ $bkup_dir/ 2>/dev/null
-     rm -Rf $tmp_dir 2>/dev/null
-     cd $current_path
-    end
-  else
-    mkdir $tmp_dir 2>/dev/null
-    echo (set_color -b 000 cb4b16)(set_color -b cb4b16 -o 000) Termux-Backup v1.0 $normal(set_color -b black cb4b16)$normal\n
-    echo 'No EXTERNAL_STORAGE mounted.'\n'Backup will be stored in ~/.backup_termux'
-    echo 'Try using '(set_color 777)'termux-setup-storage'$normal\n
-    __backup__ $file_name
-    cd $current_path
-  end
-  termux-toast -b "#222222" -g top -c white All done\! System backup is finished.
+     set bkup1 $bkup_dir.backup_termux
+     set bkup2 $tmp_dir
+     if test -d $bkup1 -o -d $bkup2
+       echo
+       echo (set_color -o yellow)'Backups:'
+       echo (set_color white)'Size'(set_color normal) (set_color -o white)'File name'(set_color normal)
+       set_color 999
+       ls -sh --format=single-column $bkup1 $bkup2 2>/dev/null | grep --color=never ".tar.gz"
+     else
+       echo 'No backups found'
+     end
+     return
+   case '-h' '--help' ''
+     echo
+     echo Usage: termux-backup [OPTION]... [FILE]...\n
+     echo Description:
+     echo Performs a backup of system and user\'s files\n
+     echo OPTION:
+     echo '-l --list		List backup files'
+     echo '-h --help		Show this help'\n
+     echo FILE:
+     echo '<bakup_file_name>	Name of backup file'
+     return
+#   case '-*'
+#     echo "termux-backup: invalid option $argv"
+#     echo "Try option '-h' or '--help' for more information"
+#     return
+   case '-c' '--create'
+     clear
+     if test -d $HOME/storage
+       if test -d $tmp_dir
+         echo (set_color -b 000 cb4b16)(set_color -b cb4b16 -o 000) Termux-Backup v1.0 $normal(set_color -b black cb4b16)$normal\n
+         __backup__ $file_name
+         cp -rf $tmp_dir/ $bkup_dir/ 2>/dev/null
+         rm -Rf $tmp_dir 2>/dev/null
+         cd $current_path
+       else
+         echo (set_color -b 000 cb4b16)(set_color -b cb4b16 -o 000) Termux-Backup v1.0 $normal(set_color -b black cb4b16)$normal\n
+         mkdir $tmp_dir
+         __backup__ $file_name
+         cp -rf $tmp_dir/ $bkup_dir/ 2>/dev/null
+         rm -Rf $tmp_dir 2>/dev/null
+         cd $current_path
+       end
+     else
+       mkdir $tmp_dir 2>/dev/null
+       echo (set_color -b 000 cb4b16)(set_color -b cb4b16 -o 000) Termux-Backup v1.0 $normal(set_color -b black cb4b16)$normal\n
+       echo 'No EXTERNAL_STORAGE mounted.'\n'Backup will be stored in ~/.backup_termux'
+       echo 'Try using '(set_color 777)'termux-setup-storage'$normal\n
+       __backup__ $file_name
+       cd $current_path
+     end
+     termux-toast -b "#222222" -g top -c white All done\! System backup is finished.
+   case '*'
+     echo "termux-backup: invalid option $argv"
+     echo "Try option '-h' or '--help' for more information"
+     return
+ end
 end
 
 ###############################################################################
