@@ -925,26 +925,12 @@ function termux-backup -a file_name -d 'Backup file system'
   [ $file_name ]; or set file_name ''  #Set defaults
 
   switch $argv
-   case '-l' '--list'
-    set bkup1 $bkup_dir.backup_termux
-    set bkup2 $tmp_dir
-    if test -d $bkup1 -o -d $bkup2
-    echo
-    echo (set_color -o yellow)'Backups:'\n
-    echo (set_color white)'Size'(set_color normal) (set_color -o white)'File name'(set_color normal)
-     set_color 999
-     ls -sh --format=single-column $bkup1 $bkup2 2>/dev/null | grep --color=never ".tar.gz"
-    else
-     echo 'No backups found'
-    end
-    return
    case '-h' '--help'
     echo
     echo Usage: termux-backup [OPTION]... [FILE]...\n
     echo Description:
     echo Performs a backup of system and user\'s files\n
     echo OPTION:
-    echo '-l' '--list'			List backup files
     echo '-h --help			Show this help'\n
     echo FILE:
     echo '<bakup_file_name>		Name of backup file'
