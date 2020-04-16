@@ -890,11 +890,9 @@ set -x LOGIN $USER
 ###############################################################################
 # => Custom functions
 ###############################################################################
-function __backup -d 'Backup file system' --argument file_name
+function __backup__ --argument file_name
 
-## Set defaults:
-
-  [ $file_name ]; or set file_name 'Backup'
+  [ $file_name ]; or set file_name 'Backup'  #Set defaults:
   echo "$HOME/storage/"\n"$HOME/.backup_termux/"\n"$HOME/exclude"\n"$HOME/termux_backup_log.txt"\n > $HOME/exclude
 
   set -g current_path (pwd)
@@ -906,13 +904,12 @@ function __backup -d 'Backup file system' --argument file_name
   set f_count_total (find . -type f | wc -l)
   set f_count_p (math (math $f_count_total / 100 x 15) + $f_count_total)
   set f_count (echo $f_count_p/1 | bc)
-  set text (set_color -o cb4b16)
-  set frame (set_color -o white)
-  set normal (set_color normal)
+  set -g text (set_color -o cb4b16)
+  set -g frame (set_color -o white)
+  set -g normal (set_color normal)
 
-  echo (set_color -b 000 cb4b16)(set_color -b cb4b16 -o 000) Termux-Backup v1.0 $normal(set_color -b black cb4b16)$normal\n
   echo (set_color yellow)'Analizing and collecting data...'$normal
-  set_color 999 && rsync -av --stats --exclude-from 'home/exclude' $termux_path/ $tmp_dir/$file/ | pv -lpes $f_count >/dev/null
+  set_color 999 && rsync -av --exclude-from 'home/exclude' $termux_path/ $tmp_dir/$file/ | pv -lpes $f_count >/dev/null
 
   set f_count_tmp_real (find $tmp_dir -type f | wc -l)
   set f_count_tmp_p (math $f_count_tmp_real - (math $f_count_tmp_real / 100 x 44))
@@ -920,37 +917,53 @@ function __backup -d 'Backup file system' --argument file_name
 
   echo \n(set_color yellow)'Compressing data...'$normal
   set_color 999 && rm $HOME/exclude && cd $tmp_dir && tar -czf - $file/ | pv -leps $f_count_tmp > $file.tar.gz && rm -Rf $file
-  cp -rf $tmp_dir/ $bkup_dir/ 2>/dev/null
-  rm -Rf $tmp_dir 2>/dev/null
 end
 
 # ----------------------------
 
-function termux-backup
+function termux-backup -a file_name -d 'Backup file system'
+  [ $file_name ]; or set file_name ''  #Set defaults
+
+  switch $argv
+   case '-h' '--help'
+    echo
+    echo Usage: termux-backup [OPTION]... [FILE]...\n
+    echo Description:
+    echo Performs a backup of system and user\'s files\n
+    echo OPTION:
+    echo '-h --help			Show this help'\n
+    echo FILE:
+    echo '<bakup_file_name>		Name of backup file'
+    return
+   case '-*'
+    echo "termux-backup: invalid option $argv"
+    echo "Try option '-h' or '--help' for more information"
+    return
+  end
+
   clear
+
   if test -d $HOME/storage
     if test -d $tmp_dir
-     __backup
+     echo (set_color -b 000 cb4b16)(set_color -b cb4b16 -o 000) Termux-Backup v1.0 $normal(set_color -b black cb4b16)$normal\n
+     __backup__ $file_name
+     cp -rf $tmp_dir/ $bkup_dir/ 2>/dev/null
+     rm -Rf $tmp_dir 2>/dev/null
      cd $current_path
     else
+     echo (set_color -b 000 cb4b16)(set_color -b cb4b16 -o 000) Termux-Backup v1.0 $normal(set_color -b black cb4b16)$normal\n
      mkdir $tmp_dir
-     __backup
+     __backup__ $file_name
+     cp -rf $tmp_dir/ $bkup_dir/ 2>/dev/null
+     rm -Rf $tmp_dir 2>/dev/null
      cd $current_path
     end
   else
     mkdir $tmp_dir 2>/dev/null
     echo (set_color -b 000 cb4b16)(set_color -b cb4b16 -o 000) Termux-Backup v1.0 $normal(set_color -b black cb4b16)$normal\n
-    echo 'No EXTERNAL_STORAGE mounted.'\n'Backup will be stored in User folder.'
+    echo 'No EXTERNAL_STORAGE mounted.'\n'Backup will be stored in ~/.backup_termux'
     echo 'Try using '(set_color 777)'termux-setup-storage'$normal\n
-    echo (set_color yellow)'Analizing and collecting data...'$normal
-    set_color 999 && rsync -av --stats --exclude-from 'home/exclude' $termux_path/ $tmp_dir/$file/ | pv -lpes $f_count >/dev/null
-
-    set f_count_tmp_real (find $tmp_dir -type f | wc -l)
-    set f_count_tmp_p (math $f_count_tmp_real - (math $f_count_tmp_real / 100 x 44))
-    set f_count_tmp (echo $f_count_tmp_p/1 | bc)
-
-    echo \n(set_color yellow)'Compressing data...'$normal
-    set_color 999 && rm home/exclude && cd $tmp_dir && tar -czf - $file/ | pv -leps $f_count_tmp > $file.tar.gz && rm -Rf $file
+    __backup__ $file_name
     cd $current_path
   end
   termux-toast -b "#222222" -g top -c white All done\! System backup is finished.
