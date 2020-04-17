@@ -908,14 +908,14 @@ function __backup__ --argument file_name
   set -g frame (set_color -o white)
   set -g normal (set_color normal)
 
-  echo (set_color yellow)'Analizing and collecting data...'$normal
+  echo (set_color fcfca3)'Analizing and collecting data...'$normal
   set_color 999 && rsync -av --exclude-from 'home/exclude' $termux_path/ $tmp_dir/$file/ | pv -lpes $f_count >/dev/null
 
   set f_count_tmp_real (find $tmp_dir -type f | wc -l)
   set f_count_tmp_p (math $f_count_tmp_real - (math $f_count_tmp_real / 100 x 44))
   set f_count_tmp (echo $f_count_tmp_p/1 | bc)
 
-  echo \n(set_color yellow)'Compressing data...'$normal
+  echo \n(set_color fcfca3)'Compressing data...'$normal
   set_color 999 && rm $HOME/exclude && cd $tmp_dir && tar -czf - $file/ | pv -leps $f_count_tmp > $file.tar.gz && rm -Rf $file
 end
 
@@ -929,30 +929,73 @@ function termux-backup -a opt file_name -d 'Backup file system'
      set bkup1 $bkup_dir.backup_termux
      set bkup2 $tmp_dir
      if test -d $bkup1 -o -d $bkup2
-       echo
-       echo (set_color -o yellow)'Backups:'
-       echo (set_color white)'Size'(set_color normal) (set_color -o white)'File name'(set_color normal)
-       set_color 999
-       ls -sh --format=single-column $bkup1 $bkup2 2>/dev/null | grep --color=never ".tar.gz"
-     else
-       echo 'No backups found'
+       set list (ls -sh --format=single-column $bkup1 $bkup2 2>/dev/null | grep --color=never ".tar.gz")
+       set list1 (ls $bkup1 $bkup2 2>/dev/null | grep --color=never ".tar.gz")
+       set -l num_items (count $list)
+       if [ $num_items -eq 0 ]
+         echo 'No backups found'
+         return
+       else
+         echo
+         echo (set_color -b 000 $barracuda_colors[5])(set_color -b cb4b16 -o 000) Backups (set_color normal)(set_color -b black cb4b16)(set_color normal)\n
+         echo (set_color -o fcfca3)' No. Size File name'(set_color normal)
+         set_color 999
+         for i in (seq $num_items)
+           echo '▶ '$i'  '$list[$i]
+         end
+       end
      end
-     return
+   case '-d' '--delete'
+     set bkup1 $bkup_dir.backup_termux
+     set bkup2 $tmp_dir
+     set current_path (pwd)
+     if test -d $bkup1 -o -d $bkup2
+       set list (ls -sh --format=single-column $bkup1 $bkup2 2>/dev/null | grep --color=never ".tar.gz")
+       set list1 (ls $bkup1 $bkup2 2>/dev/null | grep --color=never ".tar.gz")
+       set -l num_items (count $list)
+       if [ $num_items -eq 0 ]
+         echo 'No backups found'
+         return
+       else
+         echo
+         echo (set_color -b 000 cb4b16)(set_color -b cb4b16 -o 000) Backups (set_color normal)(set_color -b black cb4b16)(set_color normal)\n
+         echo (set_color -o fcfca3)' No. Size File name'(set_color normal)
+         set_color 999
+         for i in (seq $num_items)
+           echo '▶ '$i'  '$list[$i]
+         end
+         echo -en $barracuda_cursors[1]
+         set input_length (expr length (expr $num_items - 1))
+         read -p 'echo -n \n(set_color -b 555 000)" "(set_color -b 555 normal)" Delete [1-"$num_items"] "(set_color -b normal 555)" "(set_color $barracuda_colors[5])' -n $input_length -l bkup_file
+         switch $bkup_file
+           case (seq 0 (expr $num_items))
+             read -p 'echo "Are you sure (y/n)? "' -n 1 -l confirm
+               switch $confirm
+                 case 'y'
+                   rm $bkup1/$list1[$bkup_file] 2>/dev/null
+                   rm $bkup2/$list1[$bkup_file] 2>/dev/null
+                   cd $current_path
+               end
+           end
+       end
+       for i in (seq (expr $num_items + 7))
+         tput cuu1
+         tput ed
+       end
+     end
    case '-h' '--help' ''
      echo
-     echo Usage: termux-backup [OPTION]... [FILE]...\n
+     echo 'Usage: termux-backup [OPTION]...'
+     echo '       termux-backup -c [FILE]...'\n
      echo Description:
      echo Performs a backup of system and user\'s files\n
      echo OPTION:
+     echo '-c --create		Create new backup'
      echo '-l --list		List backup files'
      echo '-h --help		Show this help'\n
      echo FILE:
      echo '<bakup_file_name>	Name of backup file'
      return
-#   case '-*'
-#     echo "termux-backup: invalid option $argv"
-#     echo "Try option '-h' or '--help' for more information"
-#     return
    case '-c' '--create'
      clear
      if test -d $HOME/storage
