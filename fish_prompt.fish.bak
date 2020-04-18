@@ -901,7 +901,7 @@ set -x LOGIN $USER
 function __backup__ --argument file_name
 
   [ $file_name ]; or set file_name 'Backup'  #Set defaults:
-  echo "$HOME/storage/"\n"$HOME/.backup_termux/"\n"$HOME/exclude"\n"$HOME/termux_backup_log.txt"\n"$termux_path/usr/tmp"\n > $HOME/exclude
+  echo "home/storage/"\n"home/.backup_termux/"\n"home/exclude"\n"home/termux_backup_log.txt"\n"usr/tmp"\n > $HOME/exclude
 
   set -g termux_path (cd $HOME && .. && pwd)
   set bkup_date (date +%s)
@@ -913,14 +913,14 @@ function __backup__ --argument file_name
   set -g frame (set_color -o white)
   set -g normal (set_color normal)
 
-  echo (set_color  fcfca3)'Analizing and collecting data...'$normal
-  set_color 999 && rsync -av --exclude-from 'home/exclude' $termux_path/ $tmp_dir/$file/ | pv -lpes $f_count >/dev/null
+  echo (set_color fcfca3)'Analizing and collecting data...'$normal
+  set_color 999 && rsync -av --exclude-from='home/exclude' $termux_path/ $tmp_dir/$file/ | pv -lpes $f_count >/dev/null
 
   set f_count_tmp_real (find $tmp_dir -type f | wc -l)
-  set f_count_tmp_p (math $f_count_tmp_real - (math $f_count_tmp_real / 100 x 44))
+  set f_count_tmp_p (math $f_count_tmp_real - (math $f_count_tmp_real / 100 x 44.5))
   set f_count_tmp (echo $f_count_tmp_p/1 | bc)
 
-  echo \n(set_color fcfca3)'Compressing data...'$normal
+  echo \n(set_color fcfca3)'Compressing...'$normal
   set_color 999 && rm $HOME/exclude && cd $tmp_dir && tar -czf - $file/ | pv -leps $f_count_tmp > $file.tar.gz && rm -Rf $file
 end
 
@@ -1004,13 +1004,13 @@ function termux-backup -a opt file_name -d 'Backup file system'
      clear
      if test -d $HOME/storage
        if test -d $tmp_dir
-         echo (set_color -b 000 777)(set_color -b 777 -o 000) Termux-Backup v1.0 $normal(set_color -b 000 777)$normal\n
+         echo (set_color -b 000 777)(set_color -b 777 -o 000) Termux-Backup v1.2 $normal(set_color -b 000 777)$normal\n
          __backup__ $file_name
          cp -rf $tmp_dir/ $bkup_dir/ 2>/dev/null
          rm -Rf $tmp_dir 2>/dev/null
          cd $current_path
        else
-         echo (set_color -b 000 777)(set_color -b 777 -o 000) Termux-Backup v1.0 $normal(set_color -b 000 777)$normal\n
+         echo (set_color -b 000 777)(set_color -b 777 -o 000) Termux-Backup v1.2 $normal(set_color -b 000 777)$normal\n
          mkdir $tmp_dir
          __backup__ $file_name
          cp -rf $tmp_dir/ $bkup_dir/ 2>/dev/null
@@ -1019,7 +1019,7 @@ function termux-backup -a opt file_name -d 'Backup file system'
        end
      else
        mkdir $tmp_dir 2>/dev/null
-         echo (set_color -b 000 777)(set_color -b 777 -o 000) Termux-Backup v1.0 $normal(set_color -b 000 777)$normal\n
+         echo (set_color -b 000 777)(set_color -b 777 -o 000) Termux-Backup v1.2 $normal(set_color -b 000 777)$normal\n
        echo 'No EXTERNAL_STORAGE mounted.'\n'Backup will be stored in ~/.backup_termux'
        echo 'Try using '(set_color 777)'termux-setup-storage'$normal\n
        __backup__ $file_name
