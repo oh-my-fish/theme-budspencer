@@ -9,16 +9,6 @@ This is:
 > A theme for nerds, makes fish even more powerful. It's equipped with a hell of a
 lot of nice functions and key bindings to speed up your workflow
 
-## New features
-
-* Added function: **termux-backup** (Performs a backup of the whole system on the External Storage. If there is none, backup will be saved in $HOME/.backup_termux)
-
-```
-termux-backup <backup_name>
-```
-
-## Screenshot
-
 ![screenshot](images/screenshot.jpg)
 
 ## Requirements
@@ -120,7 +110,7 @@ set -U barracuda_alt_environment
 
 ## Right prompt segments
 
-- Shows a timestamp 
+- Shows a timestamp
 
 ## Quickly navigate in history of working directories
 
@@ -200,6 +190,30 @@ If you have still activated the acoustic bell, you probably hate that feature.
 Switch it off in that case:
 ```
 set -U barracuda_nobell
+```
+## Termux Backup
+
+With this function it's possible to perdorm a full backup of system and user's files.
+
+To create a new backup type:
+```
+termux-backup -c <or> --create [file_name]
+```
+
+To list existing backups use:
+```
+termux-backup -l <or> --list
+```
+![screenshot](images/screenshot_l.jpg)
+
+To delete an existing backup:
+```
+termux-backup -d <or> --delete
+```
+![screenshot](images/screenshot_d.jpg)
+To show help:
+```
+termux-backup -h <or> --help
 ```
 
 [font]: https://github.com/Lokaltog/powerline-fonts
