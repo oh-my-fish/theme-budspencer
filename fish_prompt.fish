@@ -901,7 +901,8 @@ set -x LOGIN $USER
 function __backup__ --argument file_name
 
   [ $file_name ]; or set file_name 'Backup'  #Set defaults:
-  echo "$HOME/storage/"\n"$HOME/.backup_termux/"\n"$HOME/exclude"\n"$HOME/termux_backup_log.txt"\n > $HOME/exclude
+  echo "$HOME/storage/"\n"$HOME/.backup_termux/"\n"$HOME/exclude"\n"$HOME/termux_backup_log.txt"\n"$termux_path/usr/tmp"\n > $HOME/exclude
+
   set -g termux_path (cd $HOME && .. && pwd)
   set bkup_date (date +%s)
   set file $file_name-$bkup_date
@@ -912,7 +913,7 @@ function __backup__ --argument file_name
   set -g frame (set_color -o white)
   set -g normal (set_color normal)
 
-  echo (set_color fcfca3)'Analizing and collecting data...'$normal
+  echo (set_color 599459)'Analizing and collecting data...'$normal
   set_color 999 && rsync -av --exclude-from 'home/exclude' $termux_path/ $tmp_dir/$file/ | pv -lpes $f_count >/dev/null
 
   set f_count_tmp_real (find $tmp_dir -type f | wc -l)
@@ -940,11 +941,10 @@ function termux-backup -a opt file_name -d 'Backup file system'
        else
          echo
          echo (set_color -b 000 777)(set_color -b 777 -o 000) Backups (set_color normal)(set_color -b black 777)(set_color normal)\n
-         echo (set_color -o fcfca3)' No. Size File name'(set_color normal)
-         set_color 999
+         echo (set_color -o fcfca3)'    Size        File name            Date of creation'(set_color normal)
          for i in (seq $num_items)
            set bkf_date (stat -c %y $bkup1/$list1[$i] $bkup2/$list1[$i] 2>/dev/null | cut -c 1-22)
-           echo '▶ '$i'  '$list[$i]'  '$bkf_date
+           echo (set_color 666)'▶ '$i(set_color 7dcf7d)' '$list[$i]' '(set_color blue)$bkf_date(set_color 7dcf7d)
          end
        end
      end
@@ -960,10 +960,10 @@ function termux-backup -a opt file_name -d 'Backup file system'
        else
          echo
          echo (set_color -b 000 777)(set_color -b 777 -o 000) Backups (set_color normal)(set_color -b black 777)(set_color normal)\n
-         echo (set_color -o fcfca3)' No. Size File name'(set_color normal)
-         set_color 999
+         echo (set_color -o fcfca3)'    Size        File name            Date of creation'(set_color normal)
          for i in (seq $num_items)
-           echo '▶ '$i'  '$list[$i]
+           set bkf_date (stat -c %y $bkup1/$list1[$i] $bkup2/$list1[$i] 2>/dev/null | cut -c 1-22)
+           echo (set_color 666)'▶ '$i(set_color 7dcf7d)' '$list[$i]' '(set_color blue)$bkf_date(set_color 7dcf7d)
          end
          echo -en $barracuda_cursors[1]
          set input_length (expr length (expr $num_items - 1))
@@ -978,22 +978,11 @@ function termux-backup -a opt file_name -d 'Backup file system'
                      rm $bkup1/$list1[$bkup_file] 2>/dev/null
                      rm $bkup2/$list1[$bkup_file] 2>/dev/null
                      cd $current_path
-                     return
-                  case 'n'
-                    for i in (seq (expr $num_items + 7))
-                      tput cuu1
-                      tput ed
-                      return
-                    end
-                  case 'o'
-                    while test ! $argv = "n" -o $argv = "y"
-                    for i in (seq (expr $num_items + 6))
-                      tput cuu1
-                      tput ed
-                    end
-                    termux-backup -d
-                    end
                end
+         end
+         for x in (seq (expr $num_items + 9))
+           tput cuu1
+           tput ed
          end
        end
      end
@@ -1015,13 +1004,13 @@ function termux-backup -a opt file_name -d 'Backup file system'
      clear
      if test -d $HOME/storage
        if test -d $tmp_dir
-         echo (set_color -b 000 cb4b16)(set_color -b cb4b16 -o 000) Termux-Backup v1.0 $normal(set_color -b black cb4b16)$normal\n
+         echo (set_color -b 000 777)(set_color -b 777 -o 000) Termux-Backup v1.0 $normal(set_color -b 000 777)$normal\n
          __backup__ $file_name
          cp -rf $tmp_dir/ $bkup_dir/ 2>/dev/null
          rm -Rf $tmp_dir 2>/dev/null
          cd $current_path
        else
-         echo (set_color -b 000 cb4b16)(set_color -b cb4b16 -o 000) Termux-Backup v1.0 $normal(set_color -b black cb4b16)$normal\n
+         echo (set_color -b 000 777)(set_color -b 777 -o 000) Termux-Backup v1.0 $normal(set_color -b 000 777)$normal\n
          mkdir $tmp_dir
          __backup__ $file_name
          cp -rf $tmp_dir/ $bkup_dir/ 2>/dev/null
@@ -1030,7 +1019,7 @@ function termux-backup -a opt file_name -d 'Backup file system'
        end
      else
        mkdir $tmp_dir 2>/dev/null
-       echo (set_color -b 000 cb4b16)(set_color -b cb4b16 -o 000) Termux-Backup v1.0 $normal(set_color -b black cb4b16)$normal\n
+         echo (set_color -b 000 777)(set_color -b 777 -o 000) Termux-Backup v1.0 $normal(set_color -b 000 777)$normal\n
        echo 'No EXTERNAL_STORAGE mounted.'\n'Backup will be stored in ~/.backup_termux'
        echo 'Try using '(set_color 777)'termux-setup-storage'$normal\n
        __backup__ $file_name
