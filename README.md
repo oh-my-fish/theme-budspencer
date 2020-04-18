@@ -106,7 +106,7 @@ set -U barracuda_alt_environment
         show the number of the bookmark
     * V: vi is parent process
     * R: [ranger][ranger] is parent process
-    * ⚙: there are background jobs, can be toggled with `#` to show the amount of
+    * ⬜: there are background jobs, can be toggled with `#` to show the amount of
         background jobs
     * 🔒: no write permissions in present working directory
     * ⚔: there are tasks scheduled for this week, can be toggled with `#` to
