@@ -35,6 +35,7 @@ function fish_greeting -d "Welcome Message"
     echo
 
     echo $b'Reporte cualquier problema en https://termux.com/issues '$e
-
-    termux-toast -b "#222222" -g top -c white \¡Bienvenido a Termux-Barracuda, Marvin\! \n \n '                             }><(({º>'
+    if test -e $termux_path/usr/bin/termux-toast
+      termux-toast -b "#222222" -g top -c white \¡Bienvenido a Termux-Barracuda, Marvin\! \n \n '                             }><(({º>'
+    end
 end

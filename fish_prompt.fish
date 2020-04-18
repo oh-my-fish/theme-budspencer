@@ -996,7 +996,7 @@ function termux-backup -a opt file_name -d 'Backup file system'
      echo Performs a backup of system and user\'s files\n
      echo OPTION:
      echo '-c --create		Create new backup'
-     echo '-d --delete		Delete a backup'
+     echo '-d --delete		Delete existing backup'
      echo '-l --list		List backup files'
      echo '-h --help		Show this help'\n
      echo FILE:
@@ -1027,7 +1027,9 @@ function termux-backup -a opt file_name -d 'Backup file system'
        __backup__ $file_name
        cd $current_path
      end
-     termux-toast -b "#222222" -g top -c white All done\! System backup is finished.
+     if test -e $termux_path/usr/bin/termux-toast
+       termux-toast -b "#222222" -g top -c white All done\! System backup is finished
+     end
    case '*'
      echo "termux-backup: invalid option $argv"
      echo "Try option '-h' or '--help' for more information"
