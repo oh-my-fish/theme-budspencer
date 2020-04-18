@@ -216,6 +216,14 @@ To show help:
 termux-backup -h <or> --help
 ```
 
+Unfortunately this function can only perform backups. Restores have to be decompressed and copied manually.
+
+## TODO
+
+* Add option to restore backups
+* Add support for English language 
+
+
 [font]: https://github.com/Lokaltog/powerline-fonts
 [ranger]: http://ranger.nongnu.org/
 [remind]: http://www.roaringpenguin.com/products/remind
