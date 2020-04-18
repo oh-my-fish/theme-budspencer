@@ -913,7 +913,7 @@ function __backup__ --argument file_name
   set -g frame (set_color -o white)
   set -g normal (set_color normal)
 
-  echo (set_color 599459)'Analizing and collecting data...'$normal
+  echo (set_color  fcfca3)'Analizing and collecting data...'$normal
   set_color 999 && rsync -av --exclude-from 'home/exclude' $termux_path/ $tmp_dir/$file/ | pv -lpes $f_count >/dev/null
 
   set f_count_tmp_real (find $tmp_dir -type f | wc -l)
