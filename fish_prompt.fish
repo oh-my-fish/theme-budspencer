@@ -890,15 +890,19 @@ set -x LOGIN $USER
 ###############################################################################
 # => Custom functions
 ###############################################################################
+
+# -- Set global variables --
+
+  set -g tmp_dir $HOME/.backup_termux
+  set -g bkup_dir $HOME/storage/shared/
+  set -g bkup1 $bkup_dir.backup_termux
+  set -g bkup2 $tmp_dir
+
 function __backup__ --argument file_name
 
   [ $file_name ]; or set file_name 'Backup'  #Set defaults:
   echo "$HOME/storage/"\n"$HOME/.backup_termux/"\n"$HOME/exclude"\n"$HOME/termux_backup_log.txt"\n > $HOME/exclude
-
-  set -g current_path (pwd)
-  set -g tmp_dir $HOME/.backup_termux
-  set -g bkup_dir $HOME/storage/shared/
-  set -U termux_path (cd $HOME && .. && pwd)
+  set -g termux_path (cd $HOME && .. && pwd)
   set bkup_date (date +%s)
   set file $file_name-$bkup_date
   set f_count_total (find . -type f | wc -l)
@@ -926,8 +930,6 @@ function termux-backup -a opt file_name -d 'Backup file system'
 
  switch $opt
    case '-l' '--list'
-     set bkup1 $bkup_dir.backup_termux
-     set bkup2 $tmp_dir
      if test -d $bkup1 -o -d $bkup2
        set list (ls -sh --format=single-column $bkup1 $bkup2 2>/dev/null | grep --color=never ".tar.gz")
        set list1 (ls $bkup1 $bkup2 2>/dev/null | grep --color=never ".tar.gz")
@@ -937,17 +939,16 @@ function termux-backup -a opt file_name -d 'Backup file system'
          return
        else
          echo
-         echo (set_color -b 000 $barracuda_colors[5])(set_color -b cb4b16 -o 000) Backups (set_color normal)(set_color -b black cb4b16)(set_color normal)\n
+         echo (set_color -b 000 777)(set_color -b 777 -o 000) Backups (set_color normal)(set_color -b black 777)(set_color normal)\n
          echo (set_color -o fcfca3)' No. Size File name'(set_color normal)
          set_color 999
          for i in (seq $num_items)
-           echo '▶ '$i'  '$list[$i]
+           set bkf_date (stat -c %y $bkup1/$list1[$i] $bkup2/$list1[$i] 2>/dev/null | cut -c 1-22)
+           echo '▶ '$i'  '$list[$i]'  '$bkf_date
          end
        end
      end
    case '-d' '--delete'
-     set bkup1 $bkup_dir.backup_termux
-     set bkup2 $tmp_dir
      set current_path (pwd)
      if test -d $bkup1 -o -d $bkup2
        set list (ls -sh --format=single-column $bkup1 $bkup2 2>/dev/null | grep --color=never ".tar.gz")
@@ -958,7 +959,7 @@ function termux-backup -a opt file_name -d 'Backup file system'
          return
        else
          echo
-         echo (set_color -b 000 cb4b16)(set_color -b cb4b16 -o 000) Backups (set_color normal)(set_color -b black cb4b16)(set_color normal)\n
+         echo (set_color -b 000 777)(set_color -b 777 -o 000) Backups (set_color normal)(set_color -b black 777)(set_color normal)\n
          echo (set_color -o fcfca3)' No. Size File name'(set_color normal)
          set_color 999
          for i in (seq $num_items)
@@ -966,21 +967,34 @@ function termux-backup -a opt file_name -d 'Backup file system'
          end
          echo -en $barracuda_cursors[1]
          set input_length (expr length (expr $num_items - 1))
-         read -p 'echo -n \n(set_color -b 555 000)" "(set_color -b 555 normal)" Delete [1-"$num_items"] "(set_color -b normal 555)" "(set_color $barracuda_colors[5])' -n $input_length -l bkup_file
+         read -p 'echo -n \n(set_color -b 777 6b052a)" "(set_color -b 777 000)" Delete [1-"$num_items"] "(set_color -b normal 555)" "(set_color fcfca3)' -n $input_length -l bkup_file
          switch $bkup_file
            case (seq 0 (expr $num_items))
-             read -p 'echo "Are you sure (y/n)? "' -n 1 -l confirm
-               switch $confirm
+             tput cuu1
+             tput ed
+             read -p 'echo "Delete item [$bkup_file] (y/n)? "' -n 1 -l argv
+               switch $argv
                  case 'y'
-                   rm $bkup1/$list1[$bkup_file] 2>/dev/null
-                   rm $bkup2/$list1[$bkup_file] 2>/dev/null
-                   cd $current_path
+                     rm $bkup1/$list1[$bkup_file] 2>/dev/null
+                     rm $bkup2/$list1[$bkup_file] 2>/dev/null
+                     cd $current_path
+                     return
+                  case 'n'
+                    for i in (seq (expr $num_items + 7))
+                      tput cuu1
+                      tput ed
+                      return
+                    end
+                  case 'o'
+                    while test ! $argv = "n" -o $argv = "y"
+                    for i in (seq (expr $num_items + 6))
+                      tput cuu1
+                      tput ed
+                    end
+                    termux-backup -d
+                    end
                end
-           end
-       end
-       for i in (seq (expr $num_items + 7))
-         tput cuu1
-         tput ed
+         end
        end
      end
    case '-h' '--help' ''
@@ -991,6 +1005,7 @@ function termux-backup -a opt file_name -d 'Backup file system'
      echo Performs a backup of system and user\'s files\n
      echo OPTION:
      echo '-c --create		Create new backup'
+     echo '-d --delete		Delete a backup'
      echo '-l --list		List backup files'
      echo '-h --help		Show this help'\n
      echo FILE:
