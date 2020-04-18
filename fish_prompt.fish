@@ -9,7 +9,7 @@
 #   a sophisticated airline/powerline theme
 #
 # Author:
-#   Joseph Tannhuber <sepp.tannhuber@yahoo.de>
+#   Marvin Eversley Silva <meverss@outlook.com>
 #
 # Sections:
 #   -> Color definitions
@@ -28,6 +28,7 @@
 #     -> Git segment
 #     -> Bind-mode segment
 #     -> Symbols segment
+#     -> Termux Backup
 #   -> Prompt initialization
 #   -> Left prompt
 #
