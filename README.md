@@ -102,7 +102,7 @@ set -U barracuda_alt_environment
 - Status symbols
     * ✻: keep track of this shell session, can be toggled with `#` to show the number of
        the session within the sessions list
-    * ⌘: present working directory is in bookmark list, can be toggled with `#` to
+    * ⭐: present working directory is in bookmark list, can be toggled with `#` to
         show the number of the bookmark
     * V: vi is parent process
     * R: [ranger][ranger] is parent process
