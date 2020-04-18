@@ -941,10 +941,10 @@ function termux-backup -a opt file_name -d 'Backup file system'
        else
          echo
          echo (set_color -b 000 777)(set_color -b 777 -o 000) Backups (set_color normal)(set_color -b black 777)(set_color normal)\n
-         echo (set_color -o fcfca3)'    Size        File name            Date of creation'(set_color normal)
+         echo (set_color fcfca3)'    Size        File name            Date of creation'(set_color normal)
          for i in (seq $num_items)
            set bkf_date (stat -c %y $bkup1/$list1[$i] $bkup2/$list1[$i] 2>/dev/null | cut -c 1-22)
-           echo (set_color 666)'▶ '$i(set_color 7dcf7d)' '$list[$i]' '(set_color blue)$bkf_date(set_color 7dcf7d)
+           echo (set_color 666)'▶ '$i(set_color 999)' '$list[$i]' '(set_color 666)$bkf_date(set_color 999)
          end
        end
      end
@@ -963,7 +963,7 @@ function termux-backup -a opt file_name -d 'Backup file system'
          echo (set_color -o fcfca3)'    Size        File name            Date of creation'(set_color normal)
          for i in (seq $num_items)
            set bkf_date (stat -c %y $bkup1/$list1[$i] $bkup2/$list1[$i] 2>/dev/null | cut -c 1-22)
-           echo (set_color 666)'▶ '$i(set_color 7dcf7d)' '$list[$i]' '(set_color blue)$bkf_date(set_color 7dcf7d)
+           echo (set_color 666)'▶ '$i(set_color 999)' '$list[$i]' '(set_color 666)$bkf_date(set_color 999)
          end
          echo -en $barracuda_cursors[1]
          set input_length (expr length (expr $num_items - 1))
@@ -971,8 +971,9 @@ function termux-backup -a opt file_name -d 'Backup file system'
          switch $bkup_file
            case (seq 0 (expr $num_items))
              tput cuu1
+             tput cuu10
              tput ed
-             read -p 'echo "Delete item [$bkup_file] (y/n)? "' -n 1 -l argv
+             read -p 'echo -n \n(set_color -b 777 6b052a)" "(set_color -b 777 0000000)" Delete item ["$i"] (y/n)? "(set_color -b normal 555)" "(set_color fcfca3)' -n 1 -l argv
                switch $argv
                  case 'y'
                      rm $bkup1/$list1[$bkup_file] 2>/dev/null
