@@ -19,7 +19,7 @@ termux-backup <backup_name>
 
 ## Screenshot
 
-![screenshot](screenshot.jpg)
+![screenshot](images/screenshot.jpg)
 
 ## Requirements
 

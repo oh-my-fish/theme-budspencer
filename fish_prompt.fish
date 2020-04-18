@@ -921,7 +921,7 @@ function __backup__ --argument file_name
   set f_count_tmp_p (math $f_count_tmp_real - (math $f_count_tmp_real / 100 x 44.5))
   set f_count_tmp (echo $f_count_tmp_p/1 | bc)
 
-  echo \n(set_color -b 000 fcfca3)'Compressing...'$normal
+  echo (set_color -b 000 fcfca3)'Compressing...'$normal
   set_color 999 && rm $HOME/exclude && cd $tmp_dir && tar -czf - $file/ | pv -leps $f_count_tmp > $file.tar.gz && rm -Rf $file
 end
 
