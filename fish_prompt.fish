@@ -1,5 +1,3 @@
-#!/data/data/com.termux/usr/bin/fish
-
 ###############################################################################
 #
 # Prompt theme name:
@@ -13,6 +11,7 @@
 #
 # Sections:
 #   -> Color definitions
+#   -> Aliases
 #   -> Files
 #   -> Functions
 #     -> Ring bell
@@ -49,6 +48,14 @@ end
 # Cursor color changes according to vi-mode
 # Define values for: normal_mode insert_mode visual_mode
 set -U barracuda_cursors "\033]12;#$barracuda_colors[5]\007" "\033]12;#$barracuda_colors[12]\007" "\033]12;#$barracuda_colors[10]\007" "\033]12;#$barracuda_colors[9]\007"
+
+###############################################################################
+# => Aliases
+###############################################################################
+
+alias backup "termux-backup"
+alias spanish "termux-language sp"
+alias english "termux-language en"
 
 ###############################################################################
 # => Files
@@ -1088,12 +1095,16 @@ end
 function termux-language -a lang -d "Set system language"
   switch $lang
     case 'sp'
+    clear
       set b_lang $lang_sp
       set bg_lang $g_lang_sp
+      omf reload
       return
     case 'en'
+    clear
       set b_lang $lang_en
       set bg_lang $g_lang_en
+      omf reload
       return
   end
 end
