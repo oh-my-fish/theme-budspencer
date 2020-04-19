@@ -903,6 +903,7 @@ set -x LOGIN $USER
 
   if not set -q b_lang
     set -U b_lang $lang_sp
+    set -U bg_lang $g_lang_sp
   end
 
 # -- Set global variables --
@@ -1088,9 +1089,11 @@ function termux-language -a lang -d "Set system language"
   switch $lang
     case 'sp'
       set b_lang $lang_sp
+      set bg_lang $g_lang_sp
       return
     case 'en'
       set b_lang $lang_en
+      set bg_lang $g_lang_en
       return
   end
 end
