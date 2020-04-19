@@ -892,6 +892,13 @@ set -x LOGIN $USER
 # => Custom functions
 ###############################################################################
 
+# -- Languages --
+
+  set -U lang_sp 'Analizando y recopilando datos...' 'Comprimiendo...' 'No se encontró ningún archivo de respaldo' 'Borrar elemento' 'Todo [a]' 'Borrar elemento' 'Borrar TODOS los archivos de respaldo (y/n)?' 'No se encontro ningún ALMACENAMIENTO_EXTERNO.' 'El respaldo se guardará en ~/.backup_termux' '\¡Listo\! Respaldo terminado con éxito' 'Intente escribiendo' 'Uso: termux-backup [OPCION]...' '     termux-backup -c [ARCHIVO]...' 'Descripción:' 'Realiza un respaldo de los archivos de usuario y sistema' 'OPCION:' '-c --create		Crear nuevo respaldo' '-d --delete		Borrar archivo de respaldo' '-l --list		Listar archivos de respaldo' '-h --help		Muestra esta ayuda' 'ARCHIVO:' '<nombre_de_archivo>	Nombre del archivo de respaldo' '  Tamaño    Nombre de archivo       Fecha de creación'
+  set -U lang_en 'Analizing and collecting data...' 'Compressing...' 'No backups found' 'Delete' 'All [a]' 'Delete item' ' Delete ALL backups (y/n)? ' 'No EXTERNAL_STORAGE mounted.' 'Backup will be stored in ~/.backup_termux' 'Try using ' 'All done\! Backup has been successfuly finished' 'Usage: termux-backup [OPTION]...' '       termux-backup -c [FILE]...' 'Description:' 'Performs a backup of system and user\'s files' 'OPTION:' '-c --create		Create new backup' '-d --delete		Delete existing backup' '-l --list		List backup files' '-h --help		Show this help' 'FILE:' '<bakup_file_name>	Name of backup file' '    Size        File name            Date of creation'
+
+  set -U b_lang $lang_sp
+
 # -- Set global variables --
 
   set -g tmp_dir $HOME/.backup_termux
@@ -899,7 +906,7 @@ set -x LOGIN $USER
   set -g bkup1 $bkup_dir.backup_termux
   set -g bkup2 $tmp_dir
 
-function __backup__ --argument file_name
+function __backup__ -a file_name
 
   [ $file_name ]; or set file_name 'Backup'  #Set defaults:
   echo "home/storage/"\n"home/.backup_termux/"\n"home/exclude"\n"home/termux_backup_log.txt"\n"usr/tmp"\n > $HOME/exclude
@@ -915,7 +922,7 @@ function __backup__ --argument file_name
   set -g frame (set_color -o white)
   set -g normal (set_color normal)
 
-  echo (set_color -b 000 fcfca3)'Analizing and collecting data...'$normal
+  echo (set_color -b 000 fcfca3)$b_lang[1]$normal
   set_color 999 && rsync -av --exclude-from='home/exclude' $termux_path/ $tmp_dir/$file/ | pv -lpes $f_count >/dev/null
 
   set f_count_tmp_real (find $tmp_dir -type f | wc -l)
@@ -923,7 +930,7 @@ function __backup__ --argument file_name
   set f_count_tmp (echo $f_count_tmp_p/1 | bc)
 
   cd $current_path
-  echo (set_color -b 000 fcfca3)'Compressing...'$normal
+  echo (set_color -b 000 fcfca3)$b_lang[2]$normal
   set_color 999 && tar -czf - $tmp_dir/$file/ 2>/dev/null | pv -leps $f_count_tmp > $tmp_dir/$file.tar.gz
   rm -Rf $tmp_dir/$file $HOME/exclude 2>/dev/null
  end
@@ -937,7 +944,7 @@ function termux-backup -a opt file_name -d 'Backup file system'
  switch $opt
    case '-l' '--list'
      if test ! -d $bkup1 -a ! -d $bkup2
-         echo 'No backups found'
+         echo $b_lang[3]
          return
      end
      if test -d $bkup1 -o -d $bkup2
@@ -945,12 +952,12 @@ function termux-backup -a opt file_name -d 'Backup file system'
        set list1 (ls $bkup1 $bkup2 2>/dev/null | grep --color=never ".tar.gz")
        set -l num_items (count $list)
        if [ $num_items -eq 0 ]
-         echo 'No backups found'
+         echo $b_lang[3]
          return
        else
          echo
          echo (set_color -b 000 777)(set_color -b 777 -o 000) Backups (set_color normal)(set_color -b black 777)(set_color normal)\n
-         echo (set_color fcfca3)'    Size        File name            Date of creation'(set_color normal)
+         echo (set_color fcfca3)$b_lang[23] (set_color normal)
          for i in (seq $num_items)
            set bkf_date (stat -c %y $bkup1/$list1[$i] $bkup2/$list1[$i] 2>/dev/null | cut -c 1-22)
            set even_odd (math $i % 2)
@@ -959,25 +966,25 @@ function termux-backup -a opt file_name -d 'Backup file system'
            else
              set line_color 999
            end
-           echo (set_color $line_color)'▶ '$i' '$list[$i]' '$bkf_date             
+           echo (set_color $line_color)'▶ '$i' '$list[$i]' '$bkf_date
          end
        end
      end
    case '-d' '--delete'
      if test ! -d $bkup1 -a ! -d $bkup2
-         echo 'No backups found'
+         echo $b_lang[3]
      end
      if test -d $bkup1 -o -d $bkup2
        set list (ls -sh --format=single-column $bkup1 $bkup2 2>/dev/null | grep --color=never ".tar.gz")
        set list1 (ls $bkup1 $bkup2 2>/dev/null | grep --color=never ".tar.gz")
        set -l num_items (count $list)
        if [ $num_items -eq 0 ]
-         echo 'No backups found'
+         echo $b_lang[3]
          return 1
        else
          echo
          echo (set_color -b 000 777)(set_color -b 777 -o 000) Backups (set_color normal)(set_color -b black 777)(set_color normal)\n
-         echo (set_color -o fcfca3)'    Size        File name            Date of creation'(set_color normal)
+         echo (set_color -o fcfca3)"$b_lang[23]" (set_color normal)
          for i in (seq $num_items)
            set bkf_date (stat -c %y $bkup1/$list1[$i] $bkup2/$list1[$i] 2>/dev/null | cut -c 1-22)
            set even_odd (math $i % 2)
@@ -986,17 +993,17 @@ function termux-backup -a opt file_name -d 'Backup file system'
            else
              set line_color 999
            end
-           echo (set_color $line_color)'▶ '$i' '$list[$i]' '$bkf_date             
+           echo (set_color $line_color)'▶ '$i' '$list[$i]' '$bkf_date
          end
          echo -en $barracuda_cursors[1]
          set input_length (expr length (expr $num_items))
-         read -p 'echo -n \n(set_color -b 777 6b052a)" "(set_color -b 777 000)" Delete [1-"$num_items"] All [a] "(set_color -b normal 555)" "(set_color fcfca3)' -n $input_length -l bkup_file
+         read -p 'echo -n \n(set_color -b 777 6b052a)" "(set_color -b 777 000)" $b_lang[4] "[1-"$num_items"]" $b_lang[5] "(set_color -b normal 555)" "(set_color fcfca3)' -n $input_length -l bkup_file
          switch $bkup_file
            case (seq 0 (expr $num_items))
              tput cuu1
              tput cuu1
              tput ed
-             read -p 'echo -n \n(set_color -b 777 6b052a)" "(set_color -b 777 000)" Delete item ["$bkup_file"] (y/n)? "(set_color -b normal 555)" "(set_color fcfca3)' -n 1 -l argv
+             read -p 'echo -n \n(set_color -b 777 6b052a)" "(set_color -b 777 000)" $b_lang[6] "["$bkup_file"]" (y/n)? "(set_color -b normal 555)" "(set_color fcfca3)' -n 1 -l argv
                switch $argv
                  case 'y'
                      rm $bkup1/$list1[$bkup_file] 2>/dev/null
@@ -1007,7 +1014,7 @@ function termux-backup -a opt file_name -d 'Backup file system'
              tput cuu1
              tput cuu1
              tput ed
-             read -p 'echo -n \n(set_color -b 777 6b052a)" "(set_color -b 777 000)" Delete ALL backups (y/n)? "(set_color -b normal 555)" "(set_color fcfca3)' -n 1 -l argv
+             read -p 'echo -n \n(set_color -b 777 6b052a)" "(set_color -b 777 000)" b_lang[7] "(set_color -b normal 555)" "(set_color fcfca3)' -n 1 -l argv
                switch $argv
                  case 'y'
                      rm -Rf $HOME/.backup_termux 2>/dev/null
@@ -1023,17 +1030,17 @@ function termux-backup -a opt file_name -d 'Backup file system'
      end
    case '-h' '--help' ''
      echo
-     echo 'Usage: termux-backup [OPTION]...'
-     echo '       termux-backup -c [FILE]...'\n
-     echo Description:
-     echo Performs a backup of system and user\'s files\n
-     echo OPTION:
-     echo '-c --create		Create new backup'
-     echo '-d --delete		Delete existing backup'
-     echo '-l --list		List backup files'
-     echo '-h --help		Show this help'\n
-     echo FILE:
-     echo '<bakup_file_name>	Name of backup file'
+     echo $b_lang[12]
+     echo "$b_lang[13]"\n
+     echo $b_lang[14]
+     echo "$b_lang[15]"\n
+     echo $b_lang[16]
+     echo $b_lang[17]
+     echo $b_lang[18]
+     echo $b_lang[19]
+     echo "$b_lang[20]"\n
+     echo $b_lang[21]
+     echo $b_lang[22]
      return
    case '-c' '--create'
      clear
@@ -1053,12 +1060,12 @@ function termux-backup -a opt file_name -d 'Backup file system'
      else
        mkdir $tmp_dir 2>/dev/null
          echo (set_color -b 000 777)''(set_color -b 777 -o 000)' Termux-Backup v1.2 '$normal(set_color -b 000 777)''$normal\n
-       echo 'No EXTERNAL_STORAGE mounted.'\n'Backup will be stored in ~/.backup_termux'
-       echo 'Try using '(set_color 777)'termux-setup-storage'$normal\n
+       echo "b_lang[8]"\n"$b_lang[9]"
+       echo "$b_lang[10]"(set_color 777)'termux-setup-storage'$normal\n
        __backup__ $file_name
      end
      if test -e $termux_path/usr/bin/termux-toast
-       termux-toast -b "#222222" -g top -c white All done\! System backup is finished
+       termux-toast -b "#222222" -g top -c white $b_lang[11]
      end
    case '*'
      echo "termux-backup: invalid option $argv"
