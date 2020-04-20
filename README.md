@@ -221,7 +221,7 @@ Unfortunately this function can only perform backups. Restores have to be decomp
 ## TODO
 
 * Add option to restore backups
-* Add support for English language 
+* Add support for other languages
 
 
 [font]: https://github.com/Lokaltog/powerline-fonts
