@@ -1091,7 +1091,7 @@ function termux-backup -a opt file_name -d 'Backup file system'
 end
 
 # --------------------------------
-# Set language
+# Set languages
 # --------------------------------
 
 function termux-language -a lang -d "Set system language"
