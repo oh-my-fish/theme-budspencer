@@ -13,7 +13,7 @@ function fish_greeting -d "Welcome Message"
     set b (set_color -b black)(set_color b58900)''(set_color -b b58900)(set_color 000000) #083743)
     set t (set_color eee)
     set e (set_color normal)(set_color b58900)''(set_color normal)
-    set -g barracuda_version (echo (set_color -b 000 cb4b16)''(set_color -b cb4b16 -o 000)'v1.2'(set_color -b 000 cb4b16)''$n)
+    set -g barracuda_version (echo (set_color -b 000 cb4b16)''(set_color -b cb4b16 -o 000)'v1.4'(set_color -b 000 cb4b16)''$n)
 
     set_color -o cb4b16
     tput cuu1 && tput cuu1

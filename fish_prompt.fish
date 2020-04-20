@@ -903,9 +903,9 @@ set -x LOGIN $USER
 # TERMUX-BACKUP
 # -------------
 
-# -- Languages (SP-EN)--
+# -- Languages (SP-EN) --
 
-  set -U lang_sp 'Analizando y recopilando datos...' 'Comprimiendo...' 'No se encontró ningún archivo de respaldo' 'Borrar' 'Todo [a]' 'Borrar elemento' 'Borrar TODOS los archivos de respaldo (y/n)?' 'No se encontró ningún ALMACENAMIENTO_EXTERNO.' 'El respaldo se guardará en ~/.backup_termux' 'Intente escribiendo' '¡Listo! Respaldo terminado con éxito' 'Uso: termux-backup [OPCION]...' '     termux-backup -c [ARCHIVO]...' 'Descripción:' 'Realiza un respaldo de los archivos de usuario y sistema' 'OPCION:' '-c --create		Crear nuevo respaldo' '-d --delete		Borrar archivo de respaldo' '-l --list		Listar archivos de respaldo' '-h --help		Muestra esta ayuda' 'ARCHIVO:' '<nombre_de_archivo>	Nombre del archivo de respaldo' '  Tamaño    Nombre de archivo       Fecha de creación' 'Archivos de respaldo'
+  set -U lang_sp 'Analizando y recopilando datos...' 'Comprimiendo...' 'No se encontró ningún archivo de respaldo' 'Borrar' 'Todo [a]' 'Borrar elemento' 'Borrar TODOS los archivos (y/n)?' 'No se encontró ningún ALMACENAMIENTO_EXTERNO.' 'El respaldo se guardará en ~/.backup_termux' 'Intente escribiendo' '¡Listo! Respaldo terminado con éxito' 'Uso: termux-backup [OPCION]...' '     termux-backup -c [ARCHIVO]...' 'Descripción:' 'Realiza un respaldo de los archivos de usuario y sistema' 'OPCION:' '-c --create		Crear nuevo respaldo' '-d --delete		Borrar archivo de respaldo' '-l --list		Listar archivos de respaldo' '-h --help		Muestra esta ayuda' 'ARCHIVO:' '<nombre_de_archivo>	Nombre del archivo de respaldo' '  Tamaño    Nombre de archivo       Fecha de creación' 'Archivos de respaldo'
   set -U lang_en 'Analizing and collecting data...' 'Compressing...' 'No backups found' 'Delete' 'All [a]' 'Delete item' ' Delete ALL backups (y/n)? ' 'No EXTERNAL_STORAGE mounted.' 'Backup will be stored in ~/.backup_termux' 'Try using ' 'All done\! Backup has been successfuly finished' 'Usage: termux-backup [OPTION]...' '       termux-backup -c [FILE]...' 'Description:' 'Performs a backup of system and user\'s files' 'OPTION:' '-c --create		Create new backup' '-d --delete		Delete existing backup' '-l --list		List backup files' '-h --help		Show this help' 'FILE:' '<bakup_file_name>	Name of backup file' '    Size        File name            Date of creation' 'Backup files'
 
   if not set -q b_lang
@@ -919,6 +919,8 @@ set -x LOGIN $USER
   set -g bkup_dir $HOME/storage/shared/
   set -g bkup1 $bkup_dir.backup_termux
   set -g bkup2 $tmp_dir
+
+# ---------------------------- #
 
 function __backup__ -a file_name
 
@@ -1028,7 +1030,7 @@ function termux-backup -a opt file_name -d 'Backup file system'
              tput cuu1
              tput cuu1
              tput ed
-             read -p 'echo -n \n(set_color -b 777 6b052a)" "(set_color -b 777 000)" b_lang[7] "(set_color -b normal 555)" "(set_color fcfca3)' -n 1 -l argv
+             read -p 'echo -n \n(set_color -b 777 6b052a)" "(set_color -b 777 000) $b_lang[7] (set_color -b normal 555)" "(set_color fcfca3)' -n 1 -l argv
                switch $argv
                  case 'y'
                      rm -Rf $HOME/.backup_termux 2>/dev/null
@@ -1057,7 +1059,6 @@ function termux-backup -a opt file_name -d 'Backup file system'
      echo $b_lang[22]
      return
    case '-c' '--create'
-     clear
      if test -d $HOME/storage1
        if test -d $tmp_dir
          echo (set_color -b 000 777)''(set_color -b 777 -o 000)' Termux-Backup v1.4 '$normal(set_color -b 000 777)''$normal\n
