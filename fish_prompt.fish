@@ -53,6 +53,7 @@ set -U barracuda_cursors "\033]12;#$barracuda_colors[5]\007" "\033]12;#$barracud
 # => Aliases
 ###############################################################################
 
+alias ps "ps -ef"
 alias backup "termux-backup"
 alias spanish "termux-language sp"
 alias english "termux-language en"
