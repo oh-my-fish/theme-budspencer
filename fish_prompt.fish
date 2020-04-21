@@ -57,6 +57,7 @@ alias ps "ps -ef"
 alias backup "termux-backup"
 alias spanish "termux-language sp"
 alias english "termux-language en"
+alias french "termux-language fr"
 
 ###############################################################################
 # => Files
@@ -906,8 +907,9 @@ set -x LOGIN $USER
 
 # -- Languages (SP-EN) --
 
-  set -U lang_sp 'Analizando y recopilando datos...' 'Comprimiendo...' 'No hay archivos de respaldo' 'Borrar archivo' 'Todo [a]' 'Borrar archivo' 'Borrar TODO (y/n)?' 'No se encontró ALMACENAMIENTO_EXTERNO.' 'El respaldo se guardará en ~/.backup_termux' 'Intente escribiendo' '¡Listo! Respaldo realizado con éxito' 'Uso: termux-backup [OPCION]...' '     termux-backup -c [ARCHIVO]...' 'Descripción:' 'Realiza un respaldo de los archivos de usuario y sistema' 'OPCION:' '-c --create		Crear nuevo respaldo' '-d --delete		Borrar archivo de respaldo' '-l --list		Listar archivos de respaldo' '-h --help		Muestra esta ayuda' 'ARCHIVO:' '<nombre_de_archivo>	Nombre del archivo de respaldo' '  Tamaño    Nombre de archivo       Fecha de creación' 'Archivos de respaldo'
-  set -U lang_en 'Analizing and collecting data...' 'Compressing...' 'No backups found' 'Delete' 'All [a]' 'Delete item' ' Delete ALL backups (y/n)? ' 'No EXTERNAL_STORAGE mounted.' 'Backup will be stored in ~/.backup_termux' 'Try using ' 'All done\! Backup has been successfuly finished' 'Usage: termux-backup [OPTION]...' '       termux-backup -c [FILE]...' 'Description:' 'Performs a backup of system and user\'s files' 'OPTION:' '-c --create		Create new backup' '-d --delete		Delete existing backup' '-l --list		List backup files' '-h --help		Show this help' 'FILE:' '<bakup_file_name>	Name of backup file' '    Size        File name            Date of creation' 'Backup files'
+  set -U lang_sp 'Analizando y recopilando datos...' 'Comprimiendo...' 'No hay archivos de respaldo' 'Borrar archivo' 'Todo [a]' 'Borrar archivo' 'Borrar TODO (y/n)?' 'No se encontró ALMACENAMIENTO_EXTERNO.' 'El respaldo se guardará en ~/.backup_termux' 'Intente escribiendo' '¡Listo! Respaldo realizado con éxito' 'Uso: termux-backup [OPCION]...' '     termux-backup -c [ARCHIVO]...' 'Descripción:' 'Realiza un respaldo de los archivos de usuario y sistema' 'OPCION:' '-c --create		Crear nuevo respaldo' '-d --delete		Borrar archivo de respaldo' '-l --list		Listar archivos de respaldo' '-h --help		Muestra esta ayuda' 'ARCHIVO:' '<nombre_de_archivo>	Nombre del archivo de respaldo' '  Tamaño    Nombre de archivo       Fecha de creación' 'Archivos de respaldo' 'Si no se especifica ninguna OPCION, se creará un archivo de respaldo con <Backup> como identificador por defecto'
+  set -U lang_en 'Analizing and collecting data...' 'Compressing...' 'No backups found' 'Delete' 'All [a]' 'Delete item' ' Delete ALL backups (y/n)? ' 'No EXTERNAL_STORAGE mounted.' 'Backup will be stored in ~/.backup_termux' 'Try using ' 'All done\! Backup has been successfuly finished' 'Usage: termux-backup [OPTION]...' '       termux-backup -c [FILE]...' 'Description:' 'Performs a backup of system and user\'s files' 'OPTION:' '-c --create		Create new backup' '-d --delete		Delete existing backup' '-l --list		List backup files' '-h --help		Show this help' 'FILE:' '<bakup_file_name>	Name of backup file' '    Size        File name            Date of creation' 'Backup files' 'If no OPTION is defined, it will be created a backup with default identifier <Backup>'
+  set -U lang_fr 'Analyser et collecter des données...' 'Compresser...' 'Aucune sauvegarde trouvée' 'Supprimer' 'Tout [a]' 'Supprimer l\'élément' 'Supprimer TOUTES les sauvegardes (y/n)?' 'Aucun STOCKAGE_EXTERNE monté.' 'La sauvegarde sera stockée dans ~/.backup_termux' 'Essayez d\'utiliser' 'Terminé! La sauvegarde est terminée avec succès' 'Utilisation: termux-backup [OPTION]...' '             termux-backup -c [FILE]...' 'Description:' 'Effectue une sauvegarde du système et des fichiers de l\'utilisateur' 'OPTION:' '-c --create		Créer une nouvelle sauvegarde' '-d --delete		Supprimer la sauvegarde existante' '-l --list		Liste les fichiers de sauvegarde' '-h --help		Afficher cette aide' 'FILE:' '<nom_du_fichier>		Nom du fichier de sauvegarde' '   Taille     Nom du fichier         Date de création' 'Fichiers de sauvegarde' 'Si aucune OPTION n\'est définie, il sera créé une sauvegarde avec l\'identifiant par défaut <Backup>'
 
   if not set -q b_lang
     set -U b_lang $lang_sp
@@ -1047,17 +1049,18 @@ function termux-backup -a opt file_name -d 'Backup file system'
      end
    case '-h' '--help' ''
      echo
-     echo $b_lang[12]
+     echo "$b_lang[12]"
      echo "$b_lang[13]"\n
-     echo $b_lang[14]
+     echo "$b_lang[14]"
      echo "$b_lang[15]"\n
-     echo $b_lang[16]
-     echo $b_lang[17]
-     echo $b_lang[18]
-     echo $b_lang[19]
+     echo "$b_lang[16]"
+     echo "$b_lang[17]"
+     echo "$b_lang[18]"
+     echo "$b_lang[19]"
      echo "$b_lang[20]"\n
-     echo $b_lang[21]
-     echo $b_lang[22]
+     echo "$b_lang[21]"
+     echo "$b_lang[22]"\n
+     echo "$b_lang[25]"
      return
    case '-c' '--create'
      if test -d $HOME/storage
@@ -1110,6 +1113,14 @@ function termux-language -a lang -d "Set system language"
       set -U lang 'english'
       exec fish
       return
+    case 'fr'
+    clear
+      set b_lang $lang_fr
+      set bg_lang $g_lang_fr
+      set -U lang 'français'
+      exec fish
+      return
+
   end
 end
 
