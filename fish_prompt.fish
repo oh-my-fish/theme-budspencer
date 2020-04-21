@@ -907,9 +907,9 @@ set -x LOGIN $USER
 
 # -- Languages (SP-EN) --
 
-  set -U lang_sp 'Analizando y recopilando datos...' 'Comprimiendo...' 'No hay archivos de respaldo' 'Borrar archivo' 'Todo [a]' 'Borrar archivo' 'Borrar TODO (y/n)?' 'No se encontró ALMACENAMIENTO_EXTERNO.' 'El respaldo se guardará en ~/.backup_termux' 'Intente escribiendo' '¡Listo! Respaldo realizado con éxito' 'Uso: termux-backup [OPCION]...' '     termux-backup -c [ARCHIVO]...' 'Descripción:' 'Realiza un respaldo de los archivos de usuario y sistema' 'OPCION:' '-c --create		Crear nuevo respaldo' '-d --delete		Borrar archivo de respaldo' '-l --list		Listar archivos de respaldo' '-h --help		Muestra esta ayuda' 'ARCHIVO:' '<nombre_de_archivo>	Nombre del archivo de respaldo' '  Tamaño    Nombre de archivo       Fecha de creación' 'Archivos de respaldo' 'Si no se especifica ninguna OPCION, se creará un archivo de respaldo con <Backup> como identificador por defecto'
+  set -U lang_sp 'Analizando y recopilando datos...' 'Comprimiendo...' 'No hay archivos de respaldo' 'Borrar archivo' 'Todo [t]' 'Borrar archivo' 'Borrar TODO (s/n)?' 'No se encontró ALMACENAMIENTO_EXTERNO.' 'El respaldo se guardará en ~/.backup_termux' 'Intente escribiendo' '¡Listo! Respaldo realizado con éxito' 'Uso: termux-backup [OPCION]...' '     termux-backup -c [ARCHIVO]...' 'Descripción:' 'Realiza un respaldo de los archivos de usuario y sistema' 'OPCION:' '-c --create		Crear nuevo respaldo' '-d --delete		Borrar archivo de respaldo' '-l --list		Listar archivos de respaldo' '-h --help		Muestra esta ayuda' 'ARCHIVO:' '<nombre_de_archivo>	Nombre del archivo de respaldo' '  Tamaño    Nombre de archivo       Fecha de creación' 'Archivos de respaldo' 'Si no se especifica ninguna OPCION, se creará un archivo de respaldo con <Backup> como identificador por defecto'
   set -U lang_en 'Analizing and collecting data...' 'Compressing...' 'No backups found' 'Delete' 'All [a]' 'Delete item' ' Delete ALL backups (y/n)? ' 'No EXTERNAL_STORAGE mounted.' 'Backup will be stored in ~/.backup_termux' 'Try using ' 'All done\! Backup has been successfuly finished' 'Usage: termux-backup [OPTION]...' '       termux-backup -c [FILE]...' 'Description:' 'Performs a backup of system and user\'s files' 'OPTION:' '-c --create		Create new backup' '-d --delete		Delete existing backup' '-l --list		List backup files' '-h --help		Show this help' 'FILE:' '<bakup_file_name>	Name of backup file' '    Size        File name            Date of creation' 'Backup files' 'If no OPTION is defined, it will be created a backup with default identifier <Backup>'
-  set -U lang_fr 'Analyser et collecter des données...' 'Compresser...' 'Aucune sauvegarde trouvée' 'Supprimer' 'Tout [a]' 'Supprimer l\'élément' 'Supprimer TOUT (y/n)?' 'Aucun STOCKAGE_EXTERNE monté.' 'La sauvegarde sera stockée dans ~/.backup_termux' 'Essayez d\'utiliser' 'Terminé! La sauvegarde est terminée avec succès' 'Utilisation: termux-backup [OPTION]...' '             termux-backup -c [FILE]...' 'Description:' 'Effectue une sauvegarde du système et des fichiers de l\'utilisateur' 'OPTION:' '-c --create		Créer une nouvelle sauvegarde' '-d --delete		Supprimer la sauvegarde existante' '-l --list		Liste les fichiers de sauvegarde' '-h --help		Afficher cette aide' 'FILE:' '<nom_du_fichier>	Nom du fichier de sauvegarde' '   Taille     Nom du fichier         Date de création' 'Fichiers de sauvegarde' 'Si aucune OPTION n\'est définie, il sera créé une sauvegarde avec l\'identifiant par défaut <Backup>'
+  set -U lang_fr 'Analyser et collecter des données...' 'Compresser...' 'Aucune sauvegarde trouvée' 'Supprimer' 'Tout [t]' 'Supprimer l\'élément' 'Supprimer TOUT (o/n)?' 'Aucun STOCKAGE_EXTERNE monté.' 'La sauvegarde sera stockée dans ~/.backup_termux' 'Essayez d\'utiliser' 'Terminé! La sauvegarde est terminée avec succès' 'Utilisation: termux-backup [OPTION]...' '             termux-backup -c [FILE]...' 'Description:' 'Effectue une sauvegarde du système et des fichiers de l\'utilisateur' 'OPTION:' '-c --create		Créer une nouvelle sauvegarde' '-d --delete		Supprimer la sauvegarde existante' '-l --list		Liste les fichiers de sauvegarde' '-h --help		Afficher cette aide' 'FILE:' '<nom_du_fichier>	Nom du fichier de sauvegarde' '   Taille     Nom du fichier         Date de création' 'Fichiers de sauvegarde' 'Si aucune OPTION n\'est définie, il sera créé une sauvegarde avec l\'identifiant par défaut <Backup>'
 
   if not set -q b_lang
     set -U b_lang $lang_sp
@@ -1022,20 +1022,20 @@ function termux-backup -a opt file_name -d 'Backup file system'
              tput cuu1
              tput cuu1
              tput ed
-             read -p 'echo -n \n(set_color -b 777 6b052a)" "(set_color -b 777 000)" $b_lang[6] "["$bkup_file"]" (y/n)? "(set_color -b normal 555)" "(set_color fcfca3)' -n 1 -l argv
+             read -p 'echo -n \n(set_color -b 777 6b052a)" "(set_color -b 777 000)" $b_lang[6] "["$bkup_file"]" ($yes_no[1]/$yes_no[2])? "(set_color -b normal 555)" "(set_color fcfca3)' -n 1 -l argv
                switch $argv
-                 case 'y'
+                 case "$yes_no[1]"
                      rm $bkup1/$list1[$bkup_file] 2>/dev/null
                      rm $bkup2/$list1[$bkup_file] 2>/dev/null
                      cd $current_path
                end
-            case 'a'
+            case "$yes_no[3]"
              tput cuu1
              tput cuu1
              tput ed
              read -p 'echo -n \n(set_color -b 777 6b052a)" "(set_color -b 777 000) $b_lang[7] (set_color -b normal 555)" "(set_color fcfca3)' -n 1 -l argv
                switch $argv
-                 case 'y'
+                 case "$yes_no[1]"
                      rm -Rf $HOME/.backup_termux 2>/dev/null
                      rm -Rf $bkup_dir/.backup_termux 2>/dev/null
                      cd $current_path
@@ -1104,6 +1104,7 @@ function termux-language -a lang -d "Set system language"
       set b_lang $lang_sp
       set bg_lang $g_lang_sp
       set -U lang 'español'
+      set -U yes_no s n t
       exec fish
       return
     case 'en'
@@ -1111,6 +1112,7 @@ function termux-language -a lang -d "Set system language"
       set b_lang $lang_en
       set bg_lang $g_lang_en
       set -U lang 'english'
+      set -U yes_no y n a
       exec fish
       return
     case 'fr'
@@ -1118,9 +1120,9 @@ function termux-language -a lang -d "Set system language"
       set b_lang $lang_fr
       set bg_lang $g_lang_fr
       set -U lang 'français'
+      set -U yes_no o n t
       exec fish
       return
-
   end
 end
 
@@ -1135,4 +1137,3 @@ function fish_prompt -d 'Write out the left prompt of the barracuda theme'
   set -g last_status $status
   echo -n -s (__barracuda_prompt_bindmode) (__barracuda_prompt_node_version) (__barracuda_prompt_git_branch) (__barracuda_prompt_left_symbols) (set_color normal)(set_color $barracuda_colors[2])
 end
-

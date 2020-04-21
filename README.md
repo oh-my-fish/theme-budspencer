@@ -1,10 +1,10 @@
 # Barracuda theme (for fish in Termux terminal)
 
-This is basically a fork of [oh-my-fish/theme-budspencer](https://github.com/oh-my-fish/theme-budspencer), which means it keeps all it's awesome features. I just added a few things to adjust it to mobile devices. 
+This theme is a fork of [oh-my-fish/theme-budspencer](https://github.com/oh-my-fish/theme-budspencer), which means it keeps almost all it's awesome features.
 
-I also made a few visual changes taking advantage of Powerline Symbols.
+Some fancy visual changes has been done taking advantage of Powerline Symbols.
 
-This is:
+Barracuda is in essence:
 
 > A theme for nerds, makes fish even more powerful. It's equipped with a hell of a
 lot of nice functions and key bindings to speed up your workflow
@@ -19,8 +19,7 @@ lot of nice functions and key bindings to speed up your workflow
 
 Non standard tools:
 
-* figlet `apt install figlet`
-* Termux:API plug-in \(It's recommended to download **Termux** and **Termux:API** from [F-Droid](https://f-droid.org) as both apps most have the same PGP signature\) 
+* APK Termux:API plug-in \(It's recommended to download **Termux** and **Termux:API** from [F-Droid](https://f-droid.org) as both apps most have the same PGP signature\) 
 * termux-api `apt install termux-api`
 * nodejs `apt install nodejs`
 * pv `apt install pv`
@@ -36,6 +35,24 @@ It's also crucial to have vi mode enabled. Thus, execute
 set -U fish_key_bindings fish_vi_key_bindings
 ```
 before enabling the theme.
+
+### Languages
+
+This theme can be shown in different languages (three langiages so far): Spanish,Englush and French
+
+There are two ways to change interface language: one is by using the function `termux-language` followed by the language identifier, and
+the other one, just typing the language name.
+
+Supporyed languages and their identifiers are
+
+* **sp** for **spanish**
+* **en** for **english**
+* **fr** for **french**
+
+To set french language:
+```
+termux-language fr
+```
 
 ### Colors
 
@@ -85,7 +102,7 @@ set -U barracuda_alt_environment
 
 ## Left prompt segments
 
-- Present working directory (in top)
+- Present working directory (on top)
 - Prompt line number
 - Barracuda ASCII logo
 - Git repository information
@@ -110,7 +127,7 @@ set -U barracuda_alt_environment
 
 ## Right prompt segments
 
-- Shows a timestamp
+- Shows current interface language
 
 ## Quickly navigate in history of working directories
 
@@ -221,7 +238,7 @@ Unfortunately this function can only perform backups. Restores have to be decomp
 ## TODO
 
 * Add option to restore backups
-* Add support for other languages
+* Add support for more languages
 
 
 [font]: https://github.com/Lokaltog/powerline-fonts
