@@ -1065,12 +1065,12 @@ function termux-backup -a opt file_name -d 'Backup file system'
    case '-c' '--create'
      if test -d $HOME/storage1
        if test -d $tmp_dir
-         echo (set_color -b 000 777)\n''(set_color -b 777 -o 000)' Termux-Backup v1.4 '$normal(set_color -b 000 777)''$normal\n
+         echo (set_color -b 000 777)\n''(set_color -b 777 -o 000)' Termux-Backup v1.6 '$normal(set_color -b 000 777)''$normal\n
          __backup__ $file_name
          cp -rf $tmp_dir/ $bkup_dir/ 2>/dev/null
          rm -Rf $tmp_dir 2>/dev/null
        else
-         echo (set_color -b 000 777)\n''(set_color -b 777 -o 000)' Termux-Backup v1.4 '$normal(set_color -b 000 777)''$normal\n
+         echo (set_color -b 000 777)\n''(set_color -b 777 -o 000)' Termux-Backup v1.6 '$normal(set_color -b 000 777)''$normal\n
          mkdir $tmp_dir
          __backup__ $file_name
          cp -rf $tmp_dir/ $bkup_dir/ 2>/dev/null
@@ -1078,7 +1078,7 @@ function termux-backup -a opt file_name -d 'Backup file system'
        end
      else
        mkdir $tmp_dir 2>/dev/null
-         echo (set_color -b 000 777)\n''(set_color -b 777 -o 000)' Termux-Backup v1.4 '$normal(set_color -b 000 777)''$normal\n
+         echo (set_color -b 000 777)\n''(set_color -b 777 -o 000)' Termux-Backup v1.6 '$normal(set_color -b 000 777)''$normal\n
        echo "$b_lang[8]"\n"$b_lang[9]"
        echo "$b_lang[10]"(set_color 777)' termux-setup-storage'$normal\n
        __backup__ $file_name
