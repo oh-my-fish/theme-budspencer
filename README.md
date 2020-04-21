@@ -38,20 +38,25 @@ before enabling the theme.
 
 ### Languages
 
-This theme can be shown in different languages (three langiages so far): Spanish,Englush and French
+This theme can be shown in different languages (three langiages so far): Spanish, English and French
 
 There are two ways to change interface language: one is by using the function `termux-language` followed by the language identifier, and
-the other one, just typing the language name.
+the other one, just typing the language name on the prompt.
 
-Supporyed languages and their identifiers are
+Supported languages and their identifiers are:
 
 * **sp** for **spanish**
 * **en** for **english**
 * **fr** for **french**
 
-To set french language:
+e.g To set french language:
 ```
 termux-language fr
+```
+
+Or
+```
+french
 ```
 
 ### Colors
