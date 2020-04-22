@@ -240,11 +240,12 @@ termux-backup -h <or> --help
 
 Unfortunately this function can only perform backups. Restores have to be decompressed and copied manually.
 
-## TODO
+<details>
+<summary>TODO</summary>
 
 * Add option to restore backups
 * Add support for more languages
-
+</details>
 
 [font]: https://github.com/Lokaltog/powerline-fonts
 [ranger]: http://ranger.nongnu.org/
