@@ -22,15 +22,21 @@ Non standard tools:
 * APK Termux:API plug-in \(It's recommended to download **Termux** and **Termux:API** from [F-Droid](https://f-droid.org) as both apps most have the same PGP signature\) 
 <details>
 <summary>termux-api</summary>
-`apt install termux-api`
+```
+apt install termux-api
+```
 </details>
 <details>
 <summary>nodejs</summary>
-`apt install nodejs`
+``` 
+apt install nodejs
+``` 
 </details>
 <details>
 <summary>pv</summary>
-`apt install pv`
+```
+apt install pv
+``` 
 </details>
 
 ## Configuration
