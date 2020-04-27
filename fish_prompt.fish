@@ -412,7 +412,7 @@ end
 #############
 # => Sessions
 #############
-function __budspencer_delete_zombi_sessions -d 'Delete zombi sessions'
+function __budspencer_delete_zombi_sessions -d 'Delete zombie sessions'
   for i in $budspencer_sessions_active_pid
     if not contains $i %fish
       set -l item (contains -i $i $budspencer_sessions_active_pid)
@@ -840,7 +840,7 @@ set -g CMD_DURATION 0
 set -g dir_hist_nosession
 set -g dir_hist dir_hist_nosession
 set -g pwd_hist_lock true
-set -g pcount 1
+set -g pcount 0
 set -g prompt_hist
 set -g no_prompt_hist 'F'
 set -g symbols_style 'symbols'

@@ -88,21 +88,7 @@ function __budspencer_cmd_duration -d 'Displays the elapsed time of last command
         end
       end
     end
-  end
-
-  set -l cmd_duration (expr $CMD_DURATION / 1000)
-  if [ $cmd_duration -gt 0 ]
-    set seconds (expr $cmd_duration \% 68400 \% 3600 \% 60)'s'
-    if [ $cmd_duration -ge 60 ]
-      set minutes (expr $cmd_duration \% 68400 \% 3600 / 60)'m'
-      if [ $cmd_duration -ge 3600 ]
-        set hours (expr $cmd_duration \% 68400 / 3600)'h'
-        if [ $cmd_duration -ge 68400 ]
-          set days (expr $cmd_duration / 68400)'d'
-              end
-          end
-      end
-      set_color $budspencer_colors[2]
+    set_color $budspencer_colors[2]
       echo -n ''
       switch $pwd_style
         case short long
