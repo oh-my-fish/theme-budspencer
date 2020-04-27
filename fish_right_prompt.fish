@@ -69,11 +69,27 @@ end
 #############################
 # => Command duration segment
 #############################
+
 function __budspencer_cmd_duration -d 'Displays the elapsed time of last command'
   set -l seconds ''
   set -l minutes ''
   set -l hours ''
   set -l days ''
+
+  set -l cmd_duration (math -s0 $CMD_DURATION / 1000)
+  if [ $cmd_duration -gt 0 ]
+    set seconds (math -s0 $cmd_duration % 60)'s'
+    if [ $cmd_duration -ge 60 ]
+      set minutes (math -s0 $cmd_duration % 3600 / 60)'m'
+      if [ $cmd_duration -ge 3600 ]
+        set hours (math -s0 $cmd_duration % 86400 / 3600)'h'
+        if [ $cmd_duration -ge 86400 ]
+          set days (math -s0 $cmd_duration / 86400)'d'
+        end
+      end
+    end
+  end
+
   set -l cmd_duration (expr $CMD_DURATION / 1000)
   if [ $cmd_duration -gt 0 ]
     set seconds (expr $cmd_duration \% 68400 \% 3600 \% 60)'s'
