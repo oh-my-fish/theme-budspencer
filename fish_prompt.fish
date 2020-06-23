@@ -845,6 +845,11 @@ set -g prompt_hist
 set -g no_prompt_hist 'F'
 set -g symbols_style 'symbols'
 
+# Fix for WSL showing wrong command number at start
+if test (uname -r | /bin/grep microsoft)
+  set -g pcount 0
+end
+
 # Load user defined key bindings
 if functions --query fish_user_key_bindings
   fish_user_key_bindings
