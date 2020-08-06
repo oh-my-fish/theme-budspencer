@@ -110,6 +110,20 @@ To show your current node version, do following in your Fish configs
 set -g budspencer_alt_environment "node -v"
 ```
 
+## Ring the bell in order to set the urgency hint flag
+
+If you have configured your terminal application to use the visual bell, your
+window manager will tell you when a job running in your shell has finished. You
+don't need to check manually whether it's done.
+
+### Disable the acoustic bell
+
+If you have still activated the acoustic bell, you probably hate that feature.
+Switch it off in that case:
+```
+set -U budspencer_nobell
+```
+
 ## Outer prompt segments
 
 - Vi mode is indicated by color of outer segments, cursor color also changes
@@ -253,18 +267,6 @@ Type `s -d` to detach current session.
 ## Set window title
 
 Just type `wt <title>`.
-
-## Ring the bell in order to set the urgency hint flag
-
-If you have configured your terminal application to use the visual bell, your
-window manager will tell you when a job running in your shell has finished. You
-don't need to check manually whether it's done.
-
-If you have still activated the acoustic bell, you probably hate that feature.
-Switch it off in that case:
-```
-set -U budspencer_nobell
-```
 
 ## TODO
 
