@@ -87,7 +87,13 @@ end
 # => Help
 #########
 function budspencer_help -d 'Show helpfile'
-  set -l readme_file "$OMF_PATH/themes/budspencer/README.md"
+  set -l readme_file_omf "$OMF_PATH/themes/budspencer/functions/README_budspencer.md"
+  set -l readme_file_fisher "$__fish_config_dir/functions/README_budspencer"
+  if [ -e $readme_file_omf ]
+    set -l readme_file "$readme_file_omf"
+  elif [ -e $readme_file_fisher ]
+    set -l readme_file "$readme_file_fisher"
+  end
   if set -q PAGER
     if [ -e $readme_file ]
       eval $PAGER $readme_file
