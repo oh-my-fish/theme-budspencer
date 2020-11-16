@@ -89,9 +89,9 @@ end
 function budspencer_help -d 'Show helpfile'
   set -l readme_file_omf "$OMF_PATH/themes/budspencer/functions/README_budspencer.md"
   set -l readme_file_fisher "$__fish_config_dir/functions/README_budspencer.md"
-  if [ -e $readme_file_omf ]
+  if test -f $readme_file_omf
     set -l readme_file "$readme_file_omf"
-  elif [ -e $readme_file_fisher ]
+  else if test -f $readme_file_fisher
     set -l readme_file "$readme_file_fisher"
   end
   if set -q PAGER
@@ -846,7 +846,7 @@ set -g CMD_DURATION 0
 set -g dir_hist_nosession
 set -g dir_hist dir_hist_nosession
 set -g pwd_hist_lock true
-set -g pcount 1
+set -g pcount 0
 set -g prompt_hist
 set -g no_prompt_hist 'F'
 set -g symbols_style 'symbols'
