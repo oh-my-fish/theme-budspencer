@@ -846,15 +846,10 @@ set -g CMD_DURATION 0
 set -g dir_hist_nosession
 set -g dir_hist dir_hist_nosession
 set -g pwd_hist_lock true
-set -g pcount 1
+set -g pcount 0
 set -g prompt_hist
 set -g no_prompt_hist 'F'
 set -g symbols_style 'symbols'
-
-# Fix for WSL showing wrong command number at start
-if test (uname -r | /bin/grep microsoft)
-  set -g pcount 0
-end
 
 # Load user defined key bindings
 if functions --query fish_user_key_bindings
