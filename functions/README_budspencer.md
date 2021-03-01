@@ -1,3 +1,5 @@
+Forked from [github][theme-budspencer] to add compatibility with [github][fisher] and fix minor issues.
+
 # Budspencer theme
 
 A theme for nerds, makes fish even more powerful. It's equipped with a hell of a
@@ -56,6 +58,13 @@ if test (uname -s) = "Darwin"
 end
 ```
 
+## Installation
+
+Using [github][fisher]:
+```
+fisher install ngmoviedo/theme-budspencer
+```
+
 ## Configuration
 
 ### General configuration
@@ -83,6 +92,8 @@ will result in a prompt like this:
 
 Two color schemes for bright and dark environments are predefined. You can
 enable them with `day` and `night`, respectively.
+
+Another color scheme that matches [github][dracula] colors is predefined. You can enable it with `dracula_budscpencer`.
 
 ### Command history
 Commands that shouldn't appear in the command history are defined by a universal
