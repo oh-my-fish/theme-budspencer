@@ -1,4 +1,4 @@
-Forked from [github][theme-budspencer] to add compatibility with [github][fisher] and fix minor issues.
+Forked from [theme-budspencer](https://github.com/oh-my-fish/theme-budspencer) to add compatibility with [fisher](https://github.com/jorgebucaran/fisher) and fix minor issues.
 
 # Budspencer theme
 
@@ -60,7 +60,7 @@ end
 
 ## Installation
 
-Using [github][fisher]:
+Using [fisher](https://github.com/jorgebucaran/fisher):
 ```
 fisher install ngmoviedo/theme-budspencer
 ```
@@ -93,7 +93,7 @@ will result in a prompt like this:
 Two color schemes for bright and dark environments are predefined. You can
 enable them with `day` and `night`, respectively.
 
-Another color scheme that matches [github][dracula] colors is predefined. You can enable it with `dracula_budscpencer`.
+Another color scheme that matches [dracula](https://draculatheme.com/) colors is predefined. You can enable it with `dracula_budscpencer`.
 
 ### Command history
 Commands that shouldn't appear in the command history are defined by a universal
