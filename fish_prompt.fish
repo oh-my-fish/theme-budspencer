@@ -845,8 +845,11 @@ set -g prompt_hist
 set -g no_prompt_hist 'F'
 set -g symbols_style 'symbols'
 
+#Locates grep path in user's system
+set -g grep_path eval (which grep)
+
 # Fix for WSL showing wrong command number at start
-if test (uname -r | /bin/grep [Mm]icrosoft)
+if test (uname -r | $grep_path [Mm]icrosoft)
   set -g pcount 0
 end
 
