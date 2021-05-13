@@ -117,7 +117,7 @@ end
 # => Pre execute
 ################
 function __budspencer_preexec -d 'Execute after hitting <Enter> before doing anything else'
-  set -l cmd (commandline | sed 's|[[:space:]]\+|\x1e|g')
+  set -l cmd (commandline | sed 's|[[:space:]]|\x1e|g')
   if [ $_ = 'fish' ]
     if [ -z $cmd[1] ]
       set -e cmd[1]
