@@ -623,7 +623,23 @@ end
 ################
 # => Git segment
 ################
-function __budspencer_prompt_git_branch -d 'Return the current branch name'
+function __budspencer_print_svn_branch -d 'Return the current svn branch name'
+    set -f path (svn info --no-newline --show-item relative-url "$argv[1]" 2> /dev/null | sed -e 's|^\^/||')
+    if not test $path > /dev/null
+        set -f path "/"
+    end
+    set_color -b $budspencer_colors[3]
+    switch $pwd_style
+        case short long
+            echo -n ''(set_color $budspencer_colors[1])'  '$path' '(set_color $budspencer_colors[3])
+        case none
+            echo -n ''
+    end
+    set_color normal
+    set_color $budspencer_colors[3]
+end
+
+function __budspencer_print_git_branch -d 'Return the current branch name'
   set -l branch (command git symbolic-ref HEAD 2> /dev/null | sed -e 's|^refs/heads/||')
   if not test $branch > /dev/null
     set -l position (command git describe --contains --all HEAD 2> /dev/null)
@@ -662,6 +678,20 @@ function __budspencer_prompt_git_branch -d 'Return the current branch name'
     set_color normal
     set_color $budspencer_colors[3]
   end
+end
+
+function __budspencer_prompt_git_branch -d 'Return the current branch name'
+    set -f path "$PWD"
+    while test "$path" != "/"
+        if test -d "$path/.git"
+            __budspencer_print_git_branch "$path"
+            break
+        else if test -d "$path/.svn"
+            __budspencer_print_svn_branch "$path"
+            break
+        end
+        set -f path (dirname "$path")
+    end
 end
 
 ######################
