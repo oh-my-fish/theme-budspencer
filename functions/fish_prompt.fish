@@ -681,16 +681,13 @@ function __budspencer_prompt_git_branch -d 'Return the current branch name'
 end
 
 function __budspencer_prompt_repo_branch -d 'Return the current branch name'
-    set -f path "$PWD"
-    while test "$path" != "/"
-        if test -d "$path/.svn"
-            __budspencer_print_svn_branch "$path"
-            break
-        else if test -d "$path/.git"
-            __budspencer_print_git_branch "$path"
-            break
-        end
-        set -f path (dirname "$path")
+    set -f git_root (git rev-parse --show-toplevel 2> /dev/null)
+    set -f svn_root (svn info --show-item wc-root 2> /dev/null)
+
+    if test (string length "$svn_root") -gt (string length "$git_root")
+        __budspencer_prompt_svn_branch "$svn_root"
+    else if test $git_root
+        __budspencer_prompt_git_branch
     end
 end
 
