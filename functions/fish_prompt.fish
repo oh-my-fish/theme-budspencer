@@ -623,7 +623,7 @@ end
 ################
 # => Git segment
 ################
-function __budspencer_print_svn_branch -d 'Return the current svn branch name'
+function __budspencer_prompt_svn_branch -d 'Return the current svn branch name'
     set -f path (svn info --no-newline --show-item relative-url "$argv[1]" 2> /dev/null | sed -e 's|^\^/||')
     if not test $path > /dev/null
         set -f path "/"
@@ -639,7 +639,7 @@ function __budspencer_print_svn_branch -d 'Return the current svn branch name'
     set_color $budspencer_colors[3]
 end
 
-function __budspencer_print_git_branch -d 'Return the current branch name'
+function __budspencer_prompt_git_branch -d 'Return the current branch name'
   set -l branch (command git symbolic-ref HEAD 2> /dev/null | sed -e 's|^refs/heads/||')
   if not test $branch > /dev/null
     set -l position (command git describe --contains --all HEAD 2> /dev/null)
@@ -680,14 +680,14 @@ function __budspencer_print_git_branch -d 'Return the current branch name'
   end
 end
 
-function __budspencer_prompt_git_branch -d 'Return the current branch name'
+function __budspencer_prompt_repo_branch -d 'Return the current branch name'
     set -f path "$PWD"
     while test "$path" != "/"
-        if test -d "$path/.git"
-            __budspencer_print_git_branch "$path"
-            break
-        else if test -d "$path/.svn"
+        if test -d "$path/.svn"
             __budspencer_print_svn_branch "$path"
+            break
+        else if test -d "$path/.git"
+            __budspencer_print_git_branch "$path"
             break
         end
         set -f path (dirname "$path")
@@ -926,5 +926,5 @@ set -x LOGIN $USER
 
 function fish_prompt -d 'Write out the left prompt of the budspencer theme'
   set -g last_status $status
-  echo -n -s (__budspencer_prompt_bindmode) (__budspencer_prompt_virtual_env) (__budspencer_prompt_node_version) (__budspencer_prompt_git_branch) (__budspencer_prompt_left_symbols) ' ' (set_color normal)
+  echo -n -s (__budspencer_prompt_bindmode) (__budspencer_prompt_virtual_env) (__budspencer_prompt_node_version) (__budspencer_prompt_repo_branch) (__budspencer_prompt_left_symbols) ' ' (set_color normal)
 end
