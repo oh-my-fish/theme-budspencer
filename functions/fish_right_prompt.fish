@@ -178,6 +178,9 @@ function __budspencer_prompt_repo_symbols -d 'Displays the repo symbols'
   set -l git_root (git rev-parse --show-toplevel 2> /dev/null)
   set -l svn_root (svn info --show-item wc-root 2> /dev/null)
 
+  if test (string length "$svn_root") -eq 0 -a (string length "$git_root") -eq 0
+    return
+  end
   set -l repo_ahead_behind (__budspencer_is_repo_ahead_or_behind "$git_root" "$svn_root")
   set -l repo_status (__budspencer_repo_status "$git_root" "$svn_root")
   set -l repo_stashed (__budspencer_is_repo_stashed "$git_root" "$svn_root")
