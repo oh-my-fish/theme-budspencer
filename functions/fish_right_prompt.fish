@@ -129,13 +129,13 @@ function __budspencer_is_git_stashed -d 'Check if there are stashed commits'
 end
 
 function __budspencer_svn_status -d 'Check svn status'
-  set -l svn_status (command svn status -q "$argv[1]" 2> /dev/null | cut -c 1-2)
+  set -l svn_status (command svn status "$argv[1]" 2> /dev/null | grep '^[ACDIMRX?!~ ]' | cut -c 1-2)
   set -l added (echo -sn $svn_status\n | egrep -c "A.")
   set -l deleted (echo -sn $svn_status\n | egrep -c "[D!].")
   set -l modified (echo -sn $svn_status\n | egrep -c "M.|.M")
   set -l renamed (echo -sn $svn_status\n | egrep -c "R.")
   set -l unmerged (echo -sn $svn_status\n | egrep -c "[~C].|.C")
-  set -l untracked (echo -sn $svn_status\n | egrep -c "\?.")
+  set -l untracked (echo -sn $svn_status\n | egrep -c '\?.')
   echo -n $added\n$deleted\n$modified\n$renamed\n$unmerged\n$untracked
 end
 
