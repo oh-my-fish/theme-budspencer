@@ -128,11 +128,6 @@ function __budspencer_is_git_stashed -d 'Check if there are stashed commits'
   command git log --format="%gd" -g $argv 'refs/stash' -- 2> /dev/null | wc -l | tr -d '[:space:]'
 end
 
-function __budspencer_is_svn_ahead_or_behind -d 'Check if there are unpulled or unpushed commits'
-  #STUB
-  echo 0\n0
-end
-
 function __budspencer_svn_status -d 'Check svn status'
   set -l svn_status (command svn status -q "$argv[1]" 2> /dev/null | cut -c 1-2)
   set -l added (echo -sn $svn_status\n | egrep -c "A")
@@ -144,26 +139,48 @@ function __budspencer_svn_status -d 'Check svn status'
   echo -n $added\n$deleted\n$modified\n$renamed\n$unmerged\n$untracked
 end
 
-function __budspencer_is_svn_stashed -d 'Check if there are stashed commits'
-  #STUB
-  echo 0
+function __budspencer_is_repo_ahead_or_behind
+  set -l git_root "$argv[1]"
+  set -l svn_root "$argv[2]"
+
+  if test (string length "$git_root") -gt (string length "$svn_root")
+    __budspencer_is_git_ahead_or_behind
+  else
+    echo 0\n0
+  end
 end
 
-function __budspencer_prompt_repo_symbols -d 'Displays the repo symbols'
-  set -f git_root (git rev-parse --show-toplevel 2> /dev/null)
-  set -f svn_root (svn info --show-item wc-root 2> /dev/null)
+function __budspencer_repo_status
+  set -l git_root "$argv[1]"
+  set -l svn_root "$argv[2]"
 
   if test (string length "$svn_root") -gt (string length "$git_root")
-    set -f repo_ahead_behind (__budspencer_is_svn_ahead_or_behind "$svn_root")
-    set -f repo_status (__budspencer_svn_status "$svn_root")
-    set -f repo_stashed (__budspencer_is_svn_stashed "$svn_root")
+    __budspencer_svn_status "$svn_root"
   else if test $git_root
-    set -f repo_ahead_behind (__budspencer_is_git_ahead_or_behind)
-    set -f repo_status (__budspencer_git_status)
-    set -f repo_stashed (__budspencer_is_git_stashed)
+    __budspencer_git_status
   else
     return
   end
+end
+
+function __budspencer_is_repo_stashed
+  set -l git_root "$argv[1]"
+  set -l svn_root "$argv[2]"
+
+  if test (string length "$git_root") -gt (string length "$svn_root")
+    __budspencer_is_git_stashed
+  else
+    echo 0
+  end
+end
+
+function __budspencer_prompt_repo_symbols -d 'Displays the repo symbols'
+  set -l git_root (git rev-parse --show-toplevel 2> /dev/null)
+  set -l svn_root (svn info --show-item wc-root 2> /dev/null)
+
+  set -l repo_ahead_behind (__budspencer_is_repo_ahead_or_behind "$git_root" "$svn_root")
+  set -l repo_status (__budspencer_repo_status "$git_root" "$svn_root")
+  set -l repo_stashed (__budspencer_is_repo_stashed "$git_root" "$svn_root")
 
   if [ (expr $repo_ahead_behind[1] + $repo_ahead_behind[2] + $repo_status[1] + $repo_status[2] + $repo_status[3] + $repo_status[4] + $repo_status[5] + $repo_status[6] + $repo_stashed) -ne 0 ]
     set_color $budspencer_colors[3]

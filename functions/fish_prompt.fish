@@ -624,10 +624,8 @@ end
 # => Git segment
 ################
 function __budspencer_prompt_svn_branch -d 'Return the current svn branch name'
-  set -f path (svn info --no-newline --show-item relative-url "$argv[1]" 2> /dev/null | sed -e 's|^\^/||')
-  if not test $path > /dev/null
-    set -f path "/"
-  end
+  set -l path (svn info --no-newline --show-item relative-url "$argv[1]" 2> /dev/null | sed -e 's|^\^/||')
+  set -l path (test -n "$path"; and echo "$path"; or echo "/")
   set_color -b $budspencer_colors[3]
   switch $pwd_style
     case short long
@@ -681,8 +679,8 @@ function __budspencer_prompt_git_branch -d 'Return the current branch name'
 end
 
 function __budspencer_prompt_repo_branch -d 'Return the current branch name'
-  set -f git_root (git rev-parse --show-toplevel 2> /dev/null)
-  set -f svn_root (svn info --show-item wc-root 2> /dev/null)
+  set -l git_root (git rev-parse --show-toplevel 2> /dev/null)
+  set -l svn_root (svn info --show-item wc-root 2> /dev/null)
 
   if test (string length "$svn_root") -gt (string length "$git_root")
     __budspencer_prompt_svn_branch "$svn_root"
