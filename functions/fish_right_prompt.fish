@@ -134,7 +134,7 @@ function __budspencer_is_svn_ahead_or_behind -d 'Check if there are unpulled or 
 end
 
 function __budspencer_svn_status -d 'Check svn status'
-  set -l svn_status (command svn status -q 2> /dev/null | cut -c 1-2)
+  set -l svn_status (command svn status -q "$argv[1]" 2> /dev/null | cut -c 1-2)
   set -l added (echo -sn $svn_status\n | egrep -c "A")
   set -l deleted (echo -sn $svn_status\n | egrep -c "[D!]")
   set -l modified (echo -sn $svn_status\n | egrep -c "M.|.M")
