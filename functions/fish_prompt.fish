@@ -629,9 +629,9 @@ function __budspencer_prompt_svn_branch -d 'Return the current svn branch name'
   set_color -b $budspencer_colors[3]
   switch $pwd_style
     case short long
-      echo -n ''(set_color $budspencer_colors[1])'  '$path' '(set_color $budspencer_colors[3])
+      echo -n ''(set_color $budspencer_colors[1])' 🄪  '$path' '(set_color $budspencer_colors[3])
     case none
-      echo -n ''
+      echo -n ''(set_color $budspencer_colors[1])' 🄪 '(set_color $budspencer_colors[3])
   end
   set_color normal
   set_color $budspencer_colors[3]
@@ -647,9 +647,9 @@ function __budspencer_prompt_git_branch -d 'Return the current branch name'
         set_color -b $budspencer_colors[11]
         switch $pwd_style
           case short long
-            echo -n ''(set_color $budspencer_colors[1])' ➦ '$commit' '(set_color $budspencer_colors[11])
+            echo -n ''(set_color $budspencer_colors[1])' 🄶 ➦ '$commit' '(set_color $budspencer_colors[11])
           case none
-            echo -n ''
+            echo -n ''(set_color $budspencer_colors[1])' 🄶 '(set_color $budspencer_colors[11])
         end
         set_color normal
         set_color $budspencer_colors[11]
@@ -658,9 +658,9 @@ function __budspencer_prompt_git_branch -d 'Return the current branch name'
       set_color -b $budspencer_colors[9]
       switch $pwd_style
         case short long
-          echo -n ''(set_color $budspencer_colors[1])'  '$position' '(set_color $budspencer_colors[9])
+          echo -n ''(set_color $budspencer_colors[1])' 🄶  '$position' '(set_color $budspencer_colors[9])
         case none
-          echo -n ''
+          echo -n ''(set_color $budspencer_colors[1])' 🄶 '(set_color $budspencer_colors[11])
       end
       set_color normal
       set_color $budspencer_colors[9]
@@ -669,9 +669,9 @@ function __budspencer_prompt_git_branch -d 'Return the current branch name'
     set_color -b $budspencer_colors[3]
     switch $pwd_style
       case short long
-        echo -n ''(set_color $budspencer_colors[1])'  '$branch' '(set_color $budspencer_colors[3])
+        echo -n ''(set_color $budspencer_colors[1])' 🄶  '$branch' '(set_color $budspencer_colors[3])
       case none
-        echo -n ''
+        echo -n ''(set_color $budspencer_colors[1])' 🄶 '(set_color $budspencer_colors[11])
     end
     set_color normal
     set_color $budspencer_colors[3]
