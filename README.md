@@ -30,6 +30,7 @@ Non standard tools:
 * xsel
 * wmctrl
 * git
+* svn
 * [taskwarrior][taskwarrior] (optional)
 * [remind][remind] (optional)
 
@@ -135,7 +136,7 @@ set -U budspencer_nobell
 ## Left prompt segments
 
 - Prompt line number
-- Git repository information
+- Repository information
 - Status symbols
     * ✻: keep track of this shell session, can be toggled with `#` to show the number of
        the session within the sessions list
@@ -159,7 +160,7 @@ set -U budspencer_nobell
 ## Right prompt segments
 
 - Last command's duration time
-- Git status symbols:
+- Repo status symbols:
     * ↑: git repository is ahead origin
     * ↓: git repository is behind origin
     * +: changes have been added to git index
@@ -193,7 +194,7 @@ The following shortcuts need vi-mode:
     * styles implemented:
         - `symbols` (shows status symbols)
         - `numbers` (shows numbers instead of symbols in left prompt as well as amount of changes in
-          right git prompt)
+          right repo prompt)
 
 Note, the format is _username@hostname:pathname_. Thus, you can cut
 the whole string with your mouse and paste it into `ssh` commands.

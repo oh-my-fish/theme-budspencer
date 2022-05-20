@@ -623,6 +623,32 @@ end
 ################
 # => Git segment
 ################
+function __budspencer_prompt_svn_branch -d 'Return the current svn branch name'
+  set -l path (svn info --no-newline --show-item relative-url "$argv[1]" 2> /dev/null | sed -e 's|^\^/||')
+  set -l path (test -n "$path"; and echo "$path"; or echo "/")
+  if string match -q -r '^tags/.+' "$path"
+      set_color -b $budspencer_colors[4]
+      switch $pwd_style
+        case short long
+          echo -n ''(set_color $budspencer_colors[1])' 🏷 '$path' '(set_color $budspencer_colors[4])
+        case none
+          echo -n ''(set_color $budspencer_colors[1])' '(set_color $budspencer_colors[4])
+      end
+      set_color normal
+      set_color $budspencer_colors[4]
+  else
+      set_color -b $budspencer_colors[9]
+      switch $pwd_style
+        case short long
+          echo -n ''(set_color $budspencer_colors[1])' 🄪 '$path' '(set_color $budspencer_colors[9])
+        case none
+          echo -n ''(set_color $budspencer_colors[1])' '(set_color $budspencer_colors[9])
+      end
+      set_color normal
+      set_color $budspencer_colors[9]
+  end
+end
+
 function __budspencer_prompt_git_branch -d 'Return the current branch name'
   set -l branch (command git symbolic-ref HEAD 2> /dev/null | sed -e 's|^refs/heads/||')
   if not test $branch > /dev/null
@@ -635,7 +661,7 @@ function __budspencer_prompt_git_branch -d 'Return the current branch name'
           case short long
             echo -n ''(set_color $budspencer_colors[1])' ➦ '$commit' '(set_color $budspencer_colors[11])
           case none
-            echo -n ''
+            echo -n ''(set_color $budspencer_colors[1])' '(set_color $budspencer_colors[11])
         end
         set_color normal
         set_color $budspencer_colors[11]
@@ -646,7 +672,7 @@ function __budspencer_prompt_git_branch -d 'Return the current branch name'
         case short long
           echo -n ''(set_color $budspencer_colors[1])'  '$position' '(set_color $budspencer_colors[9])
         case none
-          echo -n ''
+          echo -n ''(set_color $budspencer_colors[1])' '(set_color $budspencer_colors[11])
       end
       set_color normal
       set_color $budspencer_colors[9]
@@ -657,10 +683,21 @@ function __budspencer_prompt_git_branch -d 'Return the current branch name'
       case short long
         echo -n ''(set_color $budspencer_colors[1])'  '$branch' '(set_color $budspencer_colors[3])
       case none
-        echo -n ''
+        echo -n ''(set_color $budspencer_colors[1])' '(set_color $budspencer_colors[11])
     end
     set_color normal
     set_color $budspencer_colors[3]
+  end
+end
+
+function __budspencer_prompt_repo_branch -d 'Return the current branch name'
+  set -l git_root (git rev-parse --show-toplevel 2> /dev/null)
+  set -l svn_root (svn info --show-item wc-root 2> /dev/null)
+
+  if test (string length "$svn_root") -gt (string length "$git_root")
+    __budspencer_prompt_svn_branch "$svn_root"
+  else if test $git_root
+    __budspencer_prompt_git_branch
   end
 end
 
@@ -896,5 +933,5 @@ set -x LOGIN $USER
 
 function fish_prompt -d 'Write out the left prompt of the budspencer theme'
   set -g last_status $status
-  echo -n -s (__budspencer_prompt_bindmode) (__budspencer_prompt_virtual_env) (__budspencer_prompt_node_version) (__budspencer_prompt_git_branch) (__budspencer_prompt_left_symbols) ' ' (set_color normal)
+  echo -n -s (__budspencer_prompt_bindmode) (__budspencer_prompt_virtual_env) (__budspencer_prompt_node_version) (__budspencer_prompt_repo_branch) (__budspencer_prompt_left_symbols) ' ' (set_color normal)
 end

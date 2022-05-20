@@ -128,95 +128,142 @@ function __budspencer_is_git_stashed -d 'Check if there are stashed commits'
   command git log --format="%gd" -g $argv 'refs/stash' -- 2> /dev/null | wc -l | tr -d '[:space:]'
 end
 
-function __budspencer_prompt_git_symbols -d 'Displays the git symbols'
-  set -l is_repo (command git rev-parse --is-inside-work-tree 2> /dev/null)
-  if [ -z $is_repo ]
+function __budspencer_svn_status -d 'Check svn status'
+  set -l svn_status (command svn status "$argv[1]" 2> /dev/null | grep '^[ACDIMRX?!~ ]' | cut -c 1-2)
+  set -l added (echo -sn $svn_status\n | egrep -c "A.")
+  set -l deleted (echo -sn $svn_status\n | egrep -c "[D!].")
+  set -l modified (echo -sn $svn_status\n | egrep -c "M.|.M")
+  set -l renamed (echo -sn $svn_status\n | egrep -c "R.")
+  set -l unmerged (echo -sn $svn_status\n | egrep -c "[~C].|.C")
+  set -l untracked (echo -sn $svn_status\n | egrep -c '\?.')
+  echo -n $added\n$deleted\n$modified\n$renamed\n$unmerged\n$untracked
+end
+
+function __budspencer_is_repo_ahead_or_behind
+  set -l git_root "$argv[1]"
+  set -l svn_root "$argv[2]"
+
+  if test (string length "$git_root") -gt (string length "$svn_root")
+    __budspencer_is_git_ahead_or_behind
+  else
+    echo 0\n0
+  end
+end
+
+function __budspencer_repo_status
+  set -l git_root "$argv[1]"
+  set -l svn_root "$argv[2]"
+
+  if test (string length "$svn_root") -gt (string length "$git_root")
+    __budspencer_svn_status "$svn_root"
+  else if test $git_root
+    __budspencer_git_status
+  else
     return
   end
+end
 
-  set -l git_ahead_behind (__budspencer_is_git_ahead_or_behind)
-  set -l git_status (__budspencer_git_status)
-  set -l git_stashed (__budspencer_is_git_stashed)
+function __budspencer_is_repo_stashed
+  set -l git_root "$argv[1]"
+  set -l svn_root "$argv[2]"
 
-  if [ (expr $git_ahead_behind[1] + $git_ahead_behind[2] + $git_status[1] + $git_status[2] + $git_status[3] + $git_status[4] + $git_status[5] + $git_status[6] + $git_stashed) -ne 0 ]
+  if test (string length "$git_root") -gt (string length "$svn_root")
+    __budspencer_is_git_stashed
+  else
+    echo 0
+  end
+end
+
+function __budspencer_prompt_repo_symbols -d 'Displays the repo symbols'
+  set -l git_root (git rev-parse --show-toplevel 2> /dev/null)
+  set -l svn_root (svn info --show-item wc-root 2> /dev/null)
+
+  if test (string length "$svn_root") -eq 0 -a (string length "$git_root") -eq 0
+    return
+  end
+  set -l repo_ahead_behind (__budspencer_is_repo_ahead_or_behind "$git_root" "$svn_root")
+  set -l repo_status (__budspencer_repo_status "$git_root" "$svn_root")
+  set -l repo_stashed (__budspencer_is_repo_stashed "$git_root" "$svn_root")
+
+  if [ (expr $repo_ahead_behind[1] + $repo_ahead_behind[2] + $repo_status[1] + $repo_status[2] + $repo_status[3] + $repo_status[4] + $repo_status[5] + $repo_status[6] + $repo_stashed) -ne 0 ]
     set_color $budspencer_colors[3]
     echo -n ''
     set_color -b $budspencer_colors[3]
     switch $pwd_style
       case long short
         if [ $symbols_style = 'symbols' ]
-          if [ $git_ahead_behind[1] -gt 0 ]
+          if [ $repo_ahead_behind[1] -gt 0 ]
             set_color -o $budspencer_colors[5]
             echo -n ' ↑'
           end
-          if [ $git_ahead_behind[2] -gt 0 ]
+          if [ $repo_ahead_behind[2] -gt 0 ]
             set_color -o $budspencer_colors[5]
             echo -n ' ↓'
           end
-          if [ $git_status[1] -gt 0 ]
+          if [ $repo_status[1] -gt 0 ]
             set_color -o $budspencer_colors[12]
             echo -n ' +'
           end
-          if [ $git_status[2] -gt 0 ]
+          if [ $repo_status[2] -gt 0 ]
             set_color -o $budspencer_colors[7]
             echo -n ' –'
           end
-          if [ $git_status[3] -gt 0 ]
+          if [ $repo_status[3] -gt 0 ]
             set_color -o $budspencer_colors[10]
             echo -n ' ✱'
           end
-          if [ $git_status[4] -gt 0 ]
+          if [ $repo_status[4] -gt 0 ]
             set_color -o $budspencer_colors[8]
             echo -n ' →'
           end
-          if [ $git_status[5] -gt 0 ]
+          if [ $repo_status[5] -gt 0 ]
             set_color -o $budspencer_colors[9]
             echo -n ' ═'
           end
-          if [ $git_status[6] -gt 0 ]
+          if [ $repo_status[6] -gt 0 ]
             set_color -o $budspencer_colors[4]
             echo -n ' ●'
           end
-          if [ $git_stashed -gt 0 ]
+          if [ $repo_stashed -gt 0 ]
             set_color -o $budspencer_colors[11]
             echo -n ' ✭'
           end
         else
-          if [ $git_ahead_behind[1] -gt 0 ]
+          if [ $repo_ahead_behind[1] -gt 0 ]
             set_color $budspencer_colors[5]
-            echo -n ' '$git_ahead_behind[1]
+            echo -n ' '$repo_ahead_behind[1]
           end
-          if [ $git_ahead_behind[2] -gt 0 ]
+          if [ $repo_ahead_behind[2] -gt 0 ]
             set_color $budspencer_colors[5]
-            echo -n ' '$git_ahead_behind[2]
+            echo -n ' '$repo_ahead_behind[2]
           end
-          if [ $git_status[1] -gt 0 ]
+          if [ $repo_status[1] -gt 0 ]
             set_color $budspencer_colors[12]
-            echo -n ' '$git_status[1]
+            echo -n ' '$repo_status[1]
           end
-          if [ $git_status[2] -gt 0 ]
+          if [ $repo_status[2] -gt 0 ]
             set_color $budspencer_colors[7]
-            echo -n ' '$git_status[2]
+            echo -n ' '$repo_status[2]
           end
-          if [ $git_status[3] -gt 0 ]
+          if [ $repo_status[3] -gt 0 ]
             set_color $budspencer_colors[10]
-            echo -n ' '$git_status[3]
+            echo -n ' '$repo_status[3]
           end
-          if [ $git_status[4] -gt 0 ]
+          if [ $repo_status[4] -gt 0 ]
             set_color $budspencer_colors[8]
-            echo -n ' '$git_status[4]
+            echo -n ' '$repo_status[4]
           end
-          if [ $git_status[5] -gt 0 ]
+          if [ $repo_status[5] -gt 0 ]
             set_color $budspencer_colors[9]
-            echo -n ' '$git_status[5]
+            echo -n ' '$repo_status[5]
           end
-          if [ $git_status[6] -gt 0 ]
+          if [ $repo_status[6] -gt 0 ]
             set_color $budspencer_colors[4]
-            echo -n ' '$git_status[6]
+            echo -n ' '$repo_status[6]
           end
-          if [ $git_stashed -gt 0 ]
+          if [ $repo_stashed -gt 0 ]
             set_color $budspencer_colors[11]
-            echo -n ' '$git_stashed
+            echo -n ' '$repo_stashed
           end
         end
         set_color -b $budspencer_colors[3] normal
@@ -265,6 +312,6 @@ end
 ###############################################################################
 
 function fish_right_prompt -d 'Write out the right prompt of the budspencer theme'
-  echo -n -s (__budspencer_cmd_duration) (__budspencer_prompt_git_symbols) (__budspencer_prompt_pwd)
+  echo -n -s (__budspencer_cmd_duration) (__budspencer_prompt_repo_symbols) (__budspencer_prompt_pwd)
   set_color normal
 end
