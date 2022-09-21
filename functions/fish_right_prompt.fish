@@ -115,12 +115,12 @@ end
 
 function __budspencer_git_status -d 'Check git status'
   set -l git_status (command git status --porcelain 2> /dev/null | cut -c 1-2)
-  set -l added (echo -sn $git_status\n | egrep -c "[ACDMT][ MT]|[ACMT]D")
-  set -l deleted (echo -sn $git_status\n | egrep -c "[ ACMRT]D")
-  set -l modified (echo -sn $git_status\n | egrep -c ".[MT]")
-  set -l renamed (echo -sn $git_status\n | egrep -c "R.")
-  set -l unmerged (echo -sn $git_status\n | egrep -c "AA|DD|U.|.U")
-  set -l untracked (echo -sn $git_status\n | egrep -c "\?\?")
+  set -l added (echo -sn $git_status\n | grep -E -c "[ACDMT][ MT]|[ACMT]D")
+  set -l deleted (echo -sn $git_status\n | grep -E -c "[ ACMRT]D")
+  set -l modified (echo -sn $git_status\n | grep -E -c ".[MT]")
+  set -l renamed (echo -sn $git_status\n | grep -E -c "R.")
+  set -l unmerged (echo -sn $git_status\n | grep -E -c "AA|DD|U.|.U")
+  set -l untracked (echo -sn $git_status\n | grep -E -c "\?\?")
   echo -n $added\n$deleted\n$modified\n$renamed\n$unmerged\n$untracked
 end
 
@@ -130,12 +130,12 @@ end
 
 function __budspencer_svn_status -d 'Check svn status'
   set -l svn_status (command svn status "$argv[1]" 2> /dev/null | grep '^[ACDIMRX?!~ ]' | cut -c 1-2)
-  set -l added (echo -sn $svn_status\n | egrep -c "A.")
-  set -l deleted (echo -sn $svn_status\n | egrep -c "[D!].")
-  set -l modified (echo -sn $svn_status\n | egrep -c "M.|.M")
-  set -l renamed (echo -sn $svn_status\n | egrep -c "R.")
-  set -l unmerged (echo -sn $svn_status\n | egrep -c "[~C].|.C")
-  set -l untracked (echo -sn $svn_status\n | egrep -c '\?.')
+  set -l added (echo -sn $svn_status\n | grep -E -c "A.")
+  set -l deleted (echo -sn $svn_status\n | grep -E -c "[D!].")
+  set -l modified (echo -sn $svn_status\n | grep -E -c "M.|.M")
+  set -l renamed (echo -sn $svn_status\n | grep -E -c "R.")
+  set -l unmerged (echo -sn $svn_status\n | grep -E -c "[~C].|.C")
+  set -l untracked (echo -sn $svn_status\n | grep -E -c '\?.')
   echo -n $added\n$deleted\n$modified\n$renamed\n$unmerged\n$untracked
 end
 
